@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<wicket:head>
+		<link rel="stylesheet" type="text/css" href="css/upload_files_page.css" />
+	</wicket:head>
+</head>
+<body>
+    <wicket:extend>
+
+    <!--  todo: use CSS, and add class attributes to the div's and span's -->
+
+    <!-- upload page title -->
+    <h1>
+      <wicket:message key="page_title">[Upload and deposit]</wicket:message><br/>
+	</h1>
+
+    <!-- tridas (metadata) section -->
+    <!-- TODO put it in a Panel -->
+    <div class="upload-section">
+      <strong><wicket:message key="tridas_section_title">[TRiDaS metadata file]</wicket:message></strong>
+      <br/>
+
+      <div wicket:id="tridas_combined_upload_hints" id="tridas_combined_upload_hints" class="combined_upload_hints">
+      &nbsp;</div>
+
+      <div wicket:id="tridas_combined_upload_warnings" id="tridas_combined_upload_warnings" class="combined_upload_warnings">
+      &nbsp;</div>
+      <br/>
+
+      <div>
+            <span wicket:id="tridas_files_uploaded_message" id="tridas_files_uploaded_message" class="files_uploaded_message">
+            [Files...]&nbsp;</span>
+      </div>
+      <br/>
+
+      <div id="tridas_upload_panel_wrapper">
+
+	      <wicket:message key="language">[Language:]</wicket:message>
+	      <select wicket:id="tridas_language" id="tridas_language" size="1" onChange="changeLanguage();">
+	            <option value="nl">Dutch</option>
+	            <option value="en">English</option>
+	      </select>
+	      <br/><br/>
+	      <div wicket:id="tridas_upload_panel" ></div>
+	      <!-- temporary, because there is no previous 'wizard' step for uploading yet -->
+	      <wicket:message key="coupleValueFilesExplanation">[coupleValueFilesExplanation]</wicket:message>
+	      <br/>
+      </div>
+    </div>
+    <br/>
+
+    <!-- values section -->
+    <!-- TODO put it in a Panel -->
+	<div id="measurements_upload_panel_wrapper">
+	    <wicket:enclosure child="measurements_upload_panel">
+	    <!-- manage value files = measurements in 'non-tridas' formats -->
+	    <div class="upload-section">
+	    <strong><wicket:message key="values_section_title">[Value file(s)]</wicket:message></strong>
+	    <br/>
+	     <div wicket:id="values_combined_upload_warnings" id="values_combined_upload_warnings" class="combined_upload_warnings">
+	     &nbsp;</div>
+	     <div wicket:id="values_combined_upload_errors" id="values_combined_upload_errors" class="combined_upload_errors">
+	     &nbsp;</div>
+	      <br/>
+	      <div>
+	            <span wicket:id="value_files_uploaded_message" id="value_files_uploaded_message" class="value_uploaded_message">
+	            [Files...]&nbsp;</span>
+	      </div>
+	      <br/>
+	
+	    <!--  Tuscon, Heidelberg -->
+	    <!-- Note: this selection should be initialized from Wicket -->
+	    <wicket:message key="format">[Format:]</wicket:message>
+	   <select wicket:id="measurements_filetype" id="measurements_filetype" size="1" onChange="changeType();">
+	 		<option value="Tuscon" >Tuscon RWL</option>
+			<option value="Heidelberg" >Heidelberg</option>
+		</select>
+	    <br/><br/>
+	
+		<div wicket:id="measurements_upload_panel"></div>
+	    </div>
+	    <br/>
+	    </wicket:enclosure>
+	</div>
+    <br/>
+
+    <!-- manage associated files = documents an images related to the object/project -->
+<div wicket:id="associated_files_upload_section_panel"></div> 
+<!--  
+	<div id="associatedfiles_upload_panel_wrapper">
+	    <wicket:enclosure child="associatedfiles_upload_panel">
+	    <div class="upload-section">
+	    <strong><wicket:message key="associatedfiles_section_title">[Associated file(s)]</wicket:message></strong>
+	    <br/>
+	     <div wicket:id="associatedfiles_combined_upload_warnings" id="associatedfiles_combined_upload_warnings" class="combined_upload_warnings">
+	     &nbsp;</div>
+	     <div wicket:id="associatedfiles_combined_upload_errors" id="associatedfiles_combined_upload_errors" class="combined_upload_errors">
+	     &nbsp;</div>
+	      <br/>
+	      <div>
+	            <span wicket:id="associatedfiles_uploaded_message" id="associatedfiles_uploaded_message" class="associatedfiles_uploaded_message">
+	            [Files...]&nbsp;</span>
+	      </div>
+	      <br/>
+		<div wicket:id="associatedfiles_upload_panel"></div>
+	    </div>
+	    <br/>
+	    </wicket:enclosure>
+	</div>
+ -->	
+    <br/>
+ 
+ 
+   <!-- upload 'footer' -->
+   <div class="upload-footer">
+     <!-- status hints -->
+     <!--
+     Hints to get things working when it is not?
+      -->
+     <div id="upload_hints" wicket:id="upload_hints"></div>
+     <br/>
+     <form wicket:id="form" >
+        <!-- back 
+        
+		<a href="#" wicket:id="back_button" id="back_button" class="button" >
+		    <wicket:message key="back_button">[Back]</wicket:message>
+		</a>
+		<span>&nbsp;</span>
+        --> 
+        
+        <!-- cancel -->
+		<a href="#" wicket:id="combined_cancel_button" id="combined_cancel_button" class="button" >
+		    <wicket:message key="combined_cancel_button">[Cancel]</wicket:message>
+		</a>
+		<!-- spacer --><span>&nbsp;</span>
+
+        <!-- Finalise and Upload another -->
+		<a href="#" wicket:id="finish_and_upload_button" id="finish_and_upload_button" class="button" >
+		    <wicket:message key="finish_and_upload_button">[finish and upload another]</wicket:message>
+		</a>
+		<!-- spacer --><span>&nbsp;</span>
+
+        <!-- finish -->
+		<a href="#" wicket:id="finish_button" id="finish_button" class="button" >
+		    <wicket:message key="finish_button">[Finish]</wicket:message>
+		</a>
+     </form>
+   </div>
+
+   </wicket:extend>
+</body>
+</html>
+

@@ -1,0 +1,24 @@
+<html xmlns:wicket>
+<wicket:panel>
+	<div>
+		<wicket:message key="managerHeader">[Manager: ]</wicket:message>
+		<span wicket:id="managerName">[manager]</span>
+	   <a href="#" wicket:id="managerChange" class="button">
+	        <wicket:message key="changeButton">[change]</wicket:message>
+	   </a>
+	</div>
+	
+	<wicket:enclosure child="legalOwnerName">
+	<br/>
+	<div>
+		<wicket:message key="legalOwnerHeader">[Legal owner: ]</wicket:message>
+		<span wicket:id="legalOwnerName">[legal owner]</span>
+	   <a href="#" wicket:id="ownerChange" class="button">
+	        <wicket:message key="changeButton">[change]</wicket:message>
+	   </a>
+	</div>
+	</wicket:enclosure>
+	
+</wicket:panel>
+</html>
+  

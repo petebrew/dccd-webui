@@ -1,0 +1,16 @@
+<html xmlns:wicket>
+<wicket:panel>
+	<table class="layout_table">
+		<tr>
+		    <td><span wicket:id="year">year</span></td>
+		    <wicket:enclosure child="suffix">
+		    <td><select wicket:id="suffix">suffix</select></td>
+		    </wicket:enclosure>
+		    <wicket:enclosure child="certainty">
+		    <td><wicket:message key="datetime_certainty">certainty</wicket:message>: </td>
+		    <td><select wicket:id="certainty"></select></td>
+			</wicket:enclosure>
+		</tr>
+	</table>	
+</wicket:panel>
+</html>

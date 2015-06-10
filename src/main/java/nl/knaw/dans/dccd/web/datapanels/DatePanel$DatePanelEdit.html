@@ -1,0 +1,16 @@
+<html xmlns:wicket>
+<wicket:panel>
+	<table>
+  		<tr><th><wicket:message key="datetime_date">Date</wicket:message>
+  		</th>
+  		<td style="white-space:nowrap;">
+  			<input wicket:id="date" />
+  			<span wicket:id="format" class="inputExample">[format]</span>
+  		</td></tr>
+<wicket:enclosure child="certainty">
+  		<tr><th><wicket:message key="datetime_certainty">Certainty</wicket:message></th>
+  		<td><select wicket:id="certainty" /></td></tr>
+</wicket:enclosure>
+	</table>
+</wicket:panel>
+</html>

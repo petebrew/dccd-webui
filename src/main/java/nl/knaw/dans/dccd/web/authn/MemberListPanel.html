@@ -1,0 +1,56 @@
+<html xmlns:wicket>
+<wicket:panel>
+      <table class="list_table">
+      <tr>
+      <!--
+        <th></th>
+        -->
+        <th><wicket:message key="user.surname">[Surname]</wicket:message></th>
+        <th><wicket:message key="user.displayName">[Name]</wicket:message></th>
+        <th><wicket:message key="user.organization">[Organisation]</wicket:message></th>
+		<wicket:enclosure child="statusName">
+		   <th><wicket:message key="user.userId">[Username]</wicket:message></th>
+		   <th><wicket:message key="user.role">[Role]</wicket:message></th>
+		   <th><span wicket:id="statusName">[Status]</span></th>
+		</wicket:enclosure>
+      </tr>
+      <tr wicket:id="members">
+<!--
+        <td>
+            <a wicket:id="memberLink" href="#"><wicket:message key="viewLink">[View]</wicket:message></a>
+        </td>
+
+        <td>
+            <span wicket:id="surname"></span>
+        </td>
+ -->
+		<td>
+		    <a wicket:id="memberLink" href="#">
+		        <span wicket:id="surname"></span>
+		    </a>
+		</td>
+
+        <td>
+            <span wicket:id="displayname"></span>
+        </td>
+        <td>
+            <span wicket:id="organisation"></span>
+        </td>
+
+        <wicket:enclosure child="status">
+        <td>
+            <span wicket:id="username"></span>
+        </td>
+        <td>
+            <span wicket:id="role"></span>
+        </td>
+        <td>
+            <span wicket:id="status"></span>
+        </td>
+        </wicket:enclosure>
+
+      </tr>
+    </table>
+
+</wicket:panel>
+</html>

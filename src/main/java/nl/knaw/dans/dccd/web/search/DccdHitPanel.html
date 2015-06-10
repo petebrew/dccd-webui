@@ -1,0 +1,35 @@
+<html xmlns:wicket>
+<wicket:panel>
+
+<div wicket:id="viewResult" >
+
+   <div>
+    <!-- Object info -->
+     <wicket:message key="name_Object">Object </wicket:message>
+     <a wicket:id="project_view" href="#">
+       <!--  <wicket:message key="view_link">view</wicket:message>  -->
+       <strong><span wicket:id="object_title_link">Title</span></strong></a><br/>
+    <!-- <span wicket:id="object_title" style="font-weight:bold;">a title</span><br/>  -->
+    <wicket:message key="name_Type">Type: </wicket:message> <span wicket:id="object_type">a type</span>
+  </div>
+  <div style="margin-left:2em;">
+    <!-- Project info -->
+     <wicket:message key="name_Project">Project </wicket:message>
+    <strong><span wicket:id="project_title">a title</span></strong><br/>
+    <!--  <a wicket:id="project_view" href="#"><span wicket:id="project_title">a title</span></a> -->
+
+    <!-- ID: <span wicket:id="identifier_panel">a panel with the id</span><br/> -->
+    <wicket:message key="name_ID">ID: </wicket:message> <span wicket:id="identifier">id</span> (domain: <span wicket:id="domain">domain</span>)<br/>
+    <wicket:message key="name_Lab">Lab(s): </wicket:message> <span wicket:id="project_laboratory">laboratory</span><br/>
+    <wicket:message key="name_Investigator">Investigator: </wicket:message> <span wicket:id="project_investigator">an investigator</span><br/>
+    <wicket:message key="name_Types">Type(s): </wicket:message> <span wicket:id="project_type">an type</span><br/>
+    <wicket:message key="name_Category">Category: </wicket:message> <span wicket:id="project_category">a category</span><br/>
+    <wicket:enclosure>
+      <wicket:message key="name_Description">Description: </wicket:message> <span wicket:id="project_description">a description</span><br/>
+    </wicket:enclosure>
+  </div>
+<img wicket:id="geoMarkerIconImage" />
+</div>
+  <br/>
+</wicket:panel>
+</html>

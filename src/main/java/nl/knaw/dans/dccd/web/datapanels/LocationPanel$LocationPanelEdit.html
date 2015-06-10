@@ -1,0 +1,30 @@
+<html xmlns:wicket>
+<wicket:panel>
+<wicket:enclosure child="locationGeometry">
+ 	<table>
+   		<tr><th><wicket:message key="name_Geometry">Geometry</wicket:message>
+   		  <span class="required">*</span>
+   		</th>
+   		<td>
+   			<span wicket:id="locationGeometry"></span>
+   		</td></tr>
+   		<tr><th><wicket:message key="name_Type">Type</wicket:message></th>
+   		<td>
+   			<span wicket:id="locationType"></span>
+   		</td></tr>
+   		<tr><th><wicket:message key="name_Precision">Precision</wicket:message></th>
+   		<td>
+   			<span wicket:id="locationPrecision"></span>
+   		</td></tr>
+  		<tr><th><wicket:message key="name_Comment">Comment</wicket:message></th>
+  		<td>
+  			<span wicket:id="locationComment"></span>
+  		</td></tr>	
+  		<tr><th><wicket:message key="name_Address">Address</wicket:message></th>
+  		<td>
+  			<span wicket:id="address"></span>
+  		</td></tr>	
+  	</table>
+</wicket:enclosure>
+</wicket:panel>
+</html>

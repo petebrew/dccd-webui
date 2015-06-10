@@ -1,0 +1,107 @@
+<html xmlns:wicket>
+	<wicket:panel>
+	<div id="header" >
+	
+	<table  width="100%" class="layout_tight_table">
+	  <tr>
+	  <td width="197px;">
+        <wicket:link>
+            <a href="/" wicket:id="homeLink" title="Home" rel=home>
+		        <div id="headerLogo">
+		       <!-- maybe put an &nbsp; inside? -->
+		       
+		        <!-- Note: an image can be clicked to view the image in a separate window -->
+		        <!-- <img src="images/dccd_logo.png" alt="Home" /> -->
+		        </div>
+            </a>
+        </wicket:link>
+      </td>
+	  <td>
+	  	<!--  -->
+	  	<table  width="100%" class="layout_tight_table">
+	  		<tr>
+	  		  <td>
+	  		        <div class="headerctrl" id="mainBar">
+			        <wicket:link>
+				        <a href="#" wicket:id="organisationsLink">
+				        <wicket:message key="organisations">[Organisations]</wicket:message></a>
+				    </wicket:link>
+			        <span>&nbsp;</span>
+			        <wicket:link>
+			                <a href="#" wicket:id="aboutLink">
+			                <wicket:message key="page.about">[About]</wicket:message></a>
+			        </wicket:link>
+			        <span>&nbsp;</span>
+			        <wicket:link>
+			                <a href="#" wicket:id="contactLink">
+			                <wicket:message key="page.contact">[Contacts]</wicket:message></a>
+			        </wicket:link>
+			        <span>&nbsp;</span>
+			        <wicket:link>
+			                <a href="#" wicket:id="productsAndLinksLink">
+			                <wicket:message key="page.productsAndLinks">[Products and links]</wicket:message></a>
+			        </wicket:link>
+			        <span>&nbsp;</span>
+			        <a href="http://vkc.library.uu.nl/vkc/dendrochronology/research/ProjectsWiki/DCCD%20Repository%20FAQs.aspx" target="_blank">
+						<wicket:message key="faqLink">[FAQs]</wicket:message>
+					</a>
+			        
+					<!-- TODO add Browse    
+			        <span>&nbsp;</span>
+			        <wicket:link>
+			                <a href="#" wicket:id="projectsResultLink">
+			                <wicket:message key="view_projects">View projects</wicket:message></a>
+			        </wicket:link>
+					 -->
+			      </div>
+			      
+			    <!-- vertical spacer 
+				<div style="height:60px;"></div>
+	  		    -->
+	  		    <div wicket:id="searchPanel" class="searchPanel">[searchPanel]</div>
+			    <wicket:enclosure child="advancedSearchLink">
+			        <wicket:link>
+			                <a href="#" wicket:id="advancedSearchLink" class="advancedSearchLink">
+			                <wicket:message key="page.advancedsearch">[Advanced Search]</wicket:message></a>
+			        </wicket:link>
+			    </wicket:enclosure>
+			      
+<div wicket:id="maintenaceMessage" style="margin-top:10px;">[message]</div>
+
+			      
+	  		  </td>
+	  		  <td>
+	  		    <table class="layout_tight_table" align="right">
+	  		    	<tr>
+	  			    	<td>
+			        <span id="personalBar" wicket:id="personalBarPanel" class="noPrint headerctrl">
+			            [Personal bar]
+			        </span>	  		  
+
+	  			    	</td>
+	  			    	<td>
+	  		        <div align="right" >
+			        <form wicket:id="form">
+			        <span>&nbsp;</span>
+			        <span class="headerctrl">
+			        <select wicket:id="localeSelect">
+			            <option value="nl">Dutch</option>
+			            <option value="en">English</option>
+			        </select>
+			        </span>
+			        </form>
+					</div>        
+	  			    	</td>
+	  		    	</tr>
+	  		    </table>
+				</td>
+	  		</tr>
+	  	</table>
+	  </td>
+	  </tr>
+	</table>
+	
+	
+	</div>
+	</wicket:panel>
+</html>

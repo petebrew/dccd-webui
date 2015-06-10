@@ -1,0 +1,80 @@
+/* CSS specific for the CHAP Links library implementation */
+
+/* small so we can fit in more */
+
+div.timeline-frame {
+	font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+	font-size:8pt;
+	background-color:#F5F5F5;
+}
+div.timeline-event-content {
+    padding:2px;
+    margin:2px;
+}
+div.timeline-event {
+    border-radius:3px;
+}
+
+/* Navigation */
+
+/* make it look more like the open layers controls and use the dark blue images */    
+div.timeline-navigation {
+	color: white;
+	border: 1px solid white; /* slight floating effect */
+	background-color: darkblue;
+}
+div.timeline-navigation-zoom-in, div.timeline-navigation-zoom-out, div.timeline-navigation-move-left, div.timeline-navigation-move-right {
+        padding:5px 5px;
+        width: 18px;
+		height: 18px;
+}        
+div.timeline-navigation-zoom-in {
+           background-image:url('zoom-in-mini.png');
+}
+div.timeline-navigation-zoom-out {
+    background: url('zoom-out-mini.png') no-repeat center;
+}
+div.timeline-navigation-move-left {
+    background: url('zoom-left-mini.png') no-repeat center;
+}
+div.timeline-navigation-move-right {
+    background: url('zoom-right-mini.png') no-repeat center;
+}
+
+/* additions for the popup */
+
+.tlPopup-show:hover {
+	cursor: pointer;
+	background-color: #7090FF;
+}
+
+.tlPopup-show {
+	background-color: #4060FF;
+	height: 6px;
+}
+
+.tlDataContent { /* */
+	
+}
+
+.tlPopup-container {
+	position: absolute;
+	border-radius: 5px;
+	background-color: white;
+	border-color: grey;
+	border-style: solid;
+	border-width: 1px;
+	padding: 3px 3px;
+	min-width: 30px;
+}
+
+.tlPopup-point {
+	position: absolute;
+	background-image: url('bubble-top-arrow.png');
+	background-repeat: no-repeat;
+	background-position: bottom center;
+	top: -18px;
+	left: 6px;
+	width: 22px;
+	height: 18px;
+}

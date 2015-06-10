@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+  <wicket:extend>
+<a href="#" wicket:id="backButton" >
+	<wicket:message key="locationSearchResultPage.backButton">[Back to search result list]</wicket:message>
+</a>
+
+<h1>
+	<wicket:message key="searchResultDownloadPage.title">[Download Search]</wicket:message>
+</h1>
+
+<div wicket:id="resultMessage" class="resultMessage">[resultMessage]</div>
+<br/>
+
+  <form wicket:id="form" >
+	<input wicket:id="submitButton" type="submit" wicket:message="value:search.download.fileconstruction" />
+	
+	<span wicket:id="myLabel">[Depending on the query this may take a while]</span>
+	<span><a wicket:id="downloadSearchResults" href="#" class="button button_download" style="padding-top:24px;"><wicket:message key="search.downloadAllResults">[download]</wicket:message><img src="images/icon_download_button.png" height="32px" border="none" /></a></span>
+  </form>
+
+  </wicket:extend>
+</body>
+</html>

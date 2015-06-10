@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+        <title>Project edit page</title>
+    <wicket:head>
+        <link rel="stylesheet" type="text/css" href="css/project_view_and_edit.css" />
+        <link rel="stylesheet" type="text/css" href="css/project_edit.css" />
+    </wicket:head>
+</head>
+<body>
+	<wicket:extend>
+	        <h1>
+	          <wicket:message key="projecteditpage_title">Edit Project</wicket:message>
+	        </h1>
+        
+        <!--  management Panel -->
+        <div wicket:id="statusPanel"></div>
+        <br/>
+
+	<div wicket:id="projectLanguagePanel"></div>
+        <br/>
+ 			
+	<table class="dendro_table">
+		<tr>
+			<td valign="top"><div wicket:id="tree_panel" class="tree_panel"></div></td>
+  			<td valign="top">
+  			
+			<form wicket:id="edit_form">
+				<!-- editable has a submit in a form -->
+				<a href="#" wicket:id="save_top" class="button">
+				  <wicket:message key="button.text.save">[save]</wicket:message>
+				</a>
+				<br/>
+				<br/>
+   				<div id="commonFeedbackPanel" wicket:id="commonFeedbackPanel" class="feedback">Messages</div>	
+	  			<br/>
+	  			<div wicket:id="entity_panel"></div>		
+				<a href="#" wicket:id="save_bottom" class="button">
+				  <wicket:message key="button.text.save">[save]</wicket:message>
+				</a>  			
+			</form>	
+
+  			</td>
+		</tr>
+	</table>
+	</wicket:extend>
+</body>
+</html>

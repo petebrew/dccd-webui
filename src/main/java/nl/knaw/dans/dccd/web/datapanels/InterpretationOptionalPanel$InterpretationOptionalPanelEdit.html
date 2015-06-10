@@ -1,0 +1,33 @@
+<html xmlns:wicket>
+<wicket:panel>
+
+<div wicket:id="listViewContainer">
+	<wicket:enclosure>
+		<div>
+			&nbsp;<input wicket:id="firstPlusLink" class="button" type="image"
+			width="20" height="15" border="0" align="absmiddle"
+			title="add first field" alt="" src="images/icon_add.gif" />
+		</div>
+	</wicket:enclosure>	
+   	<table id="attribute_table">   	
+		<tr wicket:id="attribute" class="attribute">
+			<td><span wicket:id="attribute_panel">[attribute panel]</span></td>
+			
+			<!-- below the NEW buttons -->	
+			<td class="w_table_cell w_multiplier" width="40">
+				<span wicket:id="buttonsHolder">
+					<wicket:enclosure>
+							&nbsp;<input wicket:id="minusLink" class="button" type="image"
+						width="20" height="15" border="0" align="absmiddle"
+						title="Remove this field" alt="" src="images/icon_remove.gif" />
+					</wicket:enclosure>
+<!-- no plus here! -->
+				</span>
+			</td>
+			<!--  -->
+		</tr>
+	</table>
+</div>
+
+</wicket:panel>
+</html>

@@ -1,0 +1,32 @@
+<html xmlns:wicket>
+<wicket:panel>
+<div>
+  <wicket:message key="statusLabel">[Status :]</wicket:message>
+  <span wicket:id="project_status_value">[status value]</span>
+  <span wicket:id="project_status_date">[status date]</span>
+</div>
+<br/> <!-- would be better if CSS was used -->
+<div>
+   <!-- buttons -->
+   <a href="#" wicket:id="project_edit" class="button">
+        <wicket:message key="edit_link">[edit]</wicket:message>
+   </a>
+  <!-- spacer --><span>&nbsp;</span>
+   <a href="#" wicket:id="project_archive" class="button">
+        <wicket:message key="archive_link">[edit]</wicket:message>
+   </a>
+  <!-- spacer --><span>&nbsp;</span>
+   <a href="#" wicket:id="project_delete" class="button">
+        <wicket:message key="delete_link">[edit]</wicket:message>
+   </a>
+   
+   <!--  unarchiving is available until versioning is implemented! -->
+   <a href="#" wicket:id="project_unarchive" class="button">
+        <wicket:message key="unarchive_link">[unarchive]</wicket:message>
+   </a>
+   
+</div>
+<br/>
+<div wicket:id="unarchive_message"></div>
+</wicket:panel>
+</html>

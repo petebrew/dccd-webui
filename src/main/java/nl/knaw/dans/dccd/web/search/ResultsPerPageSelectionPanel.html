@@ -1,0 +1,16 @@
+<html xmlns:wicket>
+<wicket:panel>
+	<!-- 
+	<span wicket:id="message">Message goes here</span>
+	set to: 
+	<a href="#" wicket:id="myLink">5</a>
+	 -->
+	<span>
+ 	<wicket:message key="resultsPerPage.Prefix">Show</wicket:message>  
+	<select name="resultsPerPage" wicket:id="resultsPerPageSelection">
+		<option>5</option><option>10</option><option>20</option><option>50</option>
+	</select> 
+ 	<wicket:message key="resultsPerPage.Postfix">results per page</wicket:message>  
+    </span> 
+</wicket:panel>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+    <wicket:extend>
+
+    <div wicket:id="contactTitle">title</div>
+    <br />
+
+    <form wicket:id="contactForm">
+        <table class="layout_table">
+        <!-- Subject -->
+        <tr>
+          <td><label for="messageSubject"><wicket:message key="messageSubjectLabel">Subject</wicket:message></label></td>
+          <td><span id="messageSubject" wicket:id="messageSubject">[Subject]</span></td>
+        </tr>
+        <!-- Message -->
+        <tr>
+          <td colspan="2">
+            <label for="messageText"><wicket:message key="messageTextLabel">Message</wicket:message></label>
+            <br/>
+            <textarea wicket:id="messageText" rows="15" cols="80">[Input comes here]</textarea></td>
+        </tr>
+        <!-- Actions below -->
+    <!--
+    * Send
+      e-mail is sent to member
+      leads (back) to MemberPage
+    <input wicket:id="send" type="submit" value="Send" />
+       -->
+        <tr>
+        <td colspan="2">
+                <a href="#" wicket:id="send" class="button">Send</a>
+                <!-- default return -->
+                <input type="submit" style="display:none;">
+                <!-- spacer --><span>&nbsp;</span>
+                <a href="#" wicket:id="dontsend" class="button">Don't send</a>
+                <!-- spacer --><span>&nbsp;</span>
+                <a href="#" wicket:id="cancel" class="button">Cancel</a>
+        </td>
+        </tr>
+        </table>
+    </form>
+
+    </wicket:extend>
+</body>
+</html>

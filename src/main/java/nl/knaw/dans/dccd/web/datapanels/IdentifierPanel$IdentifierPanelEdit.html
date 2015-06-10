@@ -1,0 +1,28 @@
+<html xmlns:wicket>
+<wicket:panel>
+
+<wicket:enclosure child="identifier">
+	<table>
+  		<tr><th><wicket:message key="identifier_id">Id</wicket:message>
+  		</th>
+  			<td><input wicket:id="identifier" /></td>
+ <!--  			
+<wicket:enclosure>  			
+  			<td class="feedback">
+  				<span wicket:id="identifier-componentFeedback">componentFeedback</span>
+  			</td>
+</wicket:enclosure>
+ -->  			
+  		</tr>
+<wicket:enclosure child="domain">
+  		<tr><th><wicket:message key="identifier_domain">domain</wicket:message>
+  			<span class="required">*</span>  		
+  		</th>
+  			<td><input wicket:id="domain" /></td>
+  		</tr>
+</wicket:enclosure>
+	</table>
+</wicket:enclosure>
+	
+</wicket:panel>
+</html>

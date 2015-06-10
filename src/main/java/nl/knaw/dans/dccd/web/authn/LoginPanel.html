@@ -1,0 +1,60 @@
+<html xmlns:wicket>
+<wicket:head>
+    <META HTTP-EQUIV="expires" CONTENT="0"/>
+</wicket:head>
+
+<wicket:panel>
+    <form wicket:id="loginForm" >
+<!--
+    <div id="commonFeedbackPanel" wicket:id="commonFeedbackPanel"
+        class="feedback">Messages</div>
+ -->
+<!--  why both a common and a default ??  -->
+<p wicket:id="defaultFeedbackPanel">Messages</p>
+<!-- Messenger stuff -->
+<input type="hidden" name="token" wicket:id="token" />
+
+    <table class="layout_table">
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="userId-componentFeedback">componentFeedback</span></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="userId"><wicket:message
+                key="user.userId">userId</wicket:message></label></td>
+            <td><input id="userId" wicket:id="userId" type="text" class="standard" /></td>
+            <td>&nbsp;</td>
+        </tr>
+
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="credentials-componentFeedback">componentFeedback</span></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="password"><wicket:message
+                key="user.password">password</wicket:message></label></td>
+            <td><input id="password" wicket:id="credentials" type="password" class="standard"/></td>
+            <td>&nbsp;</td>
+        </tr>
+
+        <tr>
+            <td colspan="3">
+                <a href="#" wicket:id="login" class="button"><wicket:message key="login">[Login]</wicket:message></a>
+                 <!-- spacer --><span>&nbsp;</span>
+                <a href="#" wicket:id="cancel" class="button"><wicket:message key="cancel">[Cancel]</wicket:message></a>
+	 <!-- next line enables IE compatible form submit using the enter key -->
+	 <div style="border:0;width:0;height:0;overflow:hidden;"><input type="submit"/></div> 
+<!-- submit on return; and display:none is being ignored by IE -->
+<!--  
+<input type="submit" style="display:none;">
+-->
+            </td>
+        </tr>
+
+    </table>
+    </form>
+</wicket:panel>
+
+</html>

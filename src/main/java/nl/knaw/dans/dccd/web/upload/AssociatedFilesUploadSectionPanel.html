@@ -1,0 +1,28 @@
+<html xmlns:wicket>
+<wicket:panel>
+
+  	<div id="associatedfiles_upload_panel_wrapper">
+	    <wicket:enclosure child="associatedfiles_upload_panel">
+	    <!-- manage associated files -->
+	    <div class="upload-section">
+	    <strong><wicket:message key="associatedfiles_section_title">[Associated file(s)]</wicket:message></strong>
+	    <br/>
+	     <div wicket:id="associatedfiles_combined_upload_warnings" id="associatedfiles_combined_upload_warnings" class="combined_upload_warnings">
+	     &nbsp;</div>
+	     <div wicket:id="associatedfiles_combined_upload_errors" id="associatedfiles_combined_upload_errors" class="combined_upload_errors">
+	     &nbsp;</div>
+	      <br/>
+	      <div>
+	            <span wicket:id="associatedfiles_uploaded_message" id="associatedfiles_uploaded_message" class="associatedfiles_uploaded_message">
+	            [Files...]&nbsp;</span>
+	      </div>
+	      <br/>
+		<div wicket:id="associatedfiles_upload_panel"></div>
+	    </div>
+	    <br/>
+	    </wicket:enclosure>
+	</div>
+  
+</wicket:panel>
+</html>
+  

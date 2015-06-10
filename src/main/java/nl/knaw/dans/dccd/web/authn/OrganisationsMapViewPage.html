@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+     <wicket:extend>
+<a href="#" wicket:id="backButton" >
+	<wicket:message key="organisationLocationsPage.backButtonLabel">[Back to list]</wicket:message>
+</a>
+<br/>
+<br/>
+
+    <h1><wicket:message key="organisationLocationsPage.title">[Organisation locations]</wicket:message></h1>
+
+	<!-- indicate what whas loaded -->
+ 	<span wicket:id="loadedMsgLabel">[loadedMsgLabel]</span>
+ 	
+	<!-- The map, size was 400x300 -->
+	<div wicket:id="geoviewer" style="width: 800px; height: 600px;">[geo viewer]</div>
+ 
+    </wicket:extend>
+</body>
+</html>
+

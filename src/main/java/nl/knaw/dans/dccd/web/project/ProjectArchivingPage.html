@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Project archiving and validation page</title>
+    <wicket:head>
+    <!--
+        <link rel="stylesheet" type="text/css" href="css/project_view_and_edit.css" />
+     -->
+     </wicket:head>
+</head>
+<body>
+    <wicket:extend>
+    <h1><span wicket:id="page.title">[title]</span></h1>
+    <br/>
+
+    <wicket:message key="projectarchivingpage_message">[message]</wicket:message>
+    <br/><br/>
+
+	<form wicket:id="projectArchivingForm">
+	
+	    <!-- validation feedback -->
+	    <div wicket:id="invalid"></div>
+		<br/>    
+	    <div wicket:id="validationFeedback" class="feedback"></div>
+	    <br/>
+<!--
+	    <div wicket:id="missingId"></div>
+		<br/>
+
+	    <div wicket:id="invalidId"></div>
+		<br/>
+ -->		
+	    <!-- license -->
+	    <wicket:message key="license_title" >[license]</wicket:message>
+		<div wicket:id="license_accept_panel"></div>
+        <br/>
+
+        <wicket:message key="license_note" >[note]</wicket:message>
+        <br/><br/>
+
+	    <!-- buttons -->
+
+		<a href="#" wicket:id="cancel" class="button">
+		  <wicket:message key="cancel" >[cancel]</wicket:message>
+		</a>
+		<!-- spacer --><span>&nbsp;</span>
+		<a href="#" wicket:id="finish" class="button">
+		  <wicket:message key="finish" >[finish]</wicket:message>
+		</a>
+	</form>
+
+    </wicket:extend>
+</body>
+</html>
+

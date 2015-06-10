@@ -1,0 +1,40 @@
+<html xmlns:wicket>
+
+<!-- 
+NOTE copied the complete html from SearchResultPanel and placed the DCCD specific code in it 
+This is not the optimal solution, because the java counterpart was not copied and can now divert from it!
+-->
+
+<wicket:panel>
+<div class="searchCriteria" wicket:id="searchCriteria">[searchCriteria]</div>
+
+<div wicket:id="resultMessage" class="resultMessage">[resultMessage]</div>
+
+<table width="100%" class="searchHits">
+<tr>
+	<td width="70%" style="vertical-align:top">
+		<!-- location related panel-->
+		<div wicket:id="geoViewerPanel" style="width: 600px; height: 400px;">[geo panel]</div>
+
+		<!--  timeline -->
+		<!-- note on the wrapper div; it need space for the scrollbar -->
+		<div style="width:620px;height:302px;overflow:auto;" class="panel">         
+        	<div wicket:id="timelinePanel" style="width:600px;height:200px;">[timeline]</div>
+		</div>
+
+<!-- TEST -->
+<form wicket:id="form">
+  <input wicket:id="fromYear" />
+  <input type="submit" value="Go" />
+</form> 
+
+	</td>
+	<td style="vertical-align:top">
+		<!-- stuff was here on other search panels -->
+	</td>
+</tr>
+</table>
+
+</wicket:panel>
+
+</html>

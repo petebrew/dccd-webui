@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<wicket:extend>
+
+<h1><wicket:message key="title">[title]</wicket:message></h1>
+
+<form wicket:id="form" >
+<div class="panel">
+    <div class="hint"><wicket:message key="hint.select">[hint.select]</wicket:message></div>
+    <br/>
+	<span wicket:id="selection">
+	    <input type="radio" />TRiDaS only <br />
+	    <input type="radio" />TRiDaS with separate data files <br />
+	 </span>
+	 <br/>
+
+    <!--
+    <div class="hint"><wicket:message key="hint">[hint]</wicket:message></div>
+    <br/>
+    -->
+
+    <div wicket:id="hint_text" class="hint"></div>
+    <br/>
+
+    <a href="#" wicket:id="next" class="button">
+        <wicket:message key="next">[Next]</wicket:message>
+        <!--  make this the default button on enter key pressed -->
+        <input type="submit" style="display:none;">
+    </a>
+    <!-- spacer --><span>&nbsp;</span>
+    <a href="#" wicket:id="cancel" class="button">
+        <wicket:message key="cancel">[Cancel]</wicket:message>
+    </a>
+</div>
+</form>
+
+</wicket:extend>
+</body>
+</html>

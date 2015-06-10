@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:wicket="http://wicket.sourceforge.net/" 
+	xml:lang="en" 
+	lang="en">
+	
+<head>
+	<wicket:head>
+		<link rel="stylesheet" type="text/css" href="css/search.css" />
+		<link rel="stylesheet" type="text/css" href="css/advanced_search.css" />
+		<link rel="stylesheet" type="text/css" href="css/user_selector.css" />
+	</wicket:head>
+</head>
+
+<body>
+<wicket:extend>
+<h1><wicket:message key="page.advancedsearch">[Advanced Search]</wicket:message></h1>
+
+<!-- 
+<div id="commonFeedbackPanel" wicket:id="commonFeedbackPanel" class="feedback">Messages</div>
+ -->
+ 
+<div wicket:id="searchCriteria" class="searchCriteria"></div>
+
+<div id="advancedSearchForm">
+	<form wicket:id="advancedSearchForm">
+		<div id="search_adv">
+
+			<div id="search_adv_block3" class="search_adv_block table_alt advancedSearchInput">
+                <label for="search_adv_any">
+                <wicket:message key="name_fullText">Any field</wicket:message>
+                </label>
+                <input type="text" wicket:id="anyField" id="search_adv_any" />
+                <br /><br />
+
+                <table class="layout_table">
+	                <tr>
+		                <td valign="top">
+		                <h2><wicket:message key="entity_name_Project">Project</wicket:message></h2>
+						<table class="advancedSearchFieldsTable">
+							<tr>
+								<td><label for="search_adv_title">
+								<wicket:message key="attr_name_Title">Title</wicket:message>
+								</label></td>
+								<td><input type="text" wicket:id="projectTitle" id="search_adv_title" /></td>
+							</tr>
+		                    <tr>
+		                        <td><label for="search_adv_projectIdentifier">
+		                        <wicket:message key="attr_name_Identifier">projectIdentifier</wicket:message>
+		                        </label></td>
+		                        <td><input type="text" wicket:id="projectIdentifier" id="search_adv_projectIdentifier" /></td>
+		                    </tr>
+		                    <tr>
+		                        <td><label for="search_adv_projectLabname">
+		                        <wicket:message key="lab_Name">projectLabname</wicket:message>
+		                        </label></td>
+		                        <td><input type="text" wicket:id="projectLabname" id="search_adv_projectLabname" /></td>
+		                    </tr>
+		                    <tr>
+		                        <td><label for="search_adv_projectCategory">
+		                        <wicket:message key="attr_name_Category">projectCategory</wicket:message>
+		                        </label></td>
+		                        <td>
+									<!-- dropdown -->
+									<input type="text" wicket:id="projectCategory" id="search_adv_projectCategory" />
+									<!-- WAS autocomplete
+									<select wicket:id="projectCategory" id="search_adv_projectCategory"></select>
+									 -->
+		                        </td>
+		                    </tr>
+						</table>
+						</td>
+
+		                <td valign="top">
+		                  <h2><wicket:message key="entity_name_Object">Object</wicket:message></h2>
+                          <table class="advancedSearchFieldsTable">
+                            <tr>
+                                <td><label for="search_adv_objectTitle">
+                                <wicket:message key="attr_name_Title">Title</wicket:message>
+                                </label></td>
+                                <td><input type="text" wicket:id="objectTitle" id="search_adv_objectTitle" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="search_adv_objectIdentifier">
+                                <wicket:message key="attr_name_Identifier">objectIdentifier</wicket:message>
+                                </label></td>
+                                <td><input type="text" wicket:id="objectIdentifier" id="search_adv_objectIdentifier" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="search_adv_objectType">
+                                <wicket:message key="attr_name_Type">objectType</wicket:message>
+                                </label></td>
+                                <td><input type="text" wicket:id="objectType" id="search_adv_objectType" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="search_adv_objectCreator">
+                                <wicket:message key="attr_name_Creator">objectCreator</wicket:message>
+                                </label></td>
+                                <td><input type="text" wicket:id="objectCreator" id="search_adv_objectCreator" /></td>
+                            </tr>
+                          </table>
+		                </td>
+
+		                <td valign="top">
+                          <h2><wicket:message key="entity_name_Element">Element</wicket:message></h2>
+
+                          <table class="advancedSearchFieldsTable">
+                            <tr>
+                                <td><label for="search_adv_elementTitle">
+                                <wicket:message key="attr_name_Title">Title</wicket:message>
+                                </label></td>
+                                <td><input type="text" wicket:id="elementTitle" id="search_adv_elementTitle" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="search_adv_elementIdentifier">
+                                <wicket:message key="attr_name_Identifier">elementIdentifier</wicket:message>
+                                </label></td>
+                                <td><input type="text" wicket:id="elementIdentifier" id="search_adv_elementIdentifier" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="search_adv_elementType">
+                                <wicket:message key="attr_name_Type">elementType</wicket:message>
+                                </label></td>
+                                <td><input type="text" wicket:id="elementType" id="search_adv_elementType" /></td>
+							    <!--Modal Window with dialog for selection -->
+							    <!-- 
+								<a wicket:id="objectTypeSelectButton" class="button"><wicket:message key="button.text.selectDlg">[Select...]</wicket:message></a>
+								<div wicket:id="objectTypeSelectionPanel" />
+								-->
+                            </tr>
+                            <tr>
+                                <td><label for="search_adv_elementTaxon">
+                                <wicket:message key="attr_name_Taxon">elementTaxon</wicket:message>
+                                </label></td>
+                                <td>
+                                <!-- FIX Container is needed to workaround visural-wicket ISSUE 67 -->
+    							<span wicket:id="elementTaxonContainer">
+									<input type="text" wicket:id="elementTaxon" id="search_adv_elementTaxon" />
+    							</span>
+							    <!--Modal Window with dialog for selection -->
+							    <!-- -->
+								<a wicket:id="taxonSelectButton" class="button"><wicket:message key="button.text.selectDlg">[Select...]</wicket:message></a>
+								<div wicket:id="taxonSelectPanel" />
+								<!-- -->
+                                </td>
+                            </tr>
+                          </table>
+
+		                </td>
+					</tr>
+				</table>
+				
+<!-- Time (period) search part -->
+<br/>
+<h2><wicket:message key="page.advancedsearch.Period">[Period]</wicket:message></h2>
+<div wicket:id="yearSearchPanel">[Year Search Panel]</div>
+				
+			</div>
+	
+			<br/>
+		
+			<a wicket:id="submitButton" class="button"><wicket:message key="search">[Search]</wicket:message></a>
+			<input type="submit" value="Search" style="display:none" />
+			
+			<a wicket:id="cancelButton" class="button"><wicket:message key="cancel">[Cancel]</wicket:message></a>
+		</div>
+	</form>
+</div>
+</wicket:extend>
+</body>
+</html>

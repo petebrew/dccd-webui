@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:wicket>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title></title>
+	</head>
+	<body>
+		<wicket:panel>
+			<form wicket:id="yesNoForm" action="">
+				<div wicket:id="message" style="margin-left:1em;">Are you sure?</div>
+				<table style="width:100%;border-style:none;margin-top:1em;">
+					<tr>
+						<td align="left" style="width:50%;text-align:left;border-style:none;padding:1em;">
+							<input style="width:100%;" type="submit" wicket:id="noButton" value="No" class="button" />
+						</td>
+						<td align="right" style="width:50%;text-align:right;border-style:none;padding:1em;">
+							<input style="width:100%;" type="submit" wicket:id="yesButton" value="Yes" class="button" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</wicket:panel>
+	</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+  <wicket:extend>
+  <div style="padding:10px;">
+  <h1>
+    <wicket:message key="selected_project_title">Selected project for download</wicket:message>
+  </h1>
+  
+  <span wicket:id="project_title">a project title</span>
+  </div>
+  <br/>
+
+  <form wicket:id="form" >
+	  <div style="background-color:#e6e6e6;padding:10px;">
+		<strong>
+		  <wicket:message key="download_options_title">Download options</wicket:message>
+		</strong>
+		<br/>
+		<wicket:message key="download_options_message">
+Metadata and values are provided in TRiDaS format.
+Additionally, download values in format:		  
+		</wicket:message>
+		<br/>
+        <span wicket:id="values_selection_panel">a panel</span>
+<div wicket:id="conversionWarning">[conversion warning]</div>
+	    <br/>
+
+		<strong>
+		  <wicket:message key="download_include_title">Include</wicket:message>
+		</strong>
+		<br/>
+		<span wicket:id="file_inclusion_panel">a panel</span>
+      </div>
+      <br/>
+
+
+	  <div style="background-color:#e6e6e6;padding:10px;">
+	  <!--  licence info -->
+	  <strong>
+	    <wicket:message key="download_license_title">License</wicket:message>
+	  </strong>
+	  <br />
+      <span wicket:id="license_accept_panel">a panel</span>
+      <br />
+
+      <!-- download button or link -->
+      		<table class="layout_table"><tr>
+		  <td style="background-color:#e6e6e6;vertical-align:text-top;">
+		    <input type="submit" value="Download" wicket:id="submit_download"/>
+		  </td>
+		  <td style="background-color:#e6e6e6;vertical-align:text-top;">
+		    <span wicket:id="feedback"></span>
+		  </td>
+		</tr></table>
+      <br />
+
+	  <!-- This is left here for downloading 'the old way'
+	  <hr/>
+	   For testing purposes only: <span wicket:id="download">download TRiDaS directly</span>
+	   -->
+
+	  </div>
+  </form>
+
+  </wicket:extend>
+</body>
+</html>

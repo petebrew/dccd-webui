@@ -1,0 +1,105 @@
+<html xmlns:wicket>
+
+<!-- 
+NOTE copied the complete html from SearchResultPanel and placed the DCCD specific code in it 
+This is not the optimal solution, becaus ethe java counterpart was not copied and can now divert from it!
+-->
+
+<wicket:panel>
+<!-- 
+<div class="searchCriteria" wicket:id="searchCriteria">[searchCriteria]</div>
+ -->
+ 
+<div wicket:id="resultMessage" class="resultMessage">[resultMessage]</div>
+
+<!-- 
+<div wicket:id="pageBrowsePanelTop" class="pageBrowsePanel" style="margin-bottom:1em;">[pageBrowsePanel]</div>
+-->
+
+<!-- 
+<div wicket:id="sortPanel" class="sortPanel">[sortPanel]</div>
+ -->
+
+<!-- 
+<wicket:enclosure child="searchHits">
+<table width="100%" class="searchHits">
+<tr>
+	<td width="70%" style="vertical-align:top">
+		<div id="searchHits">
+			<wicket:container wicket:id="searchHits">
+			<div wicket:id="searchHit" class="searchHit2">[hit]</div>
+			</wicket:container>
+		</div>			
+	</td>
+	<td style="vertical-align:top">
+		<wicket:enclosure child="refineSearchPanel">
+		<div class="panel">
+			<h1><wicket:message key="searchresultpanel.refine.label">Refine</wicket:message></h1>
+			<p>
+				<div class="refineSearchPanel panel">
+					<div wicket:id="refineSearchPanel">[search within results panel]</div>
+					<a wicket:id="advancedSearch">
+						<wicket:message key="searchresultpanel.advancedsearch.label">advanced search</wicket:message>
+					</a>
+				</div>
+			</p>
+			<p wicket:id="refineFacetsEnclosure">
+				<div class="refineFacetsPanel panel">
+					<div wicket:id="refineFacets" class="refineFacet">
+						<div wicket:id="facet"></div>
+					</div>
+					<br>
+					<a wicket:id="browseMore"><wicket:message key="searchresultpanel.browsemore.label">Browse more...</wicket:message></a>
+				</div>
+			</p>
+		</div>
+		</wicket:enclosure>
+		
+<br />
+ -->
+ 
+<!-- size was 400x300 -->
+<div wicket:id="timelinePanel" style="width: 800px; height: 600px;">[geo panel]</div>
+
+<!-- 
+	</td>
+</tr>
+</table>
+</wicket:enclosure>
+ -->
+
+<!-- 
+<div wicket:id="pageBrowsePanel" class="pageBrowsePanel">[pageBrowsePanel]</div>
+ -->
+ 
+<!-- Part that was added to the SerachResulPanel -->
+<!-- 
+		<wicket:container wicket:id="searchTips">
+			<wicket:enclosure>
+				<br/>
+				Search tips:
+				<ul>
+				<li wicket:id="noResultsTip">Make the search criteria less specific (try using less words)</li>
+				</ul>
+			</wicket:enclosure>
+		</wicket:container>		
+ -->
+
+</wicket:panel>
+<!-- panel code before copy from SearchResultPanel
+<wicket:panel>
+	<wicket:extend>
+		<wicket:container wicket:id="searchTips">
+			<wicket:enclosure>
+				<br/>
+				Search tips:
+				<ul>
+				<li wicket:id="noResultsTip">Make the search criteria less specific (try using less words)</li>
+				</ul>
+			</wicket:enclosure>
+		</wicket:container>		
+		<div wicket:id="geoViewerPanel" style="width: 320px; height: 240px;">[geo panel]</div>
+	</wicket:extend>
+</wicket:panel>
+ -->
+</html>

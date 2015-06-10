@@ -1,0 +1,54 @@
+<html xmlns:wicket>
+<wicket:panel class="yui-skin-sam">
+ 	<table> 	
+  		<tr><th><wicket:message key="cvoc_term">Term</wicket:message></th>
+  		<td>
+			<!-- FIX Container is needed to workaround visural-wicket ISSUE 67 -->
+			<span wicket:id="cvoc_termContainer">
+  				<input wicket:id="cvoc_term"/>
+  			</span>
+<!-- 
+	<span>
+		<a wicket:id="show" class="button"><span wicket:id="displayButtonText">Select</span></a>
+	</span>
+	<br/>		
+ 	<div id="taxonPanelYUI" >
+		<div class="bd">
+ 			<div wicket:id="taxonSelectPanel"></div>
+ 		</div>
+	</div>
+-->
+ 		<!-- Modal Window --> 			
+		<a wicket:id="testButton" class="button"><wicket:message key="button.text.selectDlg">Select...</wicket:message></a>
+		<div wicket:id="select2Test" />  
+		<!-- -->
+		
+  		</td>
+  		</tr>
+ 
+ 		<!-- attributes -->
+  		<tr>
+  		<th><wicket:message key="cvoc_normalisedname">Normalized name</wicket:message></th>
+  		<td>
+  			<input wicket:id="cvoc_normalisedname"/>
+  		</td>
+  		</tr>
+  		<tr>
+  		<th><wicket:message key="cvoc_standarddictionaryId">Standard dictionary Id</wicket:message></th>
+  		<td>
+  			<input wicket:id="cvoc_standarddictionaryId"/>
+  		</td>
+  		</tr>
+  		<tr><th><wicket:message key="cvoc_standardname">Name of the standard</wicket:message></th>
+  		<td>
+  			<input wicket:id="cvoc_standardname"/>
+  		</td>
+  		</tr>
+  		<tr><th><wicket:message key="cvoc_langname">lang</wicket:message></th>
+  		<td>
+  			<input wicket:id="cvoc_langname"/>
+  		</td>
+  		</tr>
+	</table>
+</wicket:panel>
+</html>

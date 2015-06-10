@@ -1,0 +1,125 @@
+<html xmlns:wicket>
+<wicket:panel>
+
+	<table class="layout_table">
+        <!-- subheader -->
+        <tr><td colspan="3">
+        <h2><wicket:message key="accountHeader">[Account]</wicket:message></h2>
+        </td></tr>
+
+	   <!--  hide row if state is not visible -->
+		<form wicket:id="userInfoForm">
+		<wicket:enclosure child="statePanel">
+		 <tr>
+		     <td><label for="statePanel"><wicket:message
+		         key="user.state">User State</wicket:message></label></td>
+		     <td>
+		        <label id="state" wicket:id="state" />
+
+		         <span wicket:id="statePanel">[state panel]</span>
+		     </td>
+		     <td><wicket:message key="state.explanation"/></td>
+		 </tr>
+		 </wicket:enclosure>
+		</form>
+
+		<tr>
+			<td><label for="userId"><wicket:message
+				key="user.userId">User id</wicket:message></label></td>
+			<td><label id="userId" wicket:id="userId" /></td>
+		</tr>
+		<tr>
+			<td><label for="displayName"><wicket:message
+				key="user.displayName">User displayName</wicket:message></label></td>
+			<td><label id="displayName" wicket:id="displayName" /></td>
+		</tr>
+
+        <tr>
+            <td><label for="email"><wicket:message key="user.email">User email</wicket:message></label></td>
+            <td><label id="email" wicket:id="email" /></td>
+        </tr>
+
+        <!-- separator -->
+        <tr><td colspan="3"><br /></td></tr>
+
+        <!-- subheader -->
+        <tr><td colspan="3">
+        <h2><wicket:message key="personHeader">[Person]</wicket:message></h2>
+        </td></tr>
+
+		<tr>
+			<td><label for="title"><wicket:message key="user.title">User titles</wicket:message></label></td>
+			<td><label id="title" wicket:id="title" /></td>
+		</tr>
+		<tr>
+			<td><label for="initials"><wicket:message
+				key="user.initials">User initials</wicket:message></label></td>
+			<td><label id="initials" wicket:id="initials" /></td>
+		</tr>
+
+		<tr>
+			<td><label for="prefixes"><wicket:message
+				key="user.prefixes">Prefixes</wicket:message></label></td>
+			<td><label id="prefixes" wicket:id="prefixes" /></td>
+		</tr>
+		<tr>
+			<td><label for="surname"><wicket:message
+				key="user.surname">User surname</wicket:message></label></td>
+			<td><label id="surname" wicket:id="surname" /></td>
+		</tr>
+
+        <tr>
+            <td><label for="function"><wicket:message
+                key="user.function">User function</wicket:message></label></td>
+            <td><label id="function" wicket:id="function" /></td>
+        </tr>
+
+        <tr>
+            <td><label for="telephone"><wicket:message
+                key="user.telephone">User telephone</wicket:message></label></td>
+            <td><label id="telephone" wicket:id="telephone" /></td>
+        </tr>
+
+		<!-- digitalAuthorIdentifier -->
+		<tr>
+		    <td><label for="digitalAuthorIdentifier">
+		        <wicket:message key="user.digitalAuthorIdentifier">User telephone</wicket:message>
+		    </label></td>
+		    <td><label id="digitalAuthorIdentifier" wicket:id="digitalAuthorIdentifier" /></td>
+		</tr>
+
+        <!-- separator -->
+        <tr><td colspan="3"><br /></td></tr>
+
+       <!-- subheader -->
+        <tr><td colspan="3">
+        <h2><wicket:message key="organisationHeader">[Organisation]</wicket:message></h2>
+        </td></tr>
+
+		<tr>
+			<td><label for="organization"><wicket:message
+				key="organisation.name">organization</wicket:message></label></td>
+			<td>
+			  <!--  <label id="organization" wicket:id="organization" /> -->
+			  <a href="#" wicket:id="organisationLink">
+			    <span id="organization" wicket:id="organization">[link to Organisation Page]</span>
+			  </a>
+			</td>
+		</tr>
+
+	</table>
+	<p />
+
+    <a href="#" wicket:id="editLink" class="button">
+        <span wicket:id="editLink">[Edit]</span>
+     </a>
+
+    <!-- spacer --><span>&nbsp;</span>
+
+     <a href="#" wicket:id="changePasswordLink" class="button" >
+       <span wicket:id="changePasswordLink" >[Change Password]</span>
+     </a>
+	<p />
+
+</wicket:panel>
+</html>

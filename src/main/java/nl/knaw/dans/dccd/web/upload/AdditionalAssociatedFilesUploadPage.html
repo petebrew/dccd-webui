@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    <wicket:head>
+		<link rel="stylesheet" type="text/css" href="css/upload_files_page.css" />
+        <title>upload associated files</title>
+	</wicket:head>
+    </head>
+<body>
+	<wicket:extend>
+	<h1><wicket:message key="uploadAssocFilesPage.title">[Upload associated files]</wicket:message></h1>
+		
+	<div>
+		Project: <span wicket:id="project_title">[title]</span>
+	</div>
+	<br/>
+	
+	<div>
+		<h2>Associated Files stored</h2>
+		<div style="padding:10px;">
+		<table class="list_table">
+	      <tr wicket:id="stored_files" class="even">
+	        <td><span wicket:id="stored_files.filename">[name]</span></td>
+	      </tr>
+	    </table>
+	    </div>
+	</div>
+	
+	<div class="panel">
+		<h2>Upload additional files</h2>
+		<div class="upload-section">
+	  	<table class="list_table">
+	      <tr wicket:id="uploaded_files" class="even">
+	        <td><span wicket:id="uploaded_files.filename">[name]</span></td>
+	      </tr>
+	    </table>
+    	</div>
+    	
+		<div wicket:id="associatedfiles_upload_panel"></div>
+	</div>	
+		
+  <div class="upload-footer">
+   <form wicket:id="form" >
+        <!-- cancel -->
+		<a href="#" wicket:id="cancel_button" id="cancel_button" class="button" >
+		    <wicket:message key="cancelLink">[Cancel]</wicket:message>
+		</a>
+		<!-- spacer --><span>&nbsp;</span>
+        <!-- finish -->
+		<a href="#" wicket:id="finish_button" id="finish_button" class="button" >
+		    <wicket:message key="uploadAssocFilesPage.finish">[Finish]</wicket:message>
+		</a>
+   </form>
+   </div>
+ 
+   </wicket:extend>
+</body>
+</html>
+

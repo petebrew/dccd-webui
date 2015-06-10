@@ -1,0 +1,45 @@
+<html xmlns:wicket>
+<wicket:panel>
+<div wicket:id="listViewContainer">
+	<wicket:enclosure>
+		<div>
+			&nbsp;<input wicket:id="firstPlusLink" class="button" type="image" 
+			width="20" height="15" border="0" align="absmiddle" 
+			src="images/icon_add.gif" 
+			wicket:message="alt:plusLink.alt,title:plusLink.title" />
+		</div>
+	</wicket:enclosure>	
+   	<table id="attribute_table" style="border-style: none;">   	
+		<tr wicket:id="attribute" class="attribute">
+			<td style="border-style: none;"><span wicket:id="attribute_panel">[attribute panel]</span></td>
+			
+			<!-- below the NEW buttons -->	
+			<td class="w_table_cell w_multiplier" width="40" style="border-style: none;">
+				<span wicket:id="buttonsHolder">
+					<wicket:enclosure>
+						<!-- 							
+						<input wicket:id="minusLink" class="button" type="image"
+						width="20" height="15" border="0" align="absmiddle"
+						title="Remove this field" alt="" src="images/icon_remove.gif" />
+						 -->
+						<!-- modal confirm dialog -->
+						<span wicket:id="removeButton"/>
+					</wicket:enclosure>
+					<wicket:enclosure>
+					<!-- 
+						<input wicket:id="plusLink" class="button" type="image"
+						width="20" height="15" border="0" align="absmiddle"
+						title="Repeat this field" alt="" src="images/icon_add.gif" />
+					-->
+						 <input wicket:id="plusLink" class="button" type="image"
+						width="20" height="15" border="0" align="absmiddle"  src="images/icon_add.gif" 
+						wicket:message="alt:plusLink.alt,title:plusLink.title" />						
+					</wicket:enclosure>
+				</span>
+			</td>
+		</tr>
+	</table>
+</div>
+
+</wicket:panel>
+</html>

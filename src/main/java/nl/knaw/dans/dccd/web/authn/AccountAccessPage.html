@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+  <wicket:extend>
+    <h2><wicket:message key="accountaccessTitle">[Title]</wicket:message></h2>
+    <br />
+
+    <div>
+        <wicket:message key="instructions">[instructions]</wicket:message>
+    </div>
+
+    <form wicket:id="accountaccessForm">
+		<span wicket:id="commonFeedbackPanel">feedback</span>
+		<p/>
+		<input type="hidden" name="token" wicket:id="token"/>
+
+	    <table class="layout_table">
+			<tr>
+			<td><label for="userId"><wicket:message key="user.userId">Username</wicket:message></label></td>
+			<td><input id="userId" wicket:id="userId" type="text"/></td>
+			<td><span wicket:id="userId-componentFeedback">feedback</span></td>
+			</tr>
+
+			<tr>
+			<td><label for="email"><wicket:message key="user.email">E-mail</wicket:message></label></td>
+			<td><input id="email" type="text" wicket:id="email"/></td>
+			<td><span wicket:id="email-componentFeedback">feedback</span></td>
+			</tr>
+        </table>
+
+        <a href="#" wicket:id="request" class="button">
+          <wicket:message key="label.button.request">[Send]</wicket:message>
+        </a>
+        <!-- default return -->
+        <input type="submit" style="display:none;">
+        <!-- spacer --><span>&nbsp;</span>
+        <a href="#" wicket:id="cancel" class="button">
+          <wicket:message key="label.button.cancel">[Cancel]</wicket:message>
+        </a>
+    </form>
+ </wicket:extend>
+</body>
+</html>

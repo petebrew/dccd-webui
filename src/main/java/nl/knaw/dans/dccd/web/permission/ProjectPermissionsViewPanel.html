@@ -1,0 +1,33 @@
+<html xmlns:wicket>
+<wicket:panel>
+    <div>
+      <wicket:message key="defaultPermissionLevel">[Default permission level:]</wicket:message>
+      <span wicket:id="defaultLevel">[level]</span>
+    </div>
+
+        <wicket:enclosure child="userPermissions">
+    <div>
+        <wicket:message key="permissionExceptions">[Exceptions:]</wicket:message>
+        <br/>
+        <div style="height:70px;overflow-y:auto;">
+            <table class="list_table">
+                <tr wicket:id="userPermissions">
+                    <td>
+                      <!-- should be displayname -->
+                      <span wicket:id="permissionUserDisplayname">[user displayname]</span>
+                      (<span wicket:id="permissionUserId">[user id]</span>):
+                    </td>
+                    <td><span wicket:id="permissionLevel">[level]</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+        </wicket:enclosure>
+
+    <br/>
+
+    <a href="#" wicket:id="editPermissionsLink" class="button">
+        <wicket:message key="editPermissions">[edit permissions]</wicket:message>
+    </a>
+</wicket:panel>
+</html>

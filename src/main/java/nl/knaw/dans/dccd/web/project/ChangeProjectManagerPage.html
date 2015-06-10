@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Change manager page</title>
+    <wicket:head>
+     </wicket:head>
+</head>
+<body>
+    <wicket:extend>
+    <h1><span wicket:id="page.title">[title]</span></h1>
+    <br/>
+  
+	<form wicket:id="projectManagerForm">
+
+		<div wicket:id="managerMessage">[message]</div>
+		<br/>
+				
+		<wicket:message key="managerHeader">[Manager: ]</wicket:message>
+		<!-- <span wicket:id="managerName">[manager]</span> -->
+	    <a wicket:id="managerLink" href="#">
+	        <span wicket:id="managerDisplayname">[manager]</span>
+	    </a>
+		    		
+        <span wicket:id="memberSelectPanel"></span>
+		
+		<br/><br/>
+
+	    <!-- buttons -->
+		<a href="#" wicket:id="cancel" class="button">
+		  <wicket:message key="cancel" >[cancel]</wicket:message>
+		</a>
+		<!-- spacer --><span>&nbsp;</span>
+		<a href="#" wicket:id="save" class="button">
+		  <wicket:message key="save" >[finish]</wicket:message>
+		</a>
+	</form>
+  
+  </wicket:extend>  
+</body>
+</html>
+

@@ -1,0 +1,65 @@
+<html xmlns:wicket>
+<wicket:panel>
+
+    <table class="layout_table">
+        <!-- subheader -->
+        <tr><td colspan="3">
+        <h2><wicket:message key="organisationHeader">[Organisation]</wicket:message></h2>
+        </td></tr>
+
+       <tr>
+            <td><label for="id">
+            <wicket:message key="organisation.id">organization</wicket:message></label></td>
+            <td><label id="id" wicket:id="id" />
+            </td>
+        </tr>
+
+		<!--  hide row if state is not visible -->
+		<form wicket:id="organisationForm">
+		<div id="commonFeedbackPanel" wicket:id="commonFeedbackPanel" class="feedback">Messages</div>
+		<wicket:enclosure child="statePanel">
+		 <tr>
+		     <td><label for="statePanel"><wicket:message
+		         key="organisation.state">State</wicket:message></label></td>
+		     <td>
+		         <span wicket:id="statePanel">[state panel]</span>
+		     </td>
+		     <td><wicket:message key="state.explanation"/></td>
+		 </tr>
+		 </wicket:enclosure>
+		</form>
+
+        <!-- separator -->
+        <tr><td colspan="3"><br /></td></tr>
+
+        <tr>
+            <td><label for="address"><wicket:message
+                key="user.address">address</wicket:message></label></td>
+            <td><label id="address" wicket:id="address" /></td>
+        </tr>
+        <tr>
+            <td><label for="postalCode"><wicket:message
+                key="user.postalCode">postalCode</wicket:message></label></td>
+            <td><label id="postalCode" wicket:id="postalCode" /></td>
+        </tr>
+        <tr>
+            <td><label for="city"><wicket:message key="user.city">User city</wicket:message></label></td>
+            <td><label id="city" wicket:id="city" /></td>
+        </tr>
+        <tr>
+            <td><label for="country"><wicket:message
+                key="user.country">country</wicket:message></label></td>
+            <td><label id="country" wicket:id="country" /></td>
+        </tr>
+
+    </table>
+
+    <p />
+
+     <a href="#" wicket:id="editLink" class="button">
+        <span wicket:id="editLink">[Edit]</span>
+     </a>
+
+    <p />
+</wicket:panel>
+</html>

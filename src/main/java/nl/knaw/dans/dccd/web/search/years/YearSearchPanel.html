@@ -1,0 +1,27 @@
+<html xmlns:wicket>
+<wicket:panel>
+
+	<table class="layout_table">
+		<tr>
+			<td>From year</td>
+		    <td><input wicket:id="fromYear" /></td>
+		    <td><select wicket:id="fromYearSuffix">[suffix]</select></td>
+			<td> to </td>
+		    <td><input wicket:id="toYear" /></td>
+		    <td><select wicket:id="toYearSuffix">[suffix]</select></td>
+		</tr>
+		<tr>
+			<td>For <!-- either one of  --></td>
+			<td colspan="5">
+				<input type="checkbox" wicket:id="firstYear" />First Year 
+				<input type="checkbox" wicket:id="lastYear" />Last Year 
+				<input type="checkbox" wicket:id="pithYear" />Pith Year 
+				<input type="checkbox" wicket:id="deathYear" />Death Year 
+			</td>
+		</tr>
+	</table>
+
+<br/> 
+ 
+</wicket:panel>
+</html>

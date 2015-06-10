@@ -1,0 +1,80 @@
+<html xmlns:wicket>
+<wicket:panel>
+
+<form wicket:id="organisationForm">
+<!--
+<div id="commonFeedbackPanel" wicket:id="commonFeedbackPanel" class="feedback">Messages</div>
+ -->
+
+    <table class="layout_table">
+          <!-- Organisation* -->
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="id-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="id"><wicket:message
+                key="organisation.id">organization</wicket:message></label><span class="required">*</span></td>
+            <td><input id="id" type="text" wicket:id="id" /></td>
+            <td><wicket:message key="organization.explanation">explanation</wicket:message></td>
+        </tr>
+
+        <!-- Address -->
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="address-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="address"><wicket:message
+                key="organisation.address">address</wicket:message></label></td>
+            <td><input id="address" type="text" wicket:id="address" /></td>
+            <td><wicket:message key="address.explanation">explanation</wicket:message></td>
+        </tr>
+
+        <!-- Postal code -->
+       <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="postalCode-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="postalCode"><wicket:message
+                key="organisation.postalCode">postalCode</wicket:message></label></td>
+            <td><input id="postalCode" type="text" wicket:id="postalCode" /></td>
+            <td><wicket:message key="postalCode.explanation">explanation</wicket:message></td>
+        </tr>
+
+        <!-- City -->
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="city-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="city"><wicket:message
+                key="organisation.city">city</wicket:message></label></td>
+            <td><input id="city" type="text" wicket:id="city" /></td>
+            <td><wicket:message key="city.explanation">explanation</wicket:message></td>
+        </tr>
+
+        <!-- Country -->
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="country-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="country"><wicket:message
+                key="organisation.country">country</wicket:message></label></td>
+            <td><input id="country" type="text" wicket:id="country" /></td>
+            <td><wicket:message key="country.explanation">explanation</wicket:message></td>
+        </tr>
+
+    </table>
+
+</form>
+
+</wicket:panel>
+</html>

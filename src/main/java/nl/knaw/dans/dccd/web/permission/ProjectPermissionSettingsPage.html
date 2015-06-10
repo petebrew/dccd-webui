@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+   <!--
+        <title><wicket:message key="searchpage_title">Search page</wicket:message></title>
+   -->
+   </head>
+<body>
+  <wicket:extend>
+
+  <h1><span wicket:id="page.title">[title]</span></h1>
+  <br/>
+
+<form wicket:id="permissionSettingsForm">
+  <wicket:message key="defaultPermissionLevel">[Default permission level:]</wicket:message>
+  <br/>
+  <select wicket:id="levelsDefault" >
+    <option>[project]</option><option>[object]</option>
+  </select>
+  <br/><br/>
+
+  <wicket:message key="permissionExceptions">[Exceptions:]</wicket:message>
+  <br/>
+
+  <table class="layout_table">
+    <tr>
+    <td colspan="2" valign="top">
+        <span wicket:id="memberSelectPanel"></span>
+        <a href="#" wicket:id="memberAdd" class="button">
+            <wicket:message key="memberAdd" >[add]</wicket:message>
+        </a>
+ 
+	<!--Modal Window with dialog for user selection and adding -->	
+	<a wicket:id="selectButton" class="button">
+	<wicket:message key="selectMembersDialogButton">Select...</wicket:message>
+	</a>
+	<div wicket:id="userTablePanel" />  
+
+    </td>
+    <!-- empty cell -->
+    <!--
+    <td valign="top">
+    </td>
+     -->
+    </tr>
+    <tr>
+        <td valign="top">
+            <select style="width:350px;" size="5" wicket:id="userPermissionsSelection" multipe="multiple">
+                <option>user1</option>
+                <option>user2</option>
+            </select>
+        </td>
+        <td valign="top">
+            <select wicket:id="levelsSelection" >
+                <option>[project]</option>
+                <option>[object]</option>
+            </select>
+             <a href="#" wicket:id="levelApply" class="button">
+                <wicket:message key="levelApply" >[apply]</wicket:message>
+            </a>
+            <br/>
+            <a href="#" wicket:id="memberRemove" class="button">
+                <wicket:message key="memberRemove" >[remove]</wicket:message>
+            </a>
+        </td>
+    </tr>
+  </table>
+
+<!--
+  [This list contains a limited set of users that were manually added (see add function) to specify exceptions to the default permission level.
+  If there are no exceptions (yet), don't show the list and its buttons. ]
+ -->
+
+  <br/><br/>
+ <div id="aboutLevelsMessage">
+  <wicket:message key="aboutLevelsMessage" ></wicket:message>
+</div>
+  <br/><br/>
+
+  <a href="#" wicket:id="save" class="button">
+    <wicket:message key="save" >[save]</wicket:message>
+  </a>
+
+  <!-- spacer --><span>&nbsp;</span>
+
+  <a href="#" wicket:id="cancel" class="button">
+    <wicket:message key="cancel" >[cancel]</wicket:message>
+  </a>
+</form>
+
+  </wicket:extend>
+</body>
+</html>

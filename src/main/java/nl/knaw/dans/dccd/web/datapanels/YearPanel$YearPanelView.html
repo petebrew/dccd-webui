@@ -1,0 +1,11 @@
+<html xmlns:wicket>
+<wicket:panel>
+    <span wicket:id="year">year</span>
+    <wicket:enclosure child="suffix">
+    (<span wicket:id="suffix">suffix</span>)
+    </wicket:enclosure>
+    <wicket:enclosure child="certainty">
+    <wicket:message key="datetime_certainty">certainty</wicket:message>: <span wicket:id="certainty"></span>
+	</wicket:enclosure>
+</wicket:panel>
+</html>

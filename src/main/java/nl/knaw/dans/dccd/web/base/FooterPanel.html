@@ -1,0 +1,23 @@
+<html xmlns:wicket>
+	<wicket:panel>
+	<!-- Note: headerctrl is a bad name if we use it in the footer, so we need to refactor -->
+	<div id="footer" class="headerctrl">
+	<!--  -->
+	<wicket:link>
+	        <a href="#" wicket:id="termsOfUseLink">
+	        <wicket:message key="page.termsOfUse">[Terms of use]</wicket:message></a>
+	</wicket:link>
+	<span>&nbsp;</span>
+    <!-- TODO Language policy -->
+	<wicket:link>
+	        <a href="#" wicket:id="acknowledgementsLink">
+	        <wicket:message key="page.acknowledgements">[acknowledgements]</wicket:message></a>
+	</wicket:link>
+	
+	<div id="dccdVersion">
+		<wicket:message key="page.version.buildDate.label">[build date]</wicket:message>
+		<span wicket:id="buildDate"></span>
+	</div>
+	</div>
+	</wicket:panel>
+</html>

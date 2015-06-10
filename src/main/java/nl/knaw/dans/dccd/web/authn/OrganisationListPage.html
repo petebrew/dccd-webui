@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+     <wicket:extend>
+
+    <h1><wicket:message key="organisations">[Organisations]</wicket:message></h1>
+    
+    <div>
+	<!-- Button for showing map with locations results on a page -->
+	<a href="#"  wicket:id="fullMap" class="button">
+		<wicket:message key="organisationLocationsPage.link">[show locations]</wicket:message>
+		<img src="images/worldicon.gif" height="10px" border="none" />
+	</a>
+	</div>
+	<br/>
+			    
+  <div wicket:id="organisationListPanel">[organisationListPanel]</div>
+
+    </wicket:extend>
+
+</body>
+</html>
+

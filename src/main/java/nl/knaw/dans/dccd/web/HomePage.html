@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title><wicket:message key="homepage_title">[Homepage]</wicket:message></title>
+    </head>
+<body>
+	<wicket:extend>
+
+<div class="infoPageContent">
+	<br/>
+		<div>
+		        <strong><wicket:message key="dccd_title">[title]</wicket:message></strong>
+		        <br />
+		        <wicket:message key="dccd_subtitle">[sub title]</wicket:message>
+		</div>
+		<br/>
+	<div wicket:id="geoviewer" style="width: 500px; height: 300px;">[geo panel]</div>
+	<!-- indicate what whas loaded -->
+ 	<span wicket:id="loadedMsgLabel" style="font-size:smaller;">[loadedMsgLabel]</span>
+	
+	<div>
+		<wicket:message key="home.text">[text]</wicket:message>
+		<br/>
+		
+		<wicket:link>
+		        <a href="#" wicket:id="aboutLink">
+		        <wicket:message key="page.about.more">[more...]</wicket:message></a>
+		</wicket:link>
+		<br/>
+		<br/>
+		
+		<div style="color:#535353;">
+		<wicket:message key="home.browseradvice">[text]</wicket:message>
+		(<a href="http://www.mozilla.com">www.mozilla.com</a>).
+		</div>
+	</div>
+</div><!-- to center content -->
+
+	</wicket:extend>
+</body>
+</html>

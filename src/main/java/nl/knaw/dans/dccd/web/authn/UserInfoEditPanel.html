@@ -1,0 +1,227 @@
+<html xmlns:wicket>
+<wicket:panel>
+
+<form wicket:id="userInfoForm">
+<div id="commonFeedbackPanel" wicket:id="commonFeedbackPanel" class="feedback">Messages</div>
+
+	<table class="layout_table">
+       <!-- subheader -->
+        <tr>
+            <td colspan="3">
+                <h2><wicket:message key="accountHeader">[Account]</wicket:message></h2>
+            </td>
+        </tr>
+
+        <!-- hide row if role is not visible-->
+       <wicket:enclosure child="role">
+        <tr>
+            <td><label for="role"><wicket:message
+                key="user.role">Role</wicket:message></label></td>
+            <td>
+				<span wicket:id="role">
+				    <input type="radio">[user]</input>
+				    <input type="radio">[admin]</input>
+				</span>
+            </td>
+            <td><wicket:message key="role.explanation"/></td>
+        </tr>
+        </wicket:enclosure>
+
+		<!--  hide row if state is not visible -->
+		<wicket:enclosure child="state">
+		 <tr>
+		     <td><label for="state"><wicket:message
+		         key="user.state">User status</wicket:message></label></td>
+		     <td><label id="state" wicket:id="state" /></td>
+		 </tr>
+		 </wicket:enclosure>
+
+		<tr>
+			<td><label for="userId"><wicket:message
+				key="user.userId">User id</wicket:message></label></td>
+			<td><label id="userId" wicket:id="userId" /></td>
+			<td><wicket:message key="userid.explanation"/></td>
+		</tr>
+		<tr>
+			<td><label for="displayName"><wicket:message
+				key="user.displayName">User displayName</wicket:message></label></td>
+			<td><label id="displayName" wicket:id="displayName" /></td>
+			<td><wicket:message key="displayName.explanation"/></td>
+		</tr>
+
+       <!-- E-mail address* -->
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="email-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="email"><wicket:message key="user.email">Email</wicket:message></label><span class="required">*</span></td>
+            <td><input id="email" type="text" wicket:id="email" /></td>
+            <td><wicket:message key="registrationpage.email.explanation">explanation</wicket:message></td>
+        </tr>
+
+       <!-- NOTE: copy from the RegsitrationPage ! -->
+
+        <!-- separator -->
+        <tr><td colspan="3"><br /></td></tr>
+
+       <!-- subheader -->
+        <tr><td colspan="3">
+        <h2><wicket:message key="personHeader">[Person]</wicket:message></h2>
+        </td></tr>
+
+        <!-- Title -->
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="title-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="title"><wicket:message key="user.title">Title</wicket:message></label></td>
+            <td><input id="title" type="text" wicket:id="title" /></td>
+            <td><wicket:message key="title.explanation">explanation</wicket:message></td>
+        </tr>
+
+        <!-- Initials* -->
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="initials-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="initials"><wicket:message
+                key="user.initials">Initials</wicket:message></label><span class="required">*</span></td>
+            <td><input id="initials" type="text" wicket:id="initials" /></td>
+            <td><wicket:message key="initials.explanation">explanation</wicket:message></td>
+        </tr>
+
+        <!-- Prefix -->
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="prefixes-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="prefixes"><wicket:message
+                key="user.prefixes">Prefixes</wicket:message></label></td>
+            <td><input id="prefixes" type="text" wicket:id="prefixes" /></td>
+            <td><wicket:message key="prefixes.explanation">explanation</wicket:message></td>
+        </tr>
+
+        <!-- Surname* -->
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="surname-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="surname"><wicket:message
+                key="user.surname">Surname</wicket:message></label><span class="required">*</span></td>
+            <td><input id="surname" type="text" wicket:id="surname" /></td>
+            <td><wicket:message key="surname.explanation">explanation</wicket:message></td>
+        </tr>
+
+        <!-- Function -->
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="function-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="function"><wicket:message
+                key="user.function">Function</wicket:message></label></td>
+            <td><input id="function" type="text" wicket:id="function" /></td>
+            <td><wicket:message key="function.explanation">explanation</wicket:message></td>
+        </tr>
+
+        <!-- Telephone -->
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="telephone-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="telephone"><wicket:message
+                key="user.telephone">Telephone</wicket:message></label></td>
+            <td><input id="telephone" type="text" wicket:id="telephone" /></td>
+            <td><wicket:message key="telephone.explanation">explanation</wicket:message></td>
+        </tr>
+
+        <!-- digitalAuthorIdentifier -->
+        <wicket:enclosure>
+            <tr class="feedback">
+                <td colspan="3"><span wicket:id="digitalAuthorIdentifier-componentFeedback" /></td>
+            </tr>
+        </wicket:enclosure>
+        <tr>
+            <td><label for="digitalAuthorIdentifier"><wicket:message
+                key="user.digitalAuthorIdentifier">Telephone</wicket:message></label></td>
+            <td><input id="digitalAuthorIdentifier" type="text" wicket:id="digitalAuthorIdentifier" /></td>
+            <td><wicket:message key="digitalAuthorIdentifier.explanation">explanation</wicket:message></td>
+        </tr>
+
+        <!-- separator -->
+        <tr><td colspan="3"><br /></td></tr>
+
+      <!-- subheader -->
+        <tr><td colspan="3">
+        <h2><wicket:message key="organisationHeader">[Organisation]</wicket:message></h2>
+        </td></tr>
+
+        <!-- user organistation -->
+        <tr>
+            <td><label for="organization"><wicket:message
+                key="organisation.name">[name]</wicket:message></label></td>
+            <td>
+            <!--
+              <a href="#" wicket:id="organisationLink">
+                <span id="organization" wicket:id="organization">[link to Organisation Page]</span>
+              </a>
+             -->
+             <span id="organization" wicket:id="organization">[Organisation Name]</span>
+            </td>
+        </tr>
+
+		<!-- selection of different organisation, Admin only! -->
+		<wicket:enclosure child="organisationChoice">
+		         <wicket:enclosure>
+		            <tr class="feedback">
+		                <td colspan="3"><span wicket:id="organisationChoice-componentFeedback" /></td>
+		            </tr>
+		        </wicket:enclosure>
+		        <tr>
+		            <td>
+		              <label for="organization">
+		              <wicket:message key="organisation.select">[organization select]</wicket:message>
+		              </label>
+		              <!-- <span class="required">*</span>  -->
+		             </td>
+		             <td>
+		                <select wicket:id="organisationChoice">
+		                    <option>org one</option>
+		                    <option>org two</option>
+		                </select>
+		            </td>
+		            <td><wicket:message key="organization.explanation">explanation</wicket:message></td>
+		        </tr>
+		</wicket:enclosure>
+
+	</table>
+<p/>
+
+  <a href="#" wicket:id="update" class="button">
+    <wicket:message key="button.text.save" >[Save]</wicket:message>
+  </a>
+
+  <!-- spacer --><span>&nbsp;</span>
+
+  <a href="#" wicket:id="cancel" class="button">
+    <wicket:message key="cancel" >[Cancel]</wicket:message>
+  </a>
+
+</form>
+<p/>
+
+</wicket:panel>
+</html>

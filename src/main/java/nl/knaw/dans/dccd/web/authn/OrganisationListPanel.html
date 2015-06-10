@@ -1,0 +1,38 @@
+<html xmlns:wicket>
+<wicket:panel>
+    <table  class="list_table">
+      <tr>
+        <!--
+         <th></th>
+         -->
+        <th><wicket:message key="organisation.id">[Name]</wicket:message></th>
+        <th><wicket:message key="organisation.city">[City]</wicket:message></th>
+        <th><wicket:message key="organisation.country">[Country]</wicket:message></th>
+        <wicket:enclosure child="statusName">
+                <th><span wicket:id="statusName">[Status]</span></th>
+        </wicket:enclosure>
+      </tr>
+      <tr wicket:id="organisations">
+        <td>
+            <a wicket:id="organisationLink" href="#">
+                <span wicket:id="organisation"></span>
+            </a>
+        </td>
+
+        <td>
+            <span wicket:id="city"></span>
+        </td>
+        <td>
+            <span wicket:id="country"></span>
+        </td>
+
+        <wicket:enclosure child="status">
+        <td>
+            <span wicket:id="status"></span>
+        </td>
+        </wicket:enclosure>
+
+      </tr>
+    </table>
+</wicket:panel>
+</html>

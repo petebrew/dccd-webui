@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Project view page</title>
+    <wicket:head>
+        <link rel="stylesheet" type="text/css" href="css/project_view_and_edit.css" />
+    </wicket:head>
+</head>
+<body>
+	<wicket:extend>
+        <h1>
+          <wicket:message key="projectviewpage_title">View Project</wicket:message>
+        </h1>
+
+        <!--  management Panel -->
+        <div wicket:id="managementPanel" class="panel"></div>
+        <br/>
+
+        <!-- download -->
+        <div>
+            <a wicket:id="project_download" href="#" class="button button_download" style="padding-top:24px;">
+            <wicket:message key="download_link">download</wicket:message>
+            <img src="images/icon_download_button.png" height="32px" border="none" />
+            </a>
+        </div>
+        <br/>
+        
+       <div wicket:id="managerOwnerPanel"></div>
+       <div wicket:id="projectLanguagePanel"></div>
+       <div wicket:id="associatedFilesInfoPanel"></div>
+       <br/>
+
+		<table class="dendro_table">
+			<tr>
+				<td valign="top">
+					<div wicket:id="tree_panel" class="tree_panel"></div>
+				</td>
+			  	<td valign="top">
+			  		<div wicket:id="tree_level_panel"></div>
+			  		<br/>
+			  		<div wicket:id="entity_panel"></div>
+			  	</td>
+			</tr>
+		</table>
+	</wicket:extend>
+</body>
+</html>

@@ -1,0 +1,4 @@
+/* fix copyright (attribution) notice that is otherwise not alligned to the bottom */
+.olControlAttribution {
+    bottom: 3px !important;
+}
