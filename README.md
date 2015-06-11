@@ -108,7 +108,7 @@ The DCCD archive is used by other services that in turn can be used by external 
 There are now only two of those ‘extra’ services under development:
 
 1.	The RESTfull API; dccd-http
-2.	The OAI-MPH; dccd-oai (which needs the dccd-http to be deployed) 
+2.	The OAI-PMH; dccd-oai (which needs the dccd-http to be deployed) 
 
 Both are Maven projects for web services that need to be build and then deployed on the same server as the DCCD archive. 
 For more details read the README files accompanying the source code. 
