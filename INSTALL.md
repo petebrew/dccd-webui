@@ -154,7 +154,7 @@ Upload the rpm-file to your server with scp or sftp and run the installer:
 
 ### 2.2.3 Add the JAVA_HOME environment variable
 
-Copy the file $EASY_BACKEND/util/java.sh to /etc/profile.d and run it:
+Copy the file $DCCD_LIB/util/java.sh to /etc/profile.d and run it:
 
 	$ sudo cp java.sh /etc/profile.d/
 	$ exit
@@ -172,7 +172,7 @@ CentOS comes default with OpenJDK. Add Oracle JDK to alternatives and activate i
 	$ sudo alternatives --install /usr/bin/java java /usr/java/default/bin/java 2
 	$ sudo alternatives --config java
 
-Er zijn 3 programma's die 'java' leveren.
+You may have multiple programs providing java.  Make sure you select the /usr/java/default/bin/java
 
 	   Selectie    Commando
 	-----------------------------------------------
@@ -183,12 +183,15 @@ Er zijn 3 programma's die 'java' leveren.
 	<enter> om de huidige selectie te bewaren[+], of type een selectie\
 		nummer: 2
 
+
+Run the following and make sure the output does not mention “OpenJDK”.
+
+
 	$ java -version
 	java version "1.7.0_51"
 	Java(TM) SE Runtime Environment (build 1.7.0_51-b13)
 	Java HotSpot(TM) 64-Bit Server VM (build 24.51-b03, mixed mode)
 
-Make sure the output does not mention “OpenJDK”.
 
 
 ### 2.2.5 Notes
@@ -292,7 +295,7 @@ And insert
 		# Comment out the next line to disable requests from external clients
 		#RewriteRule ^/dccd-rest/(.*)$ ajp://localhost:8009/dccd-rest/$1 [P]
 		
-		# The DCCD OAI-MPH
+		# The DCCD OAI-PMH
 		# Comment out the next line to disable requests from external clients
 		RewriteRule ^/oai/(.*)$ ajp://		localhost:8009/dccd-oai/$1 [P]
 		
@@ -508,7 +511,7 @@ on the Fedora Commons website.
 
 Use the file
 
-	$EASY_BACKEND/dccd-fedora-commons-repository/create-fedora-db.sql
+	$DCCD_LIB/dccd-fedora-commons-repository/create-fedora-db.sql
 
 On the command line execute the following command:
 
@@ -539,9 +542,9 @@ And then in postgres:
 
 ### 3.1.3 Set the FEDORA_HOME environment variable
 
-Copy the file $EASY_BACKEND/easy-fedora-commons-repository/fedora.sh to /etc/profile.d 
+Copy the file $DCCD_LIB/easy-fedora-commons-repository/fedora.sh to /etc/profile.d 
 
-	$ sudo cp fedora.sh /etc/profile.d
+	$ sudo cp fedora.sh /etc/profile.d/
 
 and log off and on again.  The FEDORA_HOME environment variable should now point
 to /opt/fedora.
@@ -552,12 +555,12 @@ to /opt/fedora.
 
 ### 3.1.4 Run the Fedora Commons installer
 
-Download the Fedora Commons installer (fcrepo-installer-3.5.jar) from the [Fedora
+	Download the Fedora Commons installer (fcrepo-installer-3.5.jar) from the [Fedora
 Commons website].
 
 Edit install.properties:
 
-	$ sudo vi $EASY_BACKEND/easy-fedora-commons-repository/install.properties
+	$ sudo vi $DCCD_LI/Beasy-fedora-commons-repository/install.properties
 
 * for database.password fill in password:fedora_db_admin
 * for fedora.admin.pass fill in password:fedoraAdmin
