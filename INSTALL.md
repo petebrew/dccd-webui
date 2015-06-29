@@ -13,7 +13,7 @@ RedHat Linux 6 server, the configuration currently in use at DANS.
 So far, no other configurations have been tested.
 
 __Note that you should NOT put this application on a production server 'as-is' 
-because it contains static content and links specific for the DCCD that is allready made publicly available at http://dendro.dans.knaw.nl__
+because it contains static content and links specific for the DCCD that is already made publicly available at http://dendro.dans.knaw.nl__
 
 
 1.1	Overview of DCCD
@@ -65,8 +65,8 @@ The dccd-lib project contains extra files needed for installation:
 -------------
 
 During the installation you will be asked several times to provide a password. 
-Please, ensure that you create safe passwords.  Prefer randomly generated
-passwords over human readable ones.  Store your passwords in a central,
+Please, ensure that you create safe passwords.  Randomly generated
+passwords are preferred over human readable ones.  Store your passwords in a central,
 encrypted database that you secure with a passphrase you can remember.  
 
 The passwords you generate have to be specified later in the instruction. For
@@ -107,7 +107,7 @@ following conventions:
 * if the contents of a configuration file must be changed the relevant section is
   displayed in the courier font with the changed parts in **bold**;
 * some commands are included in order to check the results of previous commands 
-  (e.g., <code>sudo chkconfig --list slapd</code>); it should be obvious which ones are.
+  (e.g., <code>sudo chkconfig --list slapd</code>); it should be obvious which ones these are.
   
   
 2 Standard Software Components
@@ -115,7 +115,7 @@ following conventions:
 
 The following industry standard software components need to be installed first. 
 See subsections for comments about alternatives and additional configuration. 
-The items in this section can typically be performed by the IT department.  
+The items in this section can typically be performed by your IT department.  
 
 
 2.1 Redhat 6 or CentOS 6
