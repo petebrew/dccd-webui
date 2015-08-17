@@ -283,7 +283,7 @@ I want the dccd conf in /etc/httpd/conf.d/dendro.dans.knaw.nl.conf
 
 And insert
 
-	```xml
+```xml
 	NameVirtualHost *:80
 
 	<VirtualHost *:80>
@@ -327,7 +327,8 @@ And insert
     	ProxyPassReverse / http://dendro.dans.knaw.nl/dccd/
     	ProxyPassReverseCookiePath /dccd /
 	</VirtualHost>
-	```
+```
+
 Make sure you edit this so that the server URL matches that of your own server and not dans.knaw.nl.  
 
 Next start httpd
