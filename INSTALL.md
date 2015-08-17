@@ -1,19 +1,17 @@
 
-DCCD Installation Guide
+DCCD Installation and Deployment Guide
 =======================
 
 1 Introduction
 --------------
 
-This document will guide you through the steps of installing DCCD on a server.
-As described below, DCCD is built on several open source software components.
-Several configurations on different platforms should therefore be possible.
-However, this Guide describes a simple one-server set-up, on a CentOS 6.5 or a
+This document will guide you through the steps of deploying the DCCD software on a server.
+As described below, DCCD builds upon several open source software components so several configurations on different platforms should be possible. However, this Guide describes a simple one-server set-up, on a CentOS 6.5 or a
 RedHat Linux 6 server, the configuration currently in use at DANS. 
 So far, no other configurations have been tested.
 
 __Note that you should NOT put this application on a production server 'as-is' 
-because it contains static content and links specific for the DCCD that is allready made publicly available at http://dendro.dans.knaw.nl__
+because it contains static content and links specific to the DCCD that is already publicly deployed at http://dendro.dans.knaw.nl__
 
 
 1.1	Overview of DCCD
@@ -26,7 +24,7 @@ implementation of that protocol could possibly be used.
  
 Standard
 
-* Postgress
+* Postgresql
 * Java
 * Tomcat
  ...
@@ -47,7 +45,8 @@ this document has been tested.*
 1.2	Installation packages
 -------------------------
 Before you continue, please make sure you have the following required
-installations packages (build war files etc. !!!!):
+packages (war files etc).  For information regarding the building of DCCD packages see https://github.com/petebrew/dccd-webui/blob/master/README.md
+
 
 * dccd etc.
 
@@ -58,6 +57,7 @@ The dccd-lib project contains extra files needed for installation:
 * dccd-lib/solr
 
 ...
+
 
 
 
@@ -121,7 +121,15 @@ The items in this section can typically be performed by the IT department.
 2.1 Redhat 6 or CentOS 6
 ------------------------
 
-We recommend that you run the operation system in SELinux “protected mode.”
+We recommend that you run the operation system in SELinux “enforcing mode.”  This is the default mode for Centos so should not require any additional configuration.  You can confirm this by typing:
+
+	$ sestatus
+  	SELinux status:                 enabled
+  	SELinuxfs mount:                /selinux
+  	Current mode:                   enforcing
+  	Mode from config file:          enforcing
+  	Policy version:                 21
+  	Policy from config file:        targeted
 
 
 2.2 Oracle Java SE 7 SDK (CentOS)
@@ -154,7 +162,7 @@ Upload the rpm-file to your server with scp or sftp and run the installer:
 
 ### 2.2.3 Add the JAVA_HOME environment variable
 
-Copy the file $EASY_BACKEND/util/java.sh to /etc/profile.d and run it:
+Copy the file $DCCD-LIB/util/java.sh to /etc/profile.d and run it:
 
 	$ sudo cp java.sh /etc/profile.d/
 	$ exit
@@ -171,30 +179,31 @@ CentOS comes default with OpenJDK. Add Oracle JDK to alternatives and activate i
 
 	$ sudo alternatives --install /usr/bin/java java /usr/java/default/bin/java 2
 	$ sudo alternatives --config java
-
-Er zijn 3 programma's die 'java' leveren.
-
-	   Selectie    Commando
+	
+	There are 4 programs which provide 'java'.
+	
+	  Selection    Command
 	-----------------------------------------------
-	*+ 1           /usr/lib/jvm/jre-1.6.0-openjdk.x86_64/bin/java
-	   2           /usr/java/default/bin/java
-	   3           /usr/lib/jvm/jre-1.5.0-gcj/bin/java
+	   1           /usr/lib/jvm/jre-1.5.0-gcj/bin/java
+	*  2           /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java
+	   3           /usr/lib/jvm/jre-1.6.0-openjdk.x86_64/bin/java
+	 + 4           /usr/java/default/bin/java
+	
+	Enter to keep the current selection[+], or type selection number: 4
+	[root@localhost ~]# java -version
+	java version "1.7.0_79"
+	Java(TM) SE Runtime Environment (build 1.7.0_79-b15)
+	Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 
-	<enter> om de huidige selectie te bewaren[+], of type een selectie\
-		nummer: 2
-
-	$ java -version
-	java version "1.7.0_51"
-	Java(TM) SE Runtime Environment (build 1.7.0_51-b13)
-	Java HotSpot(TM) 64-Bit Server VM (build 24.51-b03, mixed mode)
 
 Make sure the output does not mention “OpenJDK”.
 
 
 ### 2.2.5 Notes
 
-* Version 6 will work as well; 
+* Version 6 will work as well but is now well beyond it's end of life
 * OpenJDK might work as well, but has not been tested.
+* Work has begun to migrate to Java 8 as it's the currently supported version of Java.  There are currently some minor issues that are blocking migration. (August 2015)
 
 
 ### 2.3 Oracle Java SE 7 SDK (RedHat)
@@ -209,13 +218,8 @@ Make sure the output does not mention “OpenJDK”.
 Execute the following command:
 
 	$ sudo yum install tomcat6 tomcat6-webapps tomcat6-admin-webapps
-	Loaded plugins: fastestmirror, security
-	base                                          | 3.7 kB     00:00     
-	base/primary_db                               | 4.4 MB     00:01     
-	extras                                        | 3.4 kB     00:00     
-	# .. more output, respond with y to prompts
-	Complete!
 
+Answer yes to the prompts and eventually you should get the message that the installation has been successfully completed.
 
 ### 2.4.2 Give the Tomcat 6 jvm more memory to work with
 
@@ -237,7 +241,7 @@ UTF-8 encoding, by means of the attribute:  URIEncoding="UTF-8".  When adding an
 AJP-connector to connect Tomcat to Apache HTTP Server (see next step) don’t
 forget to also configure it.
 
-{% highlight xml %}
+```xml
 $ sudo vi /etc/tomcat6/server.xml
 ...
 <Connector port="8080" protocol="HTTP/1.1"
@@ -246,7 +250,7 @@ $ sudo vi /etc/tomcat6/server.xml
                URIEncoding="UTF-8"/>
 ...
 <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" URIEncoding="UTF-8"/>
-{% endhighlight %}
+```
 
 
 ### 2.4.4	Configure the Tomcat daemon to start automatically
@@ -279,6 +283,7 @@ I want the dccd conf in /etc/httpd/conf.d/dendro.dans.knaw.nl.conf
 
 And insert
 
+	```xml
 	NameVirtualHost *:80
 
 	<VirtualHost *:80>
@@ -294,7 +299,7 @@ And insert
 		
 		# The DCCD OAI-MPH
 		# Comment out the next line to disable requests from external clients
-		RewriteRule ^/oai/(.*)$ ajp://		localhost:8009/dccd-oai/$1 [P]
+		RewriteRule ^/oai/(.*)$ ajp://localhost:8009/dccd-oai/$1 [P]
 		
 		# The DCCD webapplication (GUI)
 		RewriteRule ^/dccd/(.*)$ http://dendro.dans.knaw.nl/$1
@@ -322,9 +327,10 @@ And insert
     	ProxyPassReverse / http://dendro.dans.knaw.nl/dccd/
     	ProxyPassReverseCookiePath /dccd /
 	</VirtualHost>
+	```
+Make sure you edit this so that the server URL matches that of your own server and not dans.knaw.nl.  
 
-
-Start httpd
+Next start httpd
 
 	$ sudo service httpd start
 	$ sudo chkconfig --level 3 httpd on
@@ -332,8 +338,7 @@ Start httpd
 OK, but is it reachable from the outside (non localhost)?
 
 	$ sudo iptables --list
-	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
-
+	$ iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 	$ service iptables save
 
 Note: after changing the config always restart the service
@@ -348,10 +353,8 @@ Note: after changing the config always restart the service
 Execute the following command:
 
 	$ sudo yum install postgresql-server.x86_64
-	Loaded plugins: fastestmirror, security
-	Determining fastest mirrors
-	# .. more output, respond with y to prompts
-	Complete!
+
+Answer yes to the prompts and eventually you will get a message confirming completion.
 
 
 ### 2.6.2 Initialize the database
@@ -455,10 +458,8 @@ Start the daemon now:
 Execute the following command:
 
 	$ sudo yum install openldap-servers openldap-clients
-	Loaded plugins: fastestmirror, security
-	Loading mirror speeds from cached hostfile
-	# .. more output, respond with y to prompts
-	Complete!
+
+Answer yes to the prompts and eventually you will get a message confirming completion.
 
 
 ### 2.7.2 Remove the “default” database (optional)
