@@ -510,7 +510,7 @@ on the Fedora Commons website.
 
 Use the file
 
-	$EASY_BACKEND/dccd-fedora-commons-repository/create-fedora-db.sql
+	$DCCD-LIB/dccd-fedora-commons-repository/create-fedora-db.sql
 
 On the command line execute the following command:
 
@@ -541,9 +541,9 @@ And then in postgres:
 
 ### 3.1.3 Set the FEDORA_HOME environment variable
 
-Copy the file $EASY_BACKEND/easy-fedora-commons-repository/fedora.sh to /etc/profile.d 
+Copy the file $DCCD-LIB/dccd-fedora-commons-repository/fedora.sh to /etc/profile.d 
 
-	$ sudo cp fedora.sh /etc/profile.d
+	$ sudo cp fedora.sh /etc/profile.d/
 
 and log off and on again.  The FEDORA_HOME environment variable should now point
 to /opt/fedora.
@@ -555,11 +555,11 @@ to /opt/fedora.
 ### 3.1.4 Run the Fedora Commons installer
 
 Download the Fedora Commons installer (fcrepo-installer-3.5.jar) from the [Fedora
-Commons website].
+Commons Sourceforge](http://sourceforge.net/projects/fedora-commons/files/fedora/) website.  Note that v3.5 of Fedora Commons is an older release.  Work is underway to upgrade support for a more recent version.
 
 Edit install.properties:
 
-	$ sudo vi $EASY_BACKEND/easy-fedora-commons-repository/install.properties
+	$ sudo vi $DCCD-LIB/dccd-fedora-commons-repository/install.properties
 
 * for database.password fill in password:fedora_db_admin
 * for fedora.admin.pass fill in password:fedoraAdmin
@@ -639,7 +639,7 @@ change ownership to the tomcat user:
 Note that the policies directory does need to exist, even though we don’t
 customize the policy mechanism.
 
-Edit the file $FEDORA_HOME/server/config/fedora.fcfg, and change the following items:
+Edit the file /opt/fedora/server/config/fedora.fcfg, and change the following items:
 
 * In the module with the attribute
   role="org.fcrepo.server.storage.lowlevel.ILowlevelStorage", change the value of
@@ -648,9 +648,11 @@ Edit the file $FEDORA_HOME/server/config/fedora.fcfg, and change the following i
 * In the datastore with the attribute id="localMulgaraTriplestore", change the
   value of the “path” param to “/data/fedora/resourceIndex”
 
+<!-- There is also a /data/fedora-xacml-policies... path in there.  Shouldn't this be changed to data/fedora/fedora-xacml-policies too? -->
+
 		$ sudo vi /opt/fedora/server/config/fedora.fcfg
 
-{% highlight xml %}
+```xml
 <module role="org.fcrepo.server.storage.lowlevel.ILowlevelStorage"
 class="org.fcrepo.server.storage.lowlevel.DefaultLowlevelStorageModule">
  <param name="path_algorithm" 
@@ -705,14 +707,14 @@ class="org.fcrepo.server.storage.lowlevel.DefaultLowlevelStorageModule">
   isFilePath="true">
     <comment>The local path to the main triplestore directory.</comment>
   </param>
-{% endhighlight %}  
+``` 
   
   
 ### 3.1.7 Add Fedora Commons users
 
 So far we only have fedoraAdmin user. We will use different users for different
 services connecting to Fedora Commons.  Edit the file
-$FEDORA_HOME/server/config/fedora-users.xml and add user elements for users
+/opt/fedora/server/config/fedora-users.xml and add user elements for users
 
 __NOT Sure we have this__
 
@@ -722,7 +724,7 @@ Give them the role administrator and fill in the password from Table 1 Passwords
 
 	$ sudo vi /opt/fedora/server/config/fedora-users.xml
 
-{% highlight xml %}
+```xml
 <?xml version='1.0' ?>
   <users>
     <user name="fedoraAdmin" password="password:fedoraAdmin">
@@ -730,17 +732,17 @@ Give them the role administrator and fill in the password from Table 1 Passwords
         <value>administrator</value>
       </attribute>
     </user>
-    <user name="easy_webui" password="password:dccd_webui">
+    <user name="dccd_webui" password="password:dccd_webui">
       <attribute name="fedoraRole">
         <value>administrator</value>
       </attribute>
     </user>
-    <user name="easy_rest" password="password:dccd_rest">
+    <user name="dccd_rest" password="password:dccd_rest">
       <attribute name="fedoraRole">
         <value>administrator</value>
       </attribute>
     </user>
-    <user name="easy_proai" password="password:dccd_oai">
+    <user name="dccd_oai" password="password:dccd_oai">
       <attribute name="fedoraRole">
         <value>administrator</value>
       </attribute>
@@ -753,7 +755,7 @@ Give them the role administrator and fill in the password from Table 1 Passwords
       </attribute>
     </user>
   </users>
-{% endhighlight %}
+```
 
 It may seem useless to create extra users if they are all going to be admins
 anyway.  However, in the future we assign different roles to these users with
@@ -766,7 +768,7 @@ The fedoraIntCallUser is a user that Fedora Commons uses internally to make
 calls to itself.  By default it has the unsafe password “changeme”.  We will
 change it to a safe password. 
 
-We have already edited the file $FEDORA_HOME/server/config/fedora-users.xml.
+We have already edited the file /opt/fedora/server/config/fedora-users.xml.
 
 For fedoraIntCallUser we also need to edit
 $FEDORA_HOME/server/config/beSecurity.xml to assign the same password from Table
@@ -774,7 +776,7 @@ $FEDORA_HOME/server/config/beSecurity.xml to assign the same password from Table
 
 	$ sudo vi /opt/fedora/server/config/beSecurity.xml
 
-{% highlight xml %}
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <serviceSecurityDescription 
   xmlns="info:fedora/fedora-system:def/beSecurity#"
@@ -799,7 +801,7 @@ callbackSSL="false"
 callbackBasicAuth="false" 
 iplist="127.0.0.1"/>
 </serviceSecurityDescription>
-{% endhighlight %}
+```
 
 
 ### 3.1.9 Limit access to passwords
@@ -807,10 +809,10 @@ iplist="127.0.0.1"/>
 Several configuration files contain passwords.  We need to limit read rights for
 security:
 
-	$ sudo chmod 0600 $FEDORA_HOME/server/config/fedora-users.xml
-	$ sudo chmod 0600 $FEDORA_HOME/server/config/fedora.fcfg
-	$ sudo chmod 0600 $FEDORA_HOME/server/config/beSecurity.xml
-	$ ls -l $FEDORA_HOME/server/config/
+	$ sudo chmod 0600 /opt/fedora/server/config/fedora-users.xml
+	$ sudo chmod 0600 /opt/fedora/server/config/fedora.fcfg
+	$ sudo chmod 0600 /opt/fedora/server/config/beSecurity.xml
+	$ ls -l /opt/fedora/server/config/
 	totaal 124
 	-rw-r--r--. 1 tomcat tomcat  1403 mrt  2 07:24 activemq.xml
 	-rw-------. 1 tomcat tomcat   805 mrt  2 07:24 beSecurity.xml
@@ -831,15 +833,15 @@ not sure why, but read/write access by the owner (0600) is safe enough.
 ### 3.1.10 Ensure that Fedora "upload" directory has enough disk space
 
 Files that are uploaded to Fedora through the API-M services are initially
-written als temporary files to the Fedora "upload" directory. By default this
-directory is located at $FEDORA_HOME/server/management/upload. If $FEDORA_HOME
+written as temporary files to the Fedora "upload" directory. By default this
+directory is located at /opt/fedora/server/management/upload. If /opt/fedora/
 is located on a drive with limited space this may cause problems. We currently
 do not know how to configure a different location. As a work-around you may
-replace $FEDORA_HOME/server/management/upload with a symbolic link to a
+replace /opt/fedora/server/management/upload with a symbolic link to a
 directory on a drive with sufficient space. For example:
 
-	$ sudo mv $FEDORA_HOME/server/management/upload /var/fedora-uploads
-	$ sudo ln -s /var/fedora-uploads $FEDORA_HOME/server/management/upload
+	$ sudo mv /opt/fedora/server/management/upload /var/fedora-uploads
+	$ sudo ln -s /var/fedora-uploads /opt/fedora/server/management/upload
 
 Assuming of course that the disk mounted at /var (or /) has enough space for the
 temporary files.
@@ -869,14 +871,14 @@ see if everything goes well):
 	INFO: Server startup in 12985 ms
 
 
-### 3.1.13 Add the basic DCCD digital objects
+<!--### 3.1.13 Add the basic DCCD digital objects
 
-__NOT sure we need this__
+__NOT sure we need this.__
 
 In order to run, DCCD needs a minimal set of Fedora Commons digital objects. 
 These are provided in:
 
-$EASY_BACKEND/easy-fedora-commons-repository/basic-digital-objects
+$DCCD-LIB/dccd-fedora-commons-repository/basic-digital-objects
 
 Change directory to this folder and execute the following command, replacing
 &lt;password:fedoraAdmin>  the corresponding entry from Table 1 Passwords.
@@ -901,14 +903,14 @@ for other “special” characters in the password)
 		0 objects failed
 		0 unexpected files in directory
 		0 files ignored after error
-
+-->
 
 
 3.2 DCCD LDAP Directory 
 -----------------------
 
-The DCCD LDAP Directory component, apart from an LDAP daemon, consists some
-DCCD-specific schema’s and a few basic entry’s.  We will add those here, using
+The DCCD LDAP Directory component, apart from an LDAP daemon, consists of some
+DCCD-specific schemas and a few basic entries.  We will add those here, using
 the standard LDAP client tools.
 
 ### 3.2.1 Create a separate directory folder for DCCD
@@ -916,17 +918,17 @@ the standard LDAP client tools.
 To keep things neat and tidy, we will give DCCD its own directory:
 
 	$ sudo mkdir /var/lib/ldap/dccd; sudo chown ldap:ldap /var/lib/ldap/dccd
-	$ ls /var/lib/ldap/ -l
+	$ sudo ls /var/lib/ldap/ -l
 	totaal 4
 	drwxr-xr-x. 2 ldap ldap 4096 mrt  2 08:51 dccd
 
 
-### 3.2.2 Add DANS and DCCD schema’s
+### 3.2.2 Add DANS and DCCD schemas
 
-__ADDAPT for DCCD__
+__ADAPT for DCCD__
 
-The schema’s are added using LDIF files that can be found in:
-$EASY_BACKEND/ldap
+The schemas are added using LDIF files that can be found in:
+$DCCD-LIB/ldap
 
 Execute the following commands:
 
