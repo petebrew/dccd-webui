@@ -271,7 +271,7 @@ they are deployed.*
 ### 2.5.1 Install Apache HTTP Server
 
 
-	$ yum install httpd
+	$ sudo yum install httpd
 
 first configure it so it serves as a tomcat proxy
 
@@ -339,8 +339,8 @@ Next start httpd
 OK, but is it reachable from the outside (non localhost)?
 
 	$ sudo iptables --list
-	$ iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
-	$ service iptables save
+	$ sudo iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	$ sudo service iptables save
 
 Note: after changing the config always restart the service
 	
@@ -813,7 +813,7 @@ security:
 	$ sudo chmod 0600 /opt/fedora/server/config/fedora.fcfg
 	$ sudo chmod 0600 /opt/fedora/server/config/beSecurity.xml
 	$ ls -l /opt/fedora/server/config/
-	totaal 124
+	total 124
 	-rw-r--r--. 1 tomcat tomcat  1403 mrt  2 07:24 activemq.xml
 	-rw-------. 1 tomcat tomcat   805 mrt  2 07:24 beSecurity.xml
 	-rw-r--r--. 1 tomcat tomcat  4757 mrt  2 07:24 config-melcoe-pep-mapping.xml
@@ -918,14 +918,12 @@ the standard LDAP client tools.
 To keep things neat and tidy, we will give DCCD its own directory:
 
 	$ sudo mkdir /var/lib/ldap/dccd; sudo chown ldap:ldap /var/lib/ldap/dccd
-	$ sudo ls /var/lib/ldap/ -l
-	totaal 4
+	$ sudo ls -l /var/lib/ldap/
+	total 4
 	drwxr-xr-x. 2 ldap ldap 4096 mrt  2 08:51 dccd
 
 
 ### 3.2.2 Add DANS and DCCD schemas
-
-__ADAPT for DCCD__
 
 The schemas are added using LDIF files that can be found in:
 $DCCD-LIB/ldap
@@ -946,23 +944,6 @@ Execute the following commands:
 		 'The state of an entity' 
 	# .. more simliar output
 	adding new entry "cn=dans,cn=schema,cn=config"
-	modify complete
-
-
-### 3.2.3 Add DCCD database
-__ADDAPT for DCCD__
-
-First we add the DCCD database configuration to the config directory:
-
-	$ sudo ldapadd -v -Y EXTERNAL -H ldapi:/// -f dccd-db.ldif
-	ldap_initialize( ldapi:///??base )
-	SASL/EXTERNAL authentication started
-	SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
-	SASL SSF: 0
-	add objectClass:
-		olcDatabaseConfig
-	# .. more similar output
-	adding new entry "olcDatabase=bdb,cn=config"
 	modify complete
 
 
