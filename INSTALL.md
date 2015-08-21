@@ -45,7 +45,7 @@ this document has been tested.*
 1.2	Installation packages
 -------------------------
 Before you continue, please make sure you have the following required
-packages (war files etc).  For information regarding the building of DCCD packages see https://github.com/petebrew/dccd-webui/blob/master/README.md
+packages (war files etc).  For information regarding the building of DCCD packages see https://github.com/DANS-KNAW/dccd-webui/blob/master/README.md
 
 
 * dccd etc.
@@ -164,7 +164,7 @@ Upload the rpm-file to your server with scp or sftp and run the installer:
 
 Copy the file $DCCD-LIB/util/java.sh to /etc/profile.d and run it:
 
-	$ sudo cp java.sh /etc/profile.d/
+		$ sudo cp java.sh /etc/profile.d/
 	$ exit
 
 Now, log off and on to add the JAVA_HOME variable to your environment.
@@ -273,13 +273,13 @@ they are deployed.*
 
 	$ sudo yum install httpd
 
-first configure it so it serves as a tomcat proxy
+### 2.5.2 Configure it so it serves as a tomcat proxy
 
 	$ cd /etc/httpd
 
-I want the dccd conf in /etc/httpd/conf.d/dendro.dans.knaw.nl.conf
+I want the dccd conf in /etc/httpd/conf.d/dccd.conf
 
-	$ sudo vi /etc/httpd/conf.d/dendro.dans.knaw.nl.conf
+	$ sudo vi /etc/httpd/conf.d/dccd.conf
 
 And insert
 
@@ -289,7 +289,7 @@ And insert
 	<VirtualHost *:80>
     	ServerAdmin info@dans.knaw.nl
     	ServerName dendro.dans.knaw.nl
-    	CustomLog "/var/log/httpd/dendro.dans.knaw.nl.log" combined
+    	CustomLog "/var/log/httpd/dccd.log" combined
 	
     	RewriteEngine  on
 
@@ -313,7 +313,7 @@ And insert
 	<VirtualHost *:80>
     	ServerAdmin info@dans.knaw.nl
     	ServerName dendro.dans.knaw.nl
-    	CustomLog "/var/log/httpd/dendro.dans.knaw.nl.log" combined
+    	CustomLog "/var/log/httpd/dccd.log" combined
 	
     	<Proxy *>
 		 Order Deny,Allow
@@ -324,12 +324,14 @@ And insert
     	</Proxy>
 
     	ProxyPass / ajp://localhost:8009/dccd/
-    	ProxyPassReverse / http://dendro.dans.knaw.nl/dccd/
+	    	ProxyPassReverse / http://dendro.dans.knaw.nl/dccd/
     	ProxyPassReverseCookiePath /dccd /
 	</VirtualHost>
 ```
 
 Make sure you edit this so that the server URL matches that of your own server and not dans.knaw.nl.  
+
+### 2.5.3 Set up IPTables
 
 Next start httpd
 
