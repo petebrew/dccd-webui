@@ -948,6 +948,20 @@ Execute the following commands:
 	adding new entry "cn=dans,cn=schema,cn=config"
 	modify complete
 
+### 3.2.3 Add DCCD database
+
+First we add the DCCD database configuration to the config directory:
+
+	$ sudo ldapadd -v -Y EXTERNAL -H ldapi:/// -f dccd-db.ldif
+	ldap_initialize( ldapi:///??base )
+	SASL/EXTERNAL authentication started
+	SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+	SASL SSF: 0
+	add objectClass:
+		olcDatabaseConfig
+	# .. more similar output
+	adding new entry "olcDatabase=bdb,cn=config"
+	modify complete
 
 ### 3.2.4 Add basic entries to the DCCD database
 __ADDAPT for DCCD__
@@ -1009,12 +1023,12 @@ Then, execute this command:
 	modify complete
 
 
-### 3.2.6 Change the easyadmin user’s application password
+### 3.2.6 Change the dccdadmin user’s application password
 __ADDAPT for DCCD__
 
 The file “dccd-basis.ldif,” which we added earlier, added the administrator user
 for the DCCD application: dccdadmin.  The default password for this user is also
-“easyadmin.”  This needs to be replaced by a safe password.
+“dccdadmin.”  This needs to be replaced by a safe password.
 
 Execute:
 
@@ -1122,7 +1136,7 @@ to the /data/solr/cores/dendro/conf directory:
 	$ sudo cp schema.xml solrconfig.xml stopwords.txt \
 	    synonyms.txt protwords.txt /data/solr/cores/dendro/conf
 
-Now set ownerschip of the whole directory tree to the tomcat user:
+Now set ownership of the whole directory tree to the tomcat user:
 
 	$ sudo chown -R tomcat:tomcat /data/solr
 	$ ls -l /data/solr/
@@ -1169,7 +1183,7 @@ Execute:
 Again, we are tailing the Tomcat 6 log to see if the deployment goes well.
  
 
-4 DCCD Frond-end Modules
+4 DCCD Front-end Modules
 ========================
 
 Now that we have the back-end services up and running, we can deploy the
