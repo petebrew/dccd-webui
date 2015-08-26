@@ -348,6 +348,18 @@
 							</sources>
 						</mapping>
 						<mapping>
+							<directory>/opt/dccd</directory>
+							<filemode>655</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<recurseDirectories>true</recurseDirectories>
+							<sources>
+								<source>
+									<location>src/main/assembly/dccd-webui-post-install.sh</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
 							<directory>/usr/share/tomcat6/conf/Catalina/localhost/</directory>
 							<filemode>655</filemode>
 							<username>tomcat</username>
@@ -359,10 +371,35 @@
 								</source>
 							</sources>
 						</mapping>
+						<mapping>
+							<directory>/opt/dccd/dccd-home</directory>
+							<filemode>655</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<recurseDirectories>true</recurseDirectories>
+							<sources>
+								<source>
+									<location>src/main/assembly/dccd-home</location>
+								</source>
+							</sources>
+						</mapping>	
+						<mapping>
+							<directory>/opt/dccd/cronjobs</directory>
+							<filemode>655</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<recurseDirectories>true</recurseDirectories>
+							<sources>
+								<source>
+									<location>src/main/assembly/cronjobs</location>
+								</source>
+							</sources>
+						</mapping>	
 					</mappings>
 					<requires>
 						<require>dccd-lib</require>
 					</requires>
+					<
 					<!-- <postinstallScriptlet>
 					  <scriptFile>src/main/bin/postinstall.sh</scriptFile>
 					  <fileEncoding>utf-8</fileEncoding>
