@@ -1228,7 +1228,7 @@ access is limited to root and tomcat:
 
 Create the dccd application directory (Maybe the dccd-home should  just be there?)
 	# sudo mkdir /opt/dccd
-	# sudo cp DCCD.war /opt/dccd
+	# sudo cp dccd.war /opt/dccd
 	# sudo chown -R tomcat:tomcat /opt/dccd
 
 Configure tomcat to deploy this war by creating an xml file 
@@ -1236,7 +1236,7 @@ Configure tomcat to deploy this war by creating an xml file
 
 	# sudo vi /usr/share/tomcat6/conf/Catalina/localhost/DCCD.xml 
 	<?xml version="1.0" encoding="UTF-8"?>
-    <Context docBase="/opt/dccd/DCCD.war" debug="0" crossContext="true" />
+    <Context docBase="/opt/dccd/dccd.war" debug="0" crossContext="true" />
 	
 Now reload the Tomcat environment (i.e. stop and start it):
 
