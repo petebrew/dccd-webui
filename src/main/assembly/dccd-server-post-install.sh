@@ -13,12 +13,19 @@ exec > >(tee /var/log/dccd-lib-postinstall.log)
 exec 2>&1
 
 
-printf "\nCONFIGURING DCCD WEB APPLICATION BACKEND...\n\n"
-
+#########################################
+# Check if we're being run by root/sudo 
+#########################################
+if [ "$(id -u)" != "0" ]; then
+	echo "This script must be run by root or with sudo privileges"
+	exit 1
+fi
 
 #########################################
 # Get passwords and other input from user
 #########################################
+
+printf "\nCONFIGURING DCCD WEB APPLICATION BACKEND...\n\n"
 
 # Helper function that asks user to define a password, then checks it with a repeat
 # Call it with the name of the variable that you would like the new password stored
@@ -27,10 +34,8 @@ printf "\nCONFIGURING DCCD WEB APPLICATION BACKEND...\n\n"
 function getNewPwd()
 {
     local __resultvar=$1
-    echo "Please enter the new password:"
-    read -s pwd1
-    echo "Please repeat the new password:"
-    read -s pwd2
+    read -s -p "Please enter the new password: " pwd1
+    read -s -p "Please repeat the new password: " pwd2
 
     # Check both passwords match
         if [ $pwd1 != $pwd2 ]; then
@@ -48,38 +53,38 @@ function getNewPwd()
 printf "Create new password for fedora_db_admin\n"
 getNewPwd fedora_db_admin
 
-printf "\n\nCreate new password for fedoraAdmin\n"
+printf "\nCreate new password for fedoraAdmin\n"
 getNewPwd fedoraAdmin
 
-printf "\n\nCreate new password for fedoraIntCallUser\n"
+printf "\nCreate new password for fedoraIntCallUser\n"
 getNewPwd fedoraIntCallUser
 
-printf "\n\nCreate new password for ldapadmin\n"
+printf "\nCreate new password for ldapadmin\n"
 getNewPwd ldapadmin
 ldapadminsha=`slappasswd -h "{SSHA}" -s "$ldapadmin"`
 
-printf "\n\nCreate new password for dccduseradmin\n"
+printf "\nCreate new password for dccduseradmin\n"
 getNewPwd dccduseradmin
 dccduseradminsha=`slappasswd -h "{SSHA}" -s "$dccduseradmin"`
 
-printf "\n\nCreate new password for dccd_webui\n"
+printf "\nCreate new password for dccd_webui\n"
 getNewPwd dccd_webui
 
-printf "\n\nCreate new password for dccd_oai\n"
+printf "\nCreate new password for dccd_oai\n"
 getNewPwd dccd_oai
 
-printf "\n\nCreate new password for dccd_rest\n"
+printf "\nCreate new password for dccd_rest\n"
 getNewPwd dccd_rest
 
-printf "\n\n"
+printf "\n"
 read -p "Enter email address for the system administrator: " adminEmail
 printf "\n"
 
-printf "\n\n"
+printf "\n"
 read -p "Enter SMTP host for sending emails: " smtpHost
 printf "\n"
 
-printf "\n\n"
+printf "\n"
 read -p "Enter domain name of this server: " serverDomain
 printf "\n"
 
@@ -87,7 +92,7 @@ printf "\n"
 # Java JDK
 ################################
 
-printf "  Configuring Java environment for DCCD:\n"
+printf "Configuring Java environment for DCCD:\n"
 
 # 2.2.1 Download JDK
 # User should do this manually if they don't want OpenJDK
@@ -107,7 +112,7 @@ cp /opt/dccd/util/java.sh /etc/profile.d/
 # Apache Tomcat
 ################################
 
-printf "  Configuring Apache Tomcat environment for DCCD:\n"
+printf "Configuring Apache Tomcat environment for DCCD:\n"
 
 # 2.4.1 Install Tomcat 6
 # DONE by rpm-maven-plugin
@@ -127,7 +132,7 @@ chkconfig tomcat6 on
 # Apache HTTP Server
 ################################
 
-printf "  Configuring Apache HTTP Server for DCCD:\n"
+printf "Configuring Apache HTTP Server for DCCD:\n"
 
 # 2.5.1 Install Apache HTTP Server
 # DONE by rpm-maven-plugin
@@ -150,7 +155,7 @@ apachectl -k graceful
 # PostGreSQL
 ################################
 
-printf "  Configuring PostGreSQL for DCCD:\n"
+printf "Configuring PostGreSQL for DCCD:\n"
 
 # 2.6.1 Install PostGreSQL
 # DONE by rpm-maven-plugin
@@ -189,7 +194,7 @@ service postgresql start
 # OpenLDAP
 ################################
 
-printf "  Configuring OpenLDAP for DCCD:\n"
+printf "Configuring OpenLDAP for DCCD:\n"
 
 # 2.7.1 Install OpenLDAP servers and clients
 # DONE by rpm-maven-plugin
@@ -207,7 +212,7 @@ service slapd start
 # DCCD Fedora Commons Repository
 ################################
 
-printf "  Configuring Fedora Commons Repository for DCCD:\n"
+printf "Configuring Fedora Commons Repository for DCCD:\n"
 
 # 3.1.1 Create a database for Fedora Commons in PostGreSQL
 cp /opt/dccd/dccd-fedora-commons-repository/create-fedora-db.sql /opt/dccd/dccd-fedora-commons-repository/create-fedora-db-edited.sql
@@ -216,6 +221,7 @@ su - postgres -c "psql -U postgres < /opt/dccd/dccd-fedora-commons-repository/cr
 rm /opt/dccd/dccd-fedora-commons-repository/create-fedora-db-edited.sql
 
 # 3.1.2 Set the fedora_db_admin password
+# This is now done during the previous step through the edited SQL file
 #su - postgres -c "psql -U postgres -d postgres -c \"alter user fedora_db_admin with password '$fedora_db_admin';\""
 
 # 3.1.3 Set the FEDORA_HOME environment variable
@@ -276,7 +282,7 @@ service tomcat6 start
 # DCCD LDAP Directory 
 ################################
 
-printf "  Configuring LDAP environment for DCCD:\n"
+printf "Configuring LDAP environment for DCCD:\n"
 
 # 3.2.1 Create a separate directory folder for DCCD
 mkdir /var/lib/ldap/dccd
@@ -304,7 +310,7 @@ ldapadd -w "$ldapadmin" -D cn=ldapadmin,dc=dans,dc=knaw,dc=nl -f /opt/dccd/ldap/
 # DCCD SOLR Search Index 
 ################################
 
-printf "  Configuring Apache SOLR environment for DCCD:\n"
+printf "Configuring Apache SOLR environment for DCCD:\n"
 
 # 3.5.1 Install Apache SOLR 3.5
 cd /opt/dccd/ 
@@ -322,11 +328,11 @@ ln -s /opt/apache-solr-3.5.0/dist/apache-solr-3.5.0.war /opt/apache-solr/solr.wa
 mkdir -p /data/solr/cores/dendro/data
 mkdir -p /data/solr/cores/dendro/conf
 cp /opt/dccd/solr/config-all/solr.xml /data/solr
-cp /opt/dccd/solr/protwords.txt /data/solr/cores/dendro/conf
-cp /opt/dccd/solr/schema.xml /data/solr/cores/dendro/conf
+cp /opt/dccd/solr/protwords.txt  /data/solr/cores/dendro/conf
+cp /opt/dccd/solr/schema.xml     /data/solr/cores/dendro/conf
 cp /opt/dccd/solr/solrconfig.xml /data/solr/cores/dendro/conf
-cp /opt/dccd/solr/stopwords.txt /data/solr/cores/dendro/conf
-cp /opt/dccd/solr/synonyms.txt /data/solr/cores/dendro/conf
+cp /opt/dccd/solr/stopwords.txt  /data/solr/cores/dendro/conf
+cp /opt/dccd/solr/synonyms.txt   /data/solr/cores/dendro/conf
 chown -R tomcat:tomcat /data/solr
 
 # 3.5.4 Copy the Tomcat 6 context container
@@ -362,17 +368,18 @@ service tomcat6 force-reload
 # DCCD RESTful interface
 ################################
 
+# 4.3 All handled by dccd-http rpm-maven-plugin
 
 
 ################################
 # DCCD OAI Module 
 ################################
 
+# 4.4 All handled by dccd-oai rpm-maven-plugin
 
-
-#############################################################################
-# Remaining steps performed by dccd-webui, dccd-oai, and dccd-rest packages
-#############################################################################
+################################
+# Cron jobs 
+################################
 
 
 printf "\n\nDCCD backend configuration complete!\n\n";
