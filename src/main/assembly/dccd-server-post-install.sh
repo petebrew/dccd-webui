@@ -35,11 +35,13 @@ function getNewPwd()
 {
     local __resultvar=$1
     read -s -p "Please enter the new password: " pwd1
+    printf "\n"
     read -s -p "Please repeat the new password: " pwd2
+    printf "\n"
 
     # Check both passwords match
         if [ $pwd1 != $pwd2 ]; then
-           echo "Error - passwords do not match!  Please try again..."
+           printf "Error - passwords do not match!  Please try again...\n"
            getNewPwd
         else
            eval $__resultvar="'$pwd1'"
@@ -100,9 +102,11 @@ printf "Configuring Java environment for DCCD:\n"
 # 2.2.2 Install JDK
 # User should do this manually if they don't want OpenJDK
 
-# 2.2.3 Add the JAVA_HOME environment variable
-/opt/dccd/util/java.sh 
+# 2.2.3 Add the JAVA_HOME environment variable 
+# Use source so we don't need to log out and in again
 cp /opt/dccd/util/java.sh /etc/profile.d/
+source /opt/dccd/util/java.sh 
+
 
 # 2.2.4 Add java to alternatives
 # User should do this manually if they don't want OpenJDK
@@ -138,7 +142,7 @@ printf "Configuring Apache HTTP Server for DCCD:\n"
 # DONE by rpm-maven-plugin
 
 # 2.5.2 Configure it so it serves as a tomcat proxy
-cp /opt/dccd/httpd/dccd.conf /etc/httpd/conf.d/
+cp /opt/dccd/httpd/dccd.conf.orig /etc/httpd/conf.d/dccd.conf
 sed -i -e 's/FILL.IN.YOUR@VALID-EMAIL/'$adminEmail'/' /etc/httpd/conf.d/dccd.conf
 sed -i -e 's/%%%SERVER_DOMAIN%%%/'$serverDomain'/' /etc/httpd/conf.d/dccd.conf
 
@@ -152,10 +156,10 @@ apachectl -k graceful
 
 
 ################################
-# PostGreSQL
+# PostgreSQL
 ################################
 
-printf "Configuring PostGreSQL for DCCD:\n"
+printf "Configuring PostgreSQL for DCCD:\n"
 
 # 2.6.1 Install PostGreSQL
 # DONE by rpm-maven-plugin
@@ -172,9 +176,9 @@ if [ ! -f /var/lib/pgsql/data/postgresql.conf.dccd.bak ]; then
 fi
 
 # 2.6.4 Configure database to accept user/password credentials
-printf "DCCD needs to set the client credential configuration for Postgresql.  If you have already configured your pg_hba.conf "
-printf "file will strongly recommend you do this manually after this script has run.  Only continue if postgresql is not user "
-printf "for any other applications on this machine!\n"
+printf "DCCD needs to set the client credential configuration for PostgreSQL.  If you have already configured your pg_hba.conf "
+printf "file will strongly recommend you do this manually after this script has run.  Only continue if postgresql is not used "
+printf "for any other applications on this machine.\n"
 read -p "Are you sure you want DCCD to edit your pg_hba.conf file? (y/N)" -n 1 -r
 echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
@@ -200,7 +204,7 @@ printf "Configuring OpenLDAP for DCCD:\n"
 # DONE by rpm-maven-plugin
 
 # 2.7.2 Remove the “default” OpenLDAP database (optional)
-# rm /etc/openldap/slapd.d/cn\=config/olcDatabase\=\{2\}bdb.ldif
+rm /etc/openldap/slapd.d/cn\=config/olcDatabase\=\{2\}bdb.ldif
 
 # 2.7.3 Start the OpenLDAP daemon
 chkconfig slapd on
@@ -215,27 +219,27 @@ service slapd start
 printf "Configuring Fedora Commons Repository for DCCD:\n"
 
 # 3.1.1 Create a database for Fedora Commons in PostGreSQL
-cp /opt/dccd/dccd-fedora-commons-repository/create-fedora-db.sql /opt/dccd/dccd-fedora-commons-repository/create-fedora-db-edited.sql
-sed -i -e 's/CHANGEME/'$fedora_db_admin'/' /opt/dccd/dccd-fedora-commons-repository/create-fedora-db-edited.sql
-su - postgres -c "psql -U postgres < /opt/dccd/dccd-fedora-commons-repository/create-fedora-db-edited.sql"
-rm /opt/dccd/dccd-fedora-commons-repository/create-fedora-db-edited.sql
+cp /opt/dccd/dccd-fedora-commons-repository/create-fedora-db.sql.orig /opt/dccd/dccd-fedora-commons-repository/create-fedora-db.sql
+sed -i -e 's/CHANGEME/'$fedora_db_admin'/' /opt/dccd/dccd-fedora-commons-repository/create-fedora-db.sql
+su - postgres -c "psql -U postgres < /opt/dccd/dccd-fedora-commons-repository/create-fedora-db.sql"
+#rm /opt/dccd/dccd-fedora-commons-repository/create-fedora-db.sql
 
 # 3.1.2 Set the fedora_db_admin password
 # This is now done during the previous step through the edited SQL file
 #su - postgres -c "psql -U postgres -d postgres -c \"alter user fedora_db_admin with password '$fedora_db_admin';\""
 
-# 3.1.3 Set the FEDORA_HOME environment variable
+# 3.1.3 Set the FEDORA_HOME environment variable and run it now with source so we don't need to log out and in
 cp /opt/dccd/dccd-fedora-commons-repository/fedora.sh /etc/profile.d/
-/opt/dccd/dccd-fedora-commons-repository/fedora.sh
+source /opt/dccd/dccd-fedora-commons-repository/fedora.sh
 
 # 3.1.4 Run the Fedora Commons installer
 printf "\nDownloading Fedora Commons v3.5 installer.  This may take some time...\n\n";
 wget -O /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar http://sourceforge.net/projects/fedora-commons/files/fedora/3.5/fcrepo-installer-3.5.jar/download
-cp /opt/dccd/dccd-fedora-commons-repository/install.properties /opt/dccd/dccd-fedora-commons-repository/install.properties.2
-sed -i -e 's/database.password=/database.password='$fedora_db_admin'/' /opt/dccd/dccd-fedora-commons-repository/install.properties.2
-sed -i -e 's/fedora.admin.pass=/fedora.admin.pass='$fedoraAdmin'/' /opt/dccd/dccd-fedora-commons-repository/install.properties.2
-java -jar /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar /opt/dccd/dccd-fedora-commons-repository/install.properties.2
-//rm /opt/dccd/dccd-fedora-commons-repository/install.properties.2
+cp /opt/dccd/dccd-fedora-commons-repository/install.properties.orig /opt/dccd/dccd-fedora-commons-repository/install.properties
+sed -i -e 's/database.password=/database.password='$fedora_db_admin'/' /opt/dccd/dccd-fedora-commons-repository/install.properties
+sed -i -e 's/fedora.admin.pass=/fedora.admin.pass='$fedoraAdmin'/' /opt/dccd/dccd-fedora-commons-repository/install.properties
+java -jar /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar /opt/dccd/dccd-fedora-commons-repository/install.properties
+#rm /opt/dccd/dccd-fedora-commons-repository/install.properties
 chown -R tomcat:tomcat /opt/fedora-3.5
 
 # 3.1.5 Create a symbolic link to the fedora installation
@@ -253,7 +257,7 @@ sed -i -e 's/data\/datastreams/\/data\/fedora\/datastreams/' /opt/fedora/server/
 sed -i -e 's/data\/resourceIndex/\/data\/fedora\/resourceIndex/' /opt/fedora/server/config/fedora.fcfg
 
 # 3.1.7 Add Fedora Commons users
-cp /opt/dccd/dccd-fedora-commons-repository/fedora-users.xml /opt/fedora/server/config/
+cp /opt/dccd/dccd-fedora-commons-repository/fedora-users.xml.orig /opt/fedora/server/config/fedora-users.xml
 sed -i -e 's/password:fedoraAdmin/'$fedoraAdmin'/' /opt/fedora/server/config/fedora-users.xml
 sed -i -e 's/password:dccd_webui/'$dccd_webui'/' /opt/fedora/server/config/fedora-users.xml
 sed -i -e 's/password:dccd_rest/'$dccd_rest'/' /opt/fedora/server/config/fedora-users.xml
@@ -289,22 +293,33 @@ mkdir /var/lib/ldap/dccd
 chown ldap:ldap /var/lib/ldap/dccd
 
 # 3.2.2 Add DANS and DCCD schemas
+printf "Adding DANS and DCCD schemas...\n"
 ldapadd -v -Y EXTERNAL -H ldapi:/// -f /opt/dccd/ldap/dans-schema.ldif
 
 # 3.2.3 Add DCCD database
+printf "Adding DCCD database...\n"
 ldapadd -v -Y EXTERNAL -H ldapi:/// -f /opt/dccd/ldap/dccd-db.ldif
 
 # 3.2.4 Add basic entries to the DCCD database
-sed -i -e 's/FILL.IN.YOUR@VALID-EMAIL/'$adminEmail'/' /opt/dccd/ldap/dccd-basis.ldif
+printf "Adding basic entries to the DCCD database...\n"
+cp /opt/dccd/ldap/dccd-basis.ldif.orig /opt/dccd/ldap/dccd-basis.ldif
+sed -i -e 's/FILL_IN@YOUR_EMAIL/'$adminEmail'/' /opt/dccd/ldap/dccd-basis.ldif
 ldapadd -w secret -D cn=ldapadmin,dc=dans,dc=knaw,dc=nl -f /opt/dccd/ldap/dccd-basis.ldif
+#rm /opt/dccd/ldap/dccd-basis.ldif
 
 # 3.2.5 Change the ldapadmin password
-sed -i -e "s?CHANGEME?'$ldapadminsha'?" /opt/dccd/ldap/change-ldapadmin-pw.ldif
+printf "Changing the ldapadmin password...\n"
+cp /opt/dccd/ldap/change-ldapadmin-pw.ldif.orig /opt/dccd/ldap/change-ldapadmin-pw.ldif
+sed -i -e "s?CHANGEME?$ldapadminsha?" /opt/dccd/ldap/change-ldapadmin-pw.ldif
 ldapadd -v -Y EXTERNAL -H ldapi:/// -f /opt/dccd/ldap/change-ldapadmin-pw.ldif
+#rm /opt/dccd/ldap/change-ldapadmin-pw.ldif
 
 # 3.2.6 Change the dccdadmin user’s application password
-sed -i -e "s?CHANGEME?'$dccduseradminsha'?" /opt/dccd/ldap/change-dccdadmin-user-pw.ldif
+printf "Changing the dccdadmin user’s application password...\n"
+cp /opt/dccd/ldap/change-dccdadmin-user-pw.ldif.orig /opt/dccd/ldap/change-dccdadmin-user-pw.ldif
+sed -i -e "s?CHANGEME?$dccduseradminsha?" /opt/dccd/ldap/change-dccdadmin-user-pw.ldif
 ldapadd -w "$ldapadmin" -D cn=ldapadmin,dc=dans,dc=knaw,dc=nl -f /opt/dccd/ldap/change-dccdadmin-user-pw.ldif
+#rm /opt/dccd/ldap/change-dccdadmin-user-pw.ldif
 
 ################################
 # DCCD SOLR Search Index 
@@ -348,18 +363,21 @@ chmod -R a+x /etc/tomcat6/Catalina/localhost
 ################################
 
 # 4.1.1 Create the dccd-home dir
-# The directory is already created by rpm-maven-plugin, but we need to configure the .properties files
-sed -i -e 's?###Fill-In-fedoraAdmin-password###?$'fedora_db_admin'?' /opt/dccd/dccd-home/dccd.properties
-sed -i -e 's?###Fill-In-ldapadmin-password###?$'ldapadminsha'?' /opt/dccd/dccd-home/dccd.properties
-sed -i -e 's?###Fill-In-email###?'$adminEmail'?' /opt/dccd/dccd-home/dccd.properties
-sed -i -e 's?###Fill-In-host###?'$smtpHost'?' /opt/dccd/dccd-home/dccd.properties
-echo -e '\n# DCCD home directory\nJAVA_OPTS="${JAVA_OPTS} -Ddccd.home=/opt/dccd/dccd-home"' >> /etc/tomcat6/tomcat6.conf
+cp -R cp -R /opt/dccd/dccd-home /opt/
+cp /opt/dccd-home/dccd.properties.orig /opt/dccd-home/dccd.properties
+sed -i -e 's?###Fill-In-fedoraAdmin-password###?'$fedora_db_admin'?' /opt/dccd-home/dccd.properties
+sed -i -e 's?###Fill-In-ldapadmin-password###?'$ldapadminsha'?' /opt/dccd-home/dccd.properties
+sed -i -e 's?###Fill-In-email###?'$adminEmail'?' /opt/dccd-home/dccd.properties
+sed -i -e 's?###Fill-In-host###?'$smtpHost'?' /opt/dccd-home/dccd.properties
+chown -R tomcat:tomcat /opt/dccd-home
+chmod -R 755 /opt/dccd-home
+echo -e '\n# DCCD home directory\nJAVA_OPTS="${JAVA_OPTS} -Ddccd.home=/opt/dccd-home"' >> /etc/tomcat6/tomcat6.conf
 
 # 4.1.7 Limit access to passwords
-chmod 0600 /opt/dccd/dccd-home/dccd.properties
+chmod 0600 /opt/dccd-home/dccd.properties
 
 # 4.1.8 Deploy the webapp
-# DCCD.xml file is created by maven-rpm-plugin
+cp /opt/dccd/DCCD.xml /usr/share/tomcat6/conf/Catalina/localhost/
 # Reload tomcat to start it
 service tomcat6 force-reload
 

@@ -27,7 +27,7 @@ The DCCD software is made up of 7 packages, each of which are stored as separate
  * **dccd-reindex** - 
  * **dccd-repotools** - 
  
-In addition to a variety of internal dependencies (which are handled at compile time by Maven), these four packages rely on a number of other widely-used open source packages when they are deployed.  The following packages must therefore be installed and configured to successfull run the DCCD server software:
+In addition to a variety of internal dependencies (which are handled at compile time by Maven), these four packages rely on a number of other widely-used open source packages when they are deployed.  The following packages must therefore be installed and configured to successfully run the DCCD server software:
 
  * PostGreSQL 
  * Java
@@ -112,7 +112,7 @@ Within Eclipse, for each project go to ``File > Import > Git > Projects from Git
 
 ### 2.2.2 Compiling source code
 
-For proceding any further we need to make the hard-to-find legacy libraries stored within dccd-legacy-libs available to the other DCCD projects.  Locate the pom.xml file in the dccd-legacy-libs project, right click and do ``Run as > Maven install``.  This will install the libraries to your local Maven repostory.  This step need only be done once.
+Before proceeding any further we need to make the hard-to-find legacy libraries stored within dccd-legacy-libs available to the other DCCD projects.  Locate the pom.xml file in the dccd-legacy-libs project, right click and do ``Run as > Maven install``.  This will install the libraries to your local Maven repostory.  This step need only be done once.
 
 The source code for DCCD is compiled into RPM installer files which can then be deployed on a CentOS or Redhat server.  The development team uses CentOS 6 so we recommend for ease of deployment you use this too.  
 

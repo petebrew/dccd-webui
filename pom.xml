@@ -337,9 +337,9 @@
 					<mappings>
 						<mapping>
 							<directory>/opt/dccd</directory>
-							<filemode>655</filemode>
-							<username>root</username>
-							<groupname>root</groupname>
+							<filemode>555</filemode>
+							<username>tomcat</username>
+							<groupname>tomcat</groupname>
 							<recurseDirectories>true</recurseDirectories>
 							<sources>
 								<source>
@@ -350,8 +350,8 @@
 						<mapping>
 							<directory>/opt/dccd</directory>
 							<filemode>655</filemode>
-							<username>root</username>
-							<groupname>root</groupname>
+							<username>tomcat</username>
+							<groupname>tomcat</groupname>
 							<recurseDirectories>true</recurseDirectories>
 							<sources>
 								<source>
@@ -360,7 +360,7 @@
 							</sources>
 						</mapping>
 						<mapping>
-							<directory>/usr/share/tomcat6/conf/Catalina/localhost/</directory>
+							<directory>/opt/dccd/</directory>
 							<filemode>655</filemode>
 							<username>tomcat</username>
 							<groupname>tomcat</groupname>
