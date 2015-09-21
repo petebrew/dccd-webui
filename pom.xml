@@ -372,14 +372,15 @@
 							</sources>
 						</mapping>
 					</mappings>
+					
 					<requires>
 						<require>dccd-lib</require>
 					</requires>
 					
-					<!-- <postinstallScriptlet>
-					  <scriptFile>src/main/bin/postinstall.sh</scriptFile>
+					<postinstallScriptlet>
+					  <scriptFile>src/main/assembly/postinstall.sh</scriptFile>
 					  <fileEncoding>utf-8</fileEncoding>
-					</postinstallScriptlet>-->				
+					</postinstallScriptlet>	
 				</configuration>
 			</plugin>
 
