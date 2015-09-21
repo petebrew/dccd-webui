@@ -9,58 +9,9 @@
 # @author Peter Brewer (p.brewer@ltrr.arizona.edu)
 
 
-#########################################
-# Check if we're being run by root/sudo 
-#########################################
-if [ "$(id -u)" != "0" ]; then
-	echo "This script must be run by root or with sudo privileges"
-	exit 1
-fi
-
-###################################################
-# Download binary installers not available in repos
-###################################################
-
-if [ ! -f /opt/dccd/apache-solr-3.5.0.tgz ]; then
-	printf "\nDownloading Apache SOLR v3.5 installer.  This may take some time...\n\n"
-	wget --progress=bar:force -O /opt/dccd/apache-solr-3.5.0.tgz http://archive.apache.org/dist/lucene/solr/3.5.0/apache-solr-3.5.0.tgz
-else
-	printf "\nUsing Apache SOLR v3.5 installer found in:\n  - /opt/dccd/\n\n"
-fi
-# Check the file downloaded correctly
-if [ ! -f /opt/dccd/apache-solr-3.5.0.tgz ]; then
-	printf "ERROR - Failed to download Apache SOLR installer.  DCCD configuration cannot continue.\n"
-	printf "Download manually and place in /opt/dccd/apache-solr-3.5.0.tgz then rerun this script.\n"
-	exit 1
-fi
-
-if [ ! -f /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar ]; then
-	printf "\nDownloading Fedora Commons v3.5 installer.  This may take some time...\n\n";
-	wget --progress=bar:force -O /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar http://sourceforge.net/projects/fedora-commons/files/fedora/3.5/fcrepo-installer-3.5.jar/download
-else
-	printf "\nUsing Fedora Commons v3.5 installer found in:\n  - /opt/dccd/dccd-fedora-commons-repository\n\n"	
-fi
-# Check the file downloaded correctly
-if [ ! -f /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar ]; then
-	printf "ERROR - Failed to download Fedora Commons installer.  DCCD configuration cannot continue.\n"
-	printf "Download manually and place in /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar then rerun this script\n"
-	exit 1
-fi
-
-
-#########################################
-# Store output of the remainder in logs
-#########################################
-
-# Store output in log file 
-exec > >(tee /var/log/dccd-lib-postinstall.log)
-exec 2>&1
-
-#########################################
-# Get passwords and other input from user
-#########################################
-
-printf "\nCONFIGURING DCCD WEB APPLICATION BACKEND...\n\n"
+################################
+# Functions
+################################
 
 # Helper function that asks user to define a password, then checks it with a repeat
 # Call it with the name of the variable that you would like the new password stored
@@ -83,9 +34,62 @@ function getNewPwd()
         fi
 }
 
-#
-# Ask the user for the passwords required for all the various users within the DCCD system
-#
+
+
+#########################################
+# Check if we're being run by root/sudo 
+#########################################
+if [ "$(id -u)" != "0" ]; then
+	echo "This script must be run by root or with sudo privileges"
+	exit 1
+fi
+
+###################################################
+# Download binary installers not available in repos
+###################################################
+
+if [ ! -f /opt/dccd/apache-solr-3.5.0.tgz ]; then
+	printf "\nDownloading Apache SOLR v3.5 installer.  This may take some time...\n\n"
+	wget --progress=bar:force -O /opt/dccd/apache-solr-3.5.0.tgz http://archive.apache.org/dist/lucene/solr/3.5.0/apache-solr-3.5.0.tgz
+else
+	printf "\nUsing Apache SOLR v3.5 installer found in:\n  - /opt/dccd/\n\n"
+fi
+# Check the file downloaded correctly
+if [ ! -s /opt/dccd/apache-solr-3.5.0.tgz ]; then
+	printf "ERROR - Failed to download Apache SOLR installer.  DCCD configuration cannot continue.\n"
+	printf "Download manually and place in /opt/dccd/apache-solr-3.5.0.tgz then rerun this script.\n"
+	exit 1
+fi
+
+if [ ! -f /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar ]; then
+	printf "\nDownloading Fedora Commons v3.5 installer.  This may take some time...\n\n";
+	wget --progress=bar:force -O /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar http://sourceforge.net/projects/fedora-commons/files/fedora/3.5/fcrepo-installer-3.5.jar/download
+else
+	printf "\nUsing Fedora Commons v3.5 installer found in:\n  - /opt/dccd/dccd-fedora-commons-repository\n\n"	
+fi
+# Check the file downloaded correctly
+if [ ! -s /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar ]; then
+	printf "ERROR - Failed to download Fedora Commons installer.  DCCD configuration cannot continue.\n"
+	printf "Download manually and place in /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar then rerun this script\n"
+	exit 1
+fi
+
+
+#########################################
+# Store output of the remainder in logs
+#########################################
+
+# Store output in log file 
+exec > >(tee /var/log/dccd-lib-postinstall.log)
+exec 2>&1
+
+
+printf "\nCONFIGURING DCCD WEB APPLICATION BACKEND...\n\n"
+
+
+#########################################
+# Get passwords and other input from user
+#########################################
 
 printf "Create new password for fedora_db_admin\n"
 getNewPwd fedora_db_admin
@@ -328,6 +332,8 @@ chown ldap:ldap /var/lib/ldap/dccd
 # 3.2.2 Add DANS and DCCD schemas
 printf "Adding DANS and DCCD schemas...\n"
 ldapadd -v -Y EXTERNAL -H ldapi:/// -f /opt/dccd/ldap/dans-schema.ldif
+ldapadd -v -Y EXTERNAL -H ldapi:/// -f /opt/dccd/ldap/dccd-schema.ldif
+
 
 # 3.2.3 Add DCCD database
 printf "Adding DCCD database...\n"
@@ -361,8 +367,7 @@ ldapadd -w "$ldapadmin" -D cn=ldapadmin,dc=dans,dc=knaw,dc=nl -f /opt/dccd/ldap/
 printf "Configuring Apache SOLR environment for DCCD:\n"
 
 # 3.5.1 Install Apache SOLR 3.5
-cd /opt/dccd/ 
-tar -xzf apache-solr-3.5.0.tgz -C /opt
+tar -xzf /opt/dccd/apache-solr-3.5.0.tgz -C /opt
 #rm /opt/dccd/apache-solr-3.5.0.tgz
 chown -R tomcat:tomcat /opt/apache-solr-3.5.0
 
@@ -394,7 +399,7 @@ chmod -R a+x /etc/tomcat6/Catalina/localhost
 ################################
 
 # 4.1.1 Create the dccd-home dir
-cp -R cp -R /opt/dccd/dccd-home /opt/
+cp -R /opt/dccd/dccd-home /opt/
 cp /opt/dccd-home/dccd.properties.orig /opt/dccd-home/dccd.properties
 sed -i -e 's?###Fill-In-fedoraAdmin-password###?'$fedora_db_admin'?' /opt/dccd-home/dccd.properties
 sed -i -e 's?###Fill-In-ldapadmin-password###?'$ldapadminsha'?' /opt/dccd-home/dccd.properties
@@ -431,4 +436,9 @@ service tomcat6 force-reload
 ################################
 
 
+
+
+
 printf "\n\nDCCD backend configuration complete!\n\n";
+
+

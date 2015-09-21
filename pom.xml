@@ -337,7 +337,7 @@
 					<mappings>
 						<mapping>
 							<directory>/opt/dccd</directory>
-							<filemode>555</filemode>
+							<filemode>755</filemode>
 							<username>tomcat</username>
 							<groupname>tomcat</groupname>
 							<recurseDirectories>true</recurseDirectories>
@@ -361,7 +361,7 @@
 						</mapping>
 						<mapping>
 							<directory>/opt/dccd/</directory>
-							<filemode>655</filemode>
+							<filemode>755</filemode>
 							<username>tomcat</username>
 							<groupname>tomcat</groupname>
 							<recurseDirectories>true</recurseDirectories>
