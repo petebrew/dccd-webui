@@ -188,7 +188,7 @@ sed -i -e 's/%%%SERVER_DOMAIN%%%/'$serverDomain'/' /etc/httpd/conf.d/dccd.conf
 # 2.5.3 Set up IPTables
 service httpd start
 chkconfig --level 3 httpd on
-iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+iptables -I INPUT 5 -p tcp -m state --state NEW,ESTABLISHED --dport 80 -j ACCEPT
 service iptables save
 apachectl -k graceful
 
