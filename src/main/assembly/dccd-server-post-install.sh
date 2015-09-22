@@ -330,10 +330,10 @@ mkdir /var/lib/ldap/dccd
 chown ldap:ldap /var/lib/ldap/dccd
 
 # 3.2.2 Add DANS and DCCD schemas
-printf "Adding DANS and DCCD schemas...\n"
+printf "Adding DANS schema...\n"
 ldapadd -v -Y EXTERNAL -H ldapi:/// -f /opt/dccd/ldap/dans-schema.ldif
+printf "Adding DCCD schema...\n"
 ldapadd -v -Y EXTERNAL -H ldapi:/// -f /opt/dccd/ldap/dccd-schema.ldif
-
 
 # 3.2.3 Add DCCD database
 printf "Adding DCCD database...\n"
@@ -413,7 +413,7 @@ echo -e '\n# DCCD home directory\nJAVA_OPTS="${JAVA_OPTS} -Ddccd.home=/opt/dccd-
 chmod 0600 /opt/dccd-home/dccd.properties
 
 # 4.1.8 Deploy the webapp
-cp /opt/dccd/DCCD.xml /usr/share/tomcat6/conf/Catalina/localhost/
+cp /opt/dccd/dccd.xml /usr/share/tomcat6/conf/Catalina/localhost/
 # Reload tomcat to start it
 service tomcat6 force-reload
 

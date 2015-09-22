@@ -367,7 +367,7 @@
 							<recurseDirectories>true</recurseDirectories>
 							<sources>
 								<source>
-									<location>target/classes/tomcat/DCCD.xml</location>
+									<location>target/classes/tomcat/dccd.xml</location>
 								</source>
 							</sources>
 						</mapping>
