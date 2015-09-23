@@ -123,7 +123,7 @@ Before proceeding any further we need to make the hard-to-find legacy libraries 
 
 The source code for DCCD is compiled into RPM installer files which can then be deployed on a CentOS or Redhat server.  The development team uses CentOS 6 so we recommend for ease of deployment you use this too.  
 
-RPM files can be generated for each of the four remaining DCCD projects by right clicking on each pom.xml file and selecting ``Run as > Maven build...``.  In the dialog set the goal to 'package'.  Once you have packaged your projects you will find your RPM files in the ``target/rpm/.../RPMS/noarch/``folders of each project.  You can then transfer these rpm files to your server ready for deployment.  Again this can also be done via the command line ``mvn package``.
+RPM files can be generated for each of the remaining DCCD projects by right clicking on each pom.xml file and selecting ``Run as > Maven build...``.  In the dialog set the goal to 'package'.  Once you have packaged your projects you will find your RPM files in the ``target/rpm/.../RPMS/noarch/``folders of each project.  You can then transfer these rpm files to your server ready for deployment.  Again this can also be done via the command line ``mvn package``.
 
 
 3 Deploying DCCD
@@ -152,7 +152,7 @@ Choose Oracle Java from the list presented.
 Once you have your four rpm files on your CentOS server then they can be installed with yum as normal:
 
 ```
-sudo yum install dccd-lib dccd-webgui dccd-http dccd-oai
+sudo yum install dccd-lib dccd-webui dccd-http dccd-oai
 ```
 
 Most of the software components that DCCD relies upon will be installed by yum.  Two of them though (Fedora Commons Repository, and Apache Solr) are not available in standard software repositories.  These are installed as part of the configuration processed described below.
