@@ -67,6 +67,7 @@ The following packages are required on your development machine to build the DCC
  
  * **Java JDK 7**  - Currently the development team is using Java 7 but are aiming to move to Java 8 soon.  Testing has not begun with Java 8 yet.  Both Oracle and OpenJDK versions have been used successfully
  * **Eclipse** - Currently the development team is using v4.4 - Luna but others are likely to work fine too. Within Eclipse you will also need the following add-ons
+    * JiBX plugin  
     * m2e - Extensions Development Support 
     * Eclipse GitHub integration with task focused interface	
  * **RPM** - Redhat Package Manager  
@@ -83,8 +84,10 @@ Once installed launch Eclipse and then go to ``Help > Install New Software``.  I
   
   * m2e - Extensions Development Support 
   * Eclipse GitHub integration with task focused interface
+
+The JiBX plugin is also required.  In the ``Help > Install New Software`` dialog add the update site `` http://jibx.sourceforge.net/eclipse/``.  Then install the ``JiBX Eclipse Plugin 1.2.4``.
   
-Once installed, Eclipse will need to be restarted to complete the installation process.
+Once these plugins are installed, Eclipse will need to be restarted to complete the setup process.
 
 ### 2.1.3 RPM
 
