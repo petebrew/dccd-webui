@@ -16,24 +16,92 @@
 # Helper function that asks user to define a password, then checks it with a repeat
 # Call it with the name of the variable that you would like the new password stored
 # inside e.g.:
-#   getNewPwd mynewvariable
+# Param 1 = Variable into which the password should go
+# Param 2 = The question to ask
+#   
 function getNewPwd()
 {
-    local __resultvar=$1
-    read -s -p "Please enter the new password: " pwd1
-    printf "\n"
-    read -s -p "Please repeat the new password: " pwd2
-    printf "\n"
-
+	local __resultvar=$1
+	
+	pwd1=$(whiptail --passwordbox "$2" 8 70 --backtitle "DCCD Server Configuration Wizard" --title "$1" 3>&1 1>&2 2>&3)                                                                 
+	exitstatus=$?
+	if [ $exitstatus = 0 ]; then
+		pwd2=$(whiptail --passwordbox "Confirm password for $1" 8 70 --backtitle "DCCD Server Configuration Wizard" --title "$1" 3>&1 1>&2 2>&3)
+		if [ $exitstatus != 0 ]; then
+			clear
+			exit 1
+		fi
+	else
+		clear
+	    exit 1
+	fi
+   
     # Check both passwords match
-        if [ $pwd1 != $pwd2 ]; then
-           printf "Error - passwords do not match!  Please try again...\n"
-           getNewPwd
-        else
-           eval $__resultvar="'$pwd1'"
-        fi
+    if [ $pwd1 != $pwd2 ]; then    	
+       showMessage "Error - passwords do not match!  Please try again..."
+       getNewPwd "$1" "$2"
+    else
+       eval $__resultvar="'$pwd1'"
+    fi
 }
 
+#
+# Function to get a plain text response from user
+# Param 1 = Question to ask
+# Param 2 = Variable into which to put the response
+#
+function getInput()
+{
+	local __resultvar=$2
+	VALUE=$(whiptail --inputbox "$1" 8 70 --backtitle "DCCD Server Configuration Wizard" 3>&1 1>&2 2>&3)
+	                                                                       
+	exitstatus=$?
+	if [ $exitstatus = 0 ]; then
+	     eval $__resultvar="'$VALUE'"
+	else
+	    clear
+	    exit 1
+	fi
+	
+}
+
+#
+# Downloads the file at the URL specified to the specified file
+# Param 1 = URL
+# Param 2 = file to download to
+function downloadFile()
+{
+	wget -O "$2" "$1"  2>&1 | \
+ 	stdbuf -o0 awk '/[.] +[0-9][0-9]?[0-9]?%/ { print substr($0,63,3) }' | \
+	whiptail --backtitle "DCCD Server Configuration Wizard" --gauge "$3" 6 70 0
+	clear
+}
+
+#
+# Simply display message
+# Param 1 = Message
+#
+function showMessage()
+{
+	whiptail --backtitle "DCCD Server Configuration Wizard" --msgbox "$1" 10 70
+	clear
+}
+
+#
+# Ask the user a yes/no question.  Returns 1 for yes or 0 for no.
+# Param 1 = Question
+# Param 2 = The variable into which to put the response 
+#
+function getYesNo()
+{
+	local __resultvar=$2
+
+	if (whiptail --backtitle "DCCD Server Configuration Wizard" --yesno "$1" 14 70) then
+	    eval $__resultvar="1"
+	else
+	    eval $__resultvar="0"
+	fi
+}
 
 
 #########################################
@@ -42,37 +110,66 @@ function getNewPwd()
 if [ "$(id -u)" != "0" ]; then
 	echo "This script must be run by root or with sudo privileges"
 	exit 1
+else
+	showMessage "This wizard will collect the information required to configure and deploy your new DCCD Server, however, first we need to download installers for dependencies that are not available in the standard software repositories."
 fi
+
+
 
 ###################################################
 # Download binary installers not available in repos
 ###################################################
 
+## Download Apache Solr
 if [ ! -f /opt/dccd/apache-solr-3.5.0.tgz ]; then
-	printf "\nDownloading Apache SOLR v3.5 installer.  This may take some time...\n\n"
-	wget --progress=bar:force -O /opt/dccd/apache-solr-3.5.0.tgz http://archive.apache.org/dist/lucene/solr/3.5.0/apache-solr-3.5.0.tgz
-else
-	printf "\nUsing Apache SOLR v3.5 installer found in:\n  - /opt/dccd/\n\n"
+	downloadFile "http://archive.apache.org/dist/lucene/solr/3.5.0/apache-solr-3.5.0.tgz" "/opt/dccd/apache-solr-3.5.0.tgz" "Downloading Apache Solr v3.5.0 installer..."
 fi
 # Check the file downloaded correctly
 if [ ! -s /opt/dccd/apache-solr-3.5.0.tgz ]; then
-	printf "ERROR - Failed to download Apache SOLR installer.  DCCD configuration cannot continue.\n"
-	printf "Download manually and place in /opt/dccd/apache-solr-3.5.0.tgz then rerun this script.\n"
+	showMessage "ERROR - Failed to download Apache SOLR installer.  DCCD configuration cannot continue. Download manually and place in:\n\n - /opt/dccd/apache-solr-3.5.0.tgz\n\n ...then rerun this script."
+	clear
 	exit 1
 fi
 
+## Download Fedora Commons
 if [ ! -f /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar ]; then
-	printf "\nDownloading Fedora Commons v3.5 installer.  This may take some time...\n\n";
-	wget --progress=bar:force -O /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar http://sourceforge.net/projects/fedora-commons/files/fedora/3.5/fcrepo-installer-3.5.jar/download
-else
-	printf "\nUsing Fedora Commons v3.5 installer found in:\n  - /opt/dccd/dccd-fedora-commons-repository\n\n"	
+	downloadFile http://sourceforge.net/projects/fedora-commons/files/fedora/3.5/fcrepo-installer-3.5.jar/download /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar "Downloading Fedora Commons Repository v3.5 installer..."
 fi
 # Check the file downloaded correctly
 if [ ! -s /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar ]; then
-	printf "ERROR - Failed to download Fedora Commons installer.  DCCD configuration cannot continue.\n"
-	printf "Download manually and place in /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar then rerun this script\n"
+	showMessage "ERROR - Failed to download Fedora Commons installer.  DCCD configuration cannot continue.\nDownload manually and place in /opt/dccd/dccd-fedora-commons-repository/fcrepo-installer-3.5.jar then rerun this script"
+	clear
 	exit 1
 fi
+
+
+#########################################
+# Get passwords and other input from user
+#########################################
+
+getNewPwd fedora_db_admin "Create new password for fedora_db_admin:"
+getNewPwd fedoraAdmin "Create new password for fedoraAdmin:"
+getNewPwd fedoraIntCallUser "Create new password for fedoraIntCallUser:"
+getNewPwd ldapadmin "Create new password for ldapadmin:"
+getNewPwd dccduseradmin "Create new password for dccduseradmin:"
+getNewPwd dccd_webui "Create new password for dccd_webui:"
+getNewPwd dccd_oai "Create new password for dccd_oai:"
+getNewPwd dccd_rest "Create new password for dccd_rest:"
+getInput "Enter email address for the system administrator: " adminEmail
+getInput "Enter SMTP host for sending emails: " smtpHost
+getInput "Enter domain name of this server: " serverDomain
+getYesNo "DCCD needs to set the client credential configuration for PostgreSQL.  If you have already configured your pg_hba.conf file we recommend you do this manually after this script has run.  Only continue if PostGreSQL is not used for any other applications on this machine.\n\nShould DCCD Server edit your pg_hba.conf file?" editpghba
+getYesNo "This is all the information needed to configure your DCCD server.  Would you like to run the configuration now?" continueConfig
+
+clear
+if [[ $continueConfig == "0" ]]
+then
+	exit 1
+fi
+
+# We need to hash some of these passwords
+ldapadminsha=`slappasswd -h "{SSHA}" -s "$ldapadmin"`
+dccduseradminsha=`slappasswd -h "{SSHA}" -s "$dccduseradmin"`
 
 
 #########################################
@@ -83,51 +180,8 @@ fi
 exec > >(tee /var/log/dccd-lib-postinstall.log)
 exec 2>&1
 
+printf "Configuring DCCD Server...\n"
 
-printf "\nCONFIGURING DCCD WEB APPLICATION BACKEND...\n\n"
-
-
-#########################################
-# Get passwords and other input from user
-#########################################
-
-printf "Create new password for fedora_db_admin\n"
-getNewPwd fedora_db_admin
-
-printf "\nCreate new password for fedoraAdmin\n"
-getNewPwd fedoraAdmin
-
-printf "\nCreate new password for fedoraIntCallUser\n"
-getNewPwd fedoraIntCallUser
-
-printf "\nCreate new password for ldapadmin\n"
-getNewPwd ldapadmin
-ldapadminsha=`slappasswd -h "{SSHA}" -s "$ldapadmin"`
-
-printf "\nCreate new password for dccduseradmin\n"
-getNewPwd dccduseradmin
-dccduseradminsha=`slappasswd -h "{SSHA}" -s "$dccduseradmin"`
-
-printf "\nCreate new password for dccd_webui\n"
-getNewPwd dccd_webui
-
-printf "\nCreate new password for dccd_oai\n"
-getNewPwd dccd_oai
-
-printf "\nCreate new password for dccd_rest\n"
-getNewPwd dccd_rest
-
-printf "\n"
-read -p "Enter email address for the system administrator: " adminEmail
-printf "\n"
-
-printf "\n"
-read -p "Enter SMTP host for sending emails: " smtpHost
-printf "\n"
-
-printf "\n"
-read -p "Enter domain name of this server: " serverDomain
-printf "\n"
 
 ################################
 # Java JDK
@@ -215,12 +269,11 @@ if [ ! -f /var/lib/pgsql/data/postgresql.conf.dccd.bak ]; then
 fi
 
 # 2.6.4 Configure database to accept user/password credentials
-printf "DCCD needs to set the client credential configuration for PostgreSQL.  If you have already configured your pg_hba.conf "
-printf "file will strongly recommend you do this manually after this script has run.  Only continue if postgresql is not used "
-printf "for any other applications on this machine.\n"
-read -p "Are you sure you want DCCD to edit your pg_hba.conf file? (y/N)" -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
+#printf "DCCD needs to set the client credential configuration for PostgreSQL.  If you have already configured your pg_hba.conf "
+#printf "file will strongly recommend you do this manually after this script has run.  Only continue if postgresql is not used "
+#printf "for any other applications on this machine.\n"
+#read -p "Are you sure you want DCCD to edit your pg_hba.conf file? y/N" -n 1 -r
+if [[ $editpghba = "1" ]]
 then
 	cp /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
 	cp /opt/dccd/postgresql/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf
@@ -436,9 +489,4 @@ service tomcat6 force-reload
 ################################
 
 
-
-
-
 printf "\n\nDCCD backend configuration complete!\n\n";
-
-
