@@ -67,6 +67,7 @@ The following packages are required on your development machine to build the DCC
  
  * **Java JDK 7**  - Currently the development team is using Java 7 but are aiming to move to Java 8 soon.  Testing has not begun with Java 8 yet.  Both Oracle and OpenJDK versions have been used successfully
  * **Eclipse** - Currently the development team is using v4.4 - Luna but others are likely to work fine too. Within Eclipse you will also need the following add-ons
+    * JiBX plugin  
     * m2e - Extensions Development Support 
     * Eclipse GitHub integration with task focused interface	
  * **RPM** - Redhat Package Manager  
@@ -83,8 +84,10 @@ Once installed launch Eclipse and then go to ``Help > Install New Software``.  I
   
   * m2e - Extensions Development Support 
   * Eclipse GitHub integration with task focused interface
+
+The JiBX plugin is also required.  In the ``Help > Install New Software`` dialog add the update site `` http://jibx.sourceforge.net/eclipse/``.  Then install the ``JiBX Eclipse Plugin 1.2.4``.
   
-Once installed, Eclipse will need to be restarted to complete the installation process.
+Once these plugins are installed, Eclipse will need to be restarted to complete the setup process.
 
 ### 2.1.3 RPM
 
@@ -119,7 +122,7 @@ Within Eclipse, for each project go to ``File > Import > Git > Projects from Git
 
 ### 2.2.2 Compiling source code
 
-Before proceeding any further we need to make the hard-to-find legacy libraries stored within dccd-legacy-libs available to the other DCCD projects.  Locate the pom.xml file in the dccd-legacy-libs project, right click and do ``Run as > Maven install``.  This will install the libraries to your local Maven repostory.  This step need only be done once.  Alternatively from the command line, within the dccd-legacy-libs project folder you can do ``mvn install``.
+Before proceeding any further we need to make the hard-to-find legacy libraries stored within dccd-legacy-libs available to the other DCCD projects.  First run the ``repo/install.sh`` script within the dccd-legacy-libs project.  Next, right click on the pom.xml file and do ``Run as > Maven install``.  These steps need only be done once.  Alternatively from the command line, within the dccd-legacy-libs project folder you can do ``repo/install.sh && mvn clean install``.
 
 The source code for DCCD is compiled into RPM installer files which can then be deployed on a CentOS or Redhat server.  The development team uses CentOS 6 so we recommend for ease of deployment you use this too.  
 
