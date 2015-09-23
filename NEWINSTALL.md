@@ -119,7 +119,7 @@ Within Eclipse, for each project go to ``File > Import > Git > Projects from Git
 
 ### 2.2.2 Compiling source code
 
-Before proceeding any further we need to make the hard-to-find legacy libraries stored within dccd-legacy-libs available to the other DCCD projects.  Locate the pom.xml file in the dccd-legacy-libs project, right click and do ``Run as > Maven install``.  This will install the libraries to your local Maven repostory.  This step need only be done once.  Alternatively from the command line, within the dccd-legacy-libs project folder you can do ``mvn install``.
+Before proceeding any further we need to make the hard-to-find legacy libraries stored within dccd-legacy-libs available to the other DCCD projects.  First run the ``repo/install.sh`` script within the dccd-legacy-libs project.  Next, right click on the pom.xml file and do ``Run as > Maven install``.  These steps need only be done once.  Alternatively from the command line, within the dccd-legacy-libs project folder you can do ``repo/install.sh && mvn clean install``.
 
 The source code for DCCD is compiled into RPM installer files which can then be deployed on a CentOS or Redhat server.  The development team uses CentOS 6 so we recommend for ease of deployment you use this too.  
 
