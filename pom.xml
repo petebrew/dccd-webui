@@ -375,14 +375,9 @@
 					
 					<requires>
 						<require>dccd-lib</require>
-						<require>whiptail</require>
+						<require>newt</require>
 						<require>wget</require>
 					</requires>
-					
-					<postinstallScriptlet>
-					  <scriptFile>src/main/assembly/postinstall.sh</scriptFile>
-					  <fileEncoding>utf-8</fileEncoding>
-					</postinstallScriptlet>	
 				</configuration>
 			</plugin>
 
