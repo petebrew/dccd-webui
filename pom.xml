@@ -79,7 +79,7 @@
 		</dependency>
 
 		<!-- TRiDaS libs: TridasJLib & DendroFileIO -->
-		<!-- from the new maven repo -->
+<!-- 
 		<dependency>
 			<groupId>org.tridas</groupId>
 			<artifactId>tridasjlib</artifactId>
@@ -88,22 +88,19 @@
 		<dependency>
 			<groupId>org.tridas</groupId>
 			<artifactId>dendrofileio</artifactId>
-			<!-- <version>1.0.9-SNAPSHOT</version> -->
 			<version>1.1.0-SNAPSHOT</version>
 		</dependency>
-
-		<!-- needed for TridasJLib -->
 		<dependency>
 			<groupId>org.jvnet.jaxb2_commons</groupId>
 			<artifactId>jaxb2-basics-runtime</artifactId>
-			<version>0.6.1</version><!-- was 0.5.1 -->
+			<version>0.6.1</version>
 		</dependency>
-		<!-- DendroFileIO uses odftoolkit which needs xerces version >= 2.7.0 -->
 		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
 			<version>2.9.1</version>
 		</dependency>
+ -->
 
 		<!-- WICKET DEPENDENCIES -->
 		<dependency>
