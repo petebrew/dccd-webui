@@ -5,8 +5,10 @@ DCCD Installation and Deployment Guide
 1 Introduction
 --------------
 
-This document will guide you through the steps of deploying the DCCD software on a server.
-As described below, DCCD builds upon several open source software components so several configurations on different platforms should be possible. However, this Guide describes a simple one-server set-up, on a CentOS 6.5 or a
+This document will guide you through the steps of installing DCCD on a server.
+As described below, DCCD is built on several open source software components.
+Several configurations on different platforms should therefore be possible.
+However, this Guide describes a simple one-server set-up, on a CentOS 6.5 or a
 RedHat Linux 6 server, the configuration currently in use at DANS. 
 So far, no other configurations have been tested.
 
@@ -65,8 +67,8 @@ The dccd-lib project contains extra files needed for installation:
 -------------
 
 During the installation you will be asked several times to provide a password. 
-Please, ensure that you create safe passwords.  Prefer randomly generated
-passwords over human readable ones.  Store your passwords in a central,
+Please, ensure that you create safe passwords.  Randomly generated
+passwords are preferred over human readable ones.  Store your passwords in a central,
 encrypted database that you secure with a passphrase you can remember.  
 
 The passwords you generate have to be specified later in the instruction. For
@@ -107,7 +109,7 @@ following conventions:
 * if the contents of a configuration file must be changed the relevant section is
   displayed in the courier font with the changed parts in **bold**;
 * some commands are included in order to check the results of previous commands 
-  (e.g., <code>sudo chkconfig --list slapd</code>); it should be obvious which ones are.
+    (e.g., <code>sudo chkconfig --list slapd</code>); it should be obvious which ones these are.
   
   
 2 Standard Software Components
@@ -115,8 +117,7 @@ following conventions:
 
 The following industry standard software components need to be installed first. 
 See subsections for comments about alternatives and additional configuration. 
-The items in this section can typically be performed by the IT department.  
-
+The items in this section can typically be performed by your IT department. 
 
 2.1 Redhat 6 or CentOS 6
 ------------------------
