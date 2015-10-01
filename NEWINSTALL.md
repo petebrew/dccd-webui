@@ -57,7 +57,7 @@ This document is designed to be read by both developers of DCCD and system admin
 2 Compiling DCCD packages
 ------
 
-The following instructions assume you are using the Eclipse IDE as this is the tool used by the core DCCD development team.  If you choose to use another IDE then hopefully these instructions will give you enough guidance.
+This section describes the steps that should be performed on your desktop development machine.  The following instructions assume you are using the Eclipse IDE as this is the tool used by the core DCCD development team.  If you choose to use another IDE then hopefully these instructions will give you enough guidance.
 
 
 2.1 Installing build prerequisites
@@ -65,7 +65,7 @@ The following instructions assume you are using the Eclipse IDE as this is the t
 
 The following packages are required on your development machine to build the DCCD packages:
  
- * **Java JDK 7**  - Currently the development team is using Java 7 but are aiming to move to Java 8 soon.  Testing has not begun with Java 8 yet.  Both Oracle and OpenJDK versions have been used successfully
+ * **Java JDK 8**  - A recent version of Java 8 should be used. Both Oracle and OpenJDK versions have been used successfully
  * **Eclipse** - Currently the development team is using v4.4 - Luna but others are likely to work fine too. Within Eclipse you will also need the following add-ons
     * JiBX plugin  
     * m2e - Extensions Development Support 
@@ -132,13 +132,16 @@ RPM files can be generated for each of the remaining DCCD projects by right clic
 3 Deploying DCCD
 ---
 
+Once you have compiled DCCD on your desktop development machine you are now ready to deploy it to your server.  
+
+
 3.1 Installing Oracle Java
 ---
 
-By default CentOS is configured to use OpenJDK for it's Java.  We recommend that you install Oracle Java on your server.  First of all Download [“jdk-7uXX-linux-x64.rpm”](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html) from the Oracle website (where XX is the latest update number).  The install:
+By default CentOS is configured to use OpenJDK for it's Java.  We recommend that you install Oracle Java on your server.  First of all Download [“jdk-8uXX-linux-x64.rpm”](http://www.oracle.com/technetwork/java/javase/downloads) from the Oracle website (where XX is the latest update number).  The install:
 
 ```
-sudo yum install jdk-7uXX-linux-x64.rpm
+sudo yum install jdk-8uXX-linux-x64.rpm
 ```
 
 Next you will need to configure CentOS to use Oracle by default:
