@@ -1,5 +1,5 @@
 
-DCCD Installation Guide
+DCCD Installation and Deployment Guide
 =======================
 
 1 Introduction
@@ -13,7 +13,7 @@ RedHat Linux 6 server, the configuration currently in use at DANS.
 So far, no other configurations have been tested.
 
 __Note that you should NOT put this application on a production server 'as-is' 
-because it contains static content and links specific for the DCCD that is already made publicly available at http://dendro.dans.knaw.nl__
+because it contains static content and links specific to the DCCD that is already publicly deployed at http://dendro.dans.knaw.nl__
 
 
 1.1	Overview of DCCD
@@ -26,7 +26,7 @@ implementation of that protocol could possibly be used.
  
 Standard
 
-* Postgress
+* Postgresql
 * Java
 * Tomcat
  ...
@@ -47,7 +47,8 @@ this document has been tested.*
 1.2	Installation packages
 -------------------------
 Before you continue, please make sure you have the following required
-installations packages (build war files etc. !!!!):
+packages (war files etc).  For information regarding the building of DCCD packages see https://github.com/DANS-KNAW/dccd-webui/blob/master/README.md
+
 
 * dccd etc.
 
@@ -58,6 +59,7 @@ The dccd-lib project contains extra files needed for installation:
 * dccd-lib/solr
 
 ...
+
 
 
 
@@ -107,7 +109,7 @@ following conventions:
 * if the contents of a configuration file must be changed the relevant section is
   displayed in the courier font with the changed parts in **bold**;
 * some commands are included in order to check the results of previous commands 
-  (e.g., <code>sudo chkconfig --list slapd</code>); it should be obvious which ones these are.
+    (e.g., <code>sudo chkconfig --list slapd</code>); it should be obvious which ones these are.
   
   
 2 Standard Software Components
@@ -115,13 +117,20 @@ following conventions:
 
 The following industry standard software components need to be installed first. 
 See subsections for comments about alternatives and additional configuration. 
-The items in this section can typically be performed by your IT department.  
-
+The items in this section can typically be performed by your IT department. 
 
 2.1 Redhat 6 or CentOS 6
 ------------------------
 
-We recommend that you run the operation system in SELinux “protected mode.”
+We recommend that you run the operation system in SELinux “enforcing mode.”  This is the default mode for Centos so should not require any additional configuration.  You can confirm this by typing:
+
+	$ sestatus
+  	SELinux status:                 enabled
+  	SELinuxfs mount:                /selinux
+  	Current mode:                   enforcing
+  	Mode from config file:          enforcing
+  	Policy version:                 21
+  	Policy from config file:        targeted
 
 
 2.2 Oracle Java SE 7 SDK (CentOS)
@@ -154,9 +163,9 @@ Upload the rpm-file to your server with scp or sftp and run the installer:
 
 ### 2.2.3 Add the JAVA_HOME environment variable
 
-Copy the file $EASY_BACKEND/util/java.sh to /etc/profile.d and run it:
+Copy the file $DCCD-LIB/util/java.sh to /etc/profile.d and run it:
 
-	$ sudo cp java.sh /etc/profile.d/
+		$ sudo cp java.sh /etc/profile.d/
 	$ exit
 
 Now, log off and on to add the JAVA_HOME variable to your environment.
@@ -171,30 +180,31 @@ CentOS comes default with OpenJDK. Add Oracle JDK to alternatives and activate i
 
 	$ sudo alternatives --install /usr/bin/java java /usr/java/default/bin/java 2
 	$ sudo alternatives --config java
-
-Er zijn 3 programma's die 'java' leveren.
-
-	   Selectie    Commando
+	
+	There are 4 programs which provide 'java'.
+	
+	  Selection    Command
 	-----------------------------------------------
-	*+ 1           /usr/lib/jvm/jre-1.6.0-openjdk.x86_64/bin/java
-	   2           /usr/java/default/bin/java
-	   3           /usr/lib/jvm/jre-1.5.0-gcj/bin/java
+	   1           /usr/lib/jvm/jre-1.5.0-gcj/bin/java
+	*  2           /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java
+	   3           /usr/lib/jvm/jre-1.6.0-openjdk.x86_64/bin/java
+	 + 4           /usr/java/default/bin/java
+	
+	Enter to keep the current selection[+], or type selection number: 4
+	[root@localhost ~]# java -version
+	java version "1.7.0_79"
+	Java(TM) SE Runtime Environment (build 1.7.0_79-b15)
+	Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 
-	<enter> om de huidige selectie te bewaren[+], of type een selectie\
-		nummer: 2
-
-	$ java -version
-	java version "1.7.0_51"
-	Java(TM) SE Runtime Environment (build 1.7.0_51-b13)
-	Java HotSpot(TM) 64-Bit Server VM (build 24.51-b03, mixed mode)
 
 Make sure the output does not mention “OpenJDK”.
 
 
 ### 2.2.5 Notes
 
-* Version 6 will work as well; 
+* Version 6 will work as well but is now well beyond it's end of life
 * OpenJDK might work as well, but has not been tested.
+* Work has begun to migrate to Java 8 as it's the currently supported version of Java.  There are currently some minor issues that are blocking migration. (August 2015)
 
 
 ### 2.3 Oracle Java SE 7 SDK (RedHat)
@@ -209,13 +219,8 @@ Make sure the output does not mention “OpenJDK”.
 Execute the following command:
 
 	$ sudo yum install tomcat6 tomcat6-webapps tomcat6-admin-webapps
-	Loaded plugins: fastestmirror, security
-	base                                          | 3.7 kB     00:00     
-	base/primary_db                               | 4.4 MB     00:01     
-	extras                                        | 3.4 kB     00:00     
-	# .. more output, respond with y to prompts
-	Complete!
 
+Answer yes to the prompts and eventually you should get the message that the installation has been successfully completed.
 
 ### 2.4.2 Give the Tomcat 6 jvm more memory to work with
 
@@ -237,7 +242,7 @@ UTF-8 encoding, by means of the attribute:  URIEncoding="UTF-8".  When adding an
 AJP-connector to connect Tomcat to Apache HTTP Server (see next step) don’t
 forget to also configure it.
 
-{% highlight xml %}
+```xml
 $ sudo vi /etc/tomcat6/server.xml
 ...
 <Connector port="8080" protocol="HTTP/1.1"
@@ -246,7 +251,7 @@ $ sudo vi /etc/tomcat6/server.xml
                URIEncoding="UTF-8"/>
 ...
 <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" URIEncoding="UTF-8"/>
-{% endhighlight %}
+```
 
 
 ### 2.4.4	Configure the Tomcat daemon to start automatically
@@ -267,24 +272,25 @@ they are deployed.*
 ### 2.5.1 Install Apache HTTP Server
 
 
-	$ yum install httpd
+	$ sudo yum install httpd
 
-first configure it so it serves as a tomcat proxy
+### 2.5.2 Configure it so it serves as a tomcat proxy
 
 	$ cd /etc/httpd
 
-I want the dccd conf in /etc/httpd/conf.d/dendro.dans.knaw.nl.conf
+I want the dccd conf in /etc/httpd/conf.d/dccd.conf
 
-	$ sudo vi /etc/httpd/conf.d/dendro.dans.knaw.nl.conf
+	$ sudo vi /etc/httpd/conf.d/dccd.conf
 
 And insert
 
+```xml
 	NameVirtualHost *:80
 
 	<VirtualHost *:80>
     	ServerAdmin info@dans.knaw.nl
     	ServerName dendro.dans.knaw.nl
-    	CustomLog "/var/log/httpd/dendro.dans.knaw.nl.log" combined
+    	CustomLog "/var/log/httpd/dccd.log" combined
 	
     	RewriteEngine  on
 
@@ -294,7 +300,7 @@ And insert
 		
 		# The DCCD OAI-MPH
 		# Comment out the next line to disable requests from external clients
-		RewriteRule ^/oai/(.*)$ ajp://		localhost:8009/dccd-oai/$1 [P]
+		RewriteRule ^/oai/(.*)$ ajp://localhost:8009/dccd-oai/$1 [P]
 		
 		# The DCCD webapplication (GUI)
 		RewriteRule ^/dccd/(.*)$ http://dendro.dans.knaw.nl/$1
@@ -308,7 +314,7 @@ And insert
 	<VirtualHost *:80>
     	ServerAdmin info@dans.knaw.nl
     	ServerName dendro.dans.knaw.nl
-    	CustomLog "/var/log/httpd/dendro.dans.knaw.nl.log" combined
+    	CustomLog "/var/log/httpd/dccd.log" combined
 	
     	<Proxy *>
 		 Order Deny,Allow
@@ -319,12 +325,16 @@ And insert
     	</Proxy>
 
     	ProxyPass / ajp://localhost:8009/dccd/
-    	ProxyPassReverse / http://dendro.dans.knaw.nl/dccd/
+	    	ProxyPassReverse / http://dendro.dans.knaw.nl/dccd/
     	ProxyPassReverseCookiePath /dccd /
 	</VirtualHost>
+```
 
+Make sure you edit this so that the server URL matches that of your own server and not dans.knaw.nl.  
 
-Start httpd
+### 2.5.3 Set up IPTables
+
+Next start httpd
 
 	$ sudo service httpd start
 	$ sudo chkconfig --level 3 httpd on
@@ -332,9 +342,8 @@ Start httpd
 OK, but is it reachable from the outside (non localhost)?
 
 	$ sudo iptables --list
-	iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
-
-	$ service iptables save
+	$ sudo iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+	$ sudo service iptables save
 
 Note: after changing the config always restart the service
 	
@@ -348,10 +357,8 @@ Note: after changing the config always restart the service
 Execute the following command:
 
 	$ sudo yum install postgresql-server.x86_64
-	Loaded plugins: fastestmirror, security
-	Determining fastest mirrors
-	# .. more output, respond with y to prompts
-	Complete!
+
+Answer yes to the prompts and eventually you will get a message confirming completion.
 
 
 ### 2.6.2 Initialize the database
@@ -455,10 +462,8 @@ Start the daemon now:
 Execute the following command:
 
 	$ sudo yum install openldap-servers openldap-clients
-	Loaded plugins: fastestmirror, security
-	Loading mirror speeds from cached hostfile
-	# .. more output, respond with y to prompts
-	Complete!
+
+Answer yes to the prompts and eventually you will get a message confirming completion.
 
 
 ### 2.7.2 Remove the “default” database (optional)
@@ -508,7 +513,7 @@ on the Fedora Commons website.
 
 Use the file
 
-	$EASY_BACKEND/dccd-fedora-commons-repository/create-fedora-db.sql
+	$DCCD-LIB/dccd-fedora-commons-repository/create-fedora-db.sql
 
 On the command line execute the following command:
 
@@ -539,9 +544,9 @@ And then in postgres:
 
 ### 3.1.3 Set the FEDORA_HOME environment variable
 
-Copy the file $EASY_BACKEND/easy-fedora-commons-repository/fedora.sh to /etc/profile.d 
+Copy the file $DCCD-LIB/dccd-fedora-commons-repository/fedora.sh to /etc/profile.d 
 
-	$ sudo cp fedora.sh /etc/profile.d
+	$ sudo cp fedora.sh /etc/profile.d/
 
 and log off and on again.  The FEDORA_HOME environment variable should now point
 to /opt/fedora.
@@ -553,11 +558,11 @@ to /opt/fedora.
 ### 3.1.4 Run the Fedora Commons installer
 
 Download the Fedora Commons installer (fcrepo-installer-3.5.jar) from the [Fedora
-Commons website].
+Commons Sourceforge](http://sourceforge.net/projects/fedora-commons/files/fedora/) website.  Note that v3.5 of Fedora Commons is an older release.  Work is underway to upgrade support for a more recent version.
 
 Edit install.properties:
 
-	$ sudo vi $EASY_BACKEND/easy-fedora-commons-repository/install.properties
+	$ sudo vi $DCCD-LIB/dccd-fedora-commons-repository/install.properties
 
 * for database.password fill in password:fedora_db_admin
 * for fedora.admin.pass fill in password:fedoraAdmin
@@ -637,7 +642,7 @@ change ownership to the tomcat user:
 Note that the policies directory does need to exist, even though we don’t
 customize the policy mechanism.
 
-Edit the file $FEDORA_HOME/server/config/fedora.fcfg, and change the following items:
+Edit the file /opt/fedora/server/config/fedora.fcfg, and change the following items:
 
 * In the module with the attribute
   role="org.fcrepo.server.storage.lowlevel.ILowlevelStorage", change the value of
@@ -646,9 +651,11 @@ Edit the file $FEDORA_HOME/server/config/fedora.fcfg, and change the following i
 * In the datastore with the attribute id="localMulgaraTriplestore", change the
   value of the “path” param to “/data/fedora/resourceIndex”
 
+<!-- There is also a /data/fedora-xacml-policies... path in there.  Shouldn't this be changed to data/fedora/fedora-xacml-policies too? -->
+
 		$ sudo vi /opt/fedora/server/config/fedora.fcfg
 
-{% highlight xml %}
+```xml
 <module role="org.fcrepo.server.storage.lowlevel.ILowlevelStorage"
 class="org.fcrepo.server.storage.lowlevel.DefaultLowlevelStorageModule">
  <param name="path_algorithm" 
@@ -703,14 +710,14 @@ class="org.fcrepo.server.storage.lowlevel.DefaultLowlevelStorageModule">
   isFilePath="true">
     <comment>The local path to the main triplestore directory.</comment>
   </param>
-{% endhighlight %}  
+``` 
   
   
 ### 3.1.7 Add Fedora Commons users
 
 So far we only have fedoraAdmin user. We will use different users for different
 services connecting to Fedora Commons.  Edit the file
-$FEDORA_HOME/server/config/fedora-users.xml and add user elements for users
+/opt/fedora/server/config/fedora-users.xml and add user elements for users
 
 __NOT Sure we have this__
 
@@ -720,7 +727,7 @@ Give them the role administrator and fill in the password from Table 1 Passwords
 
 	$ sudo vi /opt/fedora/server/config/fedora-users.xml
 
-{% highlight xml %}
+```xml
 <?xml version='1.0' ?>
   <users>
     <user name="fedoraAdmin" password="password:fedoraAdmin">
@@ -728,17 +735,17 @@ Give them the role administrator and fill in the password from Table 1 Passwords
         <value>administrator</value>
       </attribute>
     </user>
-    <user name="easy_webui" password="password:dccd_webui">
+    <user name="dccd_webui" password="password:dccd_webui">
       <attribute name="fedoraRole">
         <value>administrator</value>
       </attribute>
     </user>
-    <user name="easy_rest" password="password:dccd_rest">
+    <user name="dccd_rest" password="password:dccd_rest">
       <attribute name="fedoraRole">
         <value>administrator</value>
       </attribute>
     </user>
-    <user name="easy_proai" password="password:dccd_oai">
+    <user name="dccd_oai" password="password:dccd_oai">
       <attribute name="fedoraRole">
         <value>administrator</value>
       </attribute>
@@ -751,7 +758,7 @@ Give them the role administrator and fill in the password from Table 1 Passwords
       </attribute>
     </user>
   </users>
-{% endhighlight %}
+```
 
 It may seem useless to create extra users if they are all going to be admins
 anyway.  However, in the future we assign different roles to these users with
@@ -764,7 +771,7 @@ The fedoraIntCallUser is a user that Fedora Commons uses internally to make
 calls to itself.  By default it has the unsafe password “changeme”.  We will
 change it to a safe password. 
 
-We have already edited the file $FEDORA_HOME/server/config/fedora-users.xml.
+We have already edited the file /opt/fedora/server/config/fedora-users.xml.
 
 For fedoraIntCallUser we also need to edit
 $FEDORA_HOME/server/config/beSecurity.xml to assign the same password from Table
@@ -772,7 +779,7 @@ $FEDORA_HOME/server/config/beSecurity.xml to assign the same password from Table
 
 	$ sudo vi /opt/fedora/server/config/beSecurity.xml
 
-{% highlight xml %}
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <serviceSecurityDescription 
   xmlns="info:fedora/fedora-system:def/beSecurity#"
@@ -797,7 +804,7 @@ callbackSSL="false"
 callbackBasicAuth="false" 
 iplist="127.0.0.1"/>
 </serviceSecurityDescription>
-{% endhighlight %}
+```
 
 
 ### 3.1.9 Limit access to passwords
@@ -805,11 +812,11 @@ iplist="127.0.0.1"/>
 Several configuration files contain passwords.  We need to limit read rights for
 security:
 
-	$ sudo chmod 0600 $FEDORA_HOME/server/config/fedora-users.xml
-	$ sudo chmod 0600 $FEDORA_HOME/server/config/fedora.fcfg
-	$ sudo chmod 0600 $FEDORA_HOME/server/config/beSecurity.xml
-	$ ls -l $FEDORA_HOME/server/config/
-	totaal 124
+	$ sudo chmod 0600 /opt/fedora/server/config/fedora-users.xml
+	$ sudo chmod 0600 /opt/fedora/server/config/fedora.fcfg
+	$ sudo chmod 0600 /opt/fedora/server/config/beSecurity.xml
+	$ ls -l /opt/fedora/server/config/
+	total 124
 	-rw-r--r--. 1 tomcat tomcat  1403 mrt  2 07:24 activemq.xml
 	-rw-------. 1 tomcat tomcat   805 mrt  2 07:24 beSecurity.xml
 	-rw-r--r--. 1 tomcat tomcat  4757 mrt  2 07:24 config-melcoe-pep-mapping.xml
@@ -829,15 +836,15 @@ not sure why, but read/write access by the owner (0600) is safe enough.
 ### 3.1.10 Ensure that Fedora "upload" directory has enough disk space
 
 Files that are uploaded to Fedora through the API-M services are initially
-written als temporary files to the Fedora "upload" directory. By default this
-directory is located at $FEDORA_HOME/server/management/upload. If $FEDORA_HOME
+written as temporary files to the Fedora "upload" directory. By default this
+directory is located at /opt/fedora/server/management/upload. If /opt/fedora/
 is located on a drive with limited space this may cause problems. We currently
 do not know how to configure a different location. As a work-around you may
-replace $FEDORA_HOME/server/management/upload with a symbolic link to a
+replace /opt/fedora/server/management/upload with a symbolic link to a
 directory on a drive with sufficient space. For example:
 
-	$ sudo mv $FEDORA_HOME/server/management/upload /var/fedora-uploads
-	$ sudo ln -s /var/fedora-uploads $FEDORA_HOME/server/management/upload
+	$ sudo mv /opt/fedora/server/management/upload /var/fedora-uploads
+	$ sudo ln -s /var/fedora-uploads /opt/fedora/server/management/upload
 
 Assuming of course that the disk mounted at /var (or /) has enough space for the
 temporary files.
@@ -867,14 +874,14 @@ see if everything goes well):
 	INFO: Server startup in 12985 ms
 
 
-### 3.1.13 Add the basic DCCD digital objects
+<!--### 3.1.13 Add the basic DCCD digital objects
 
-__NOT sure we need this__
+__NOT sure we need this.__
 
 In order to run, DCCD needs a minimal set of Fedora Commons digital objects. 
 These are provided in:
 
-$EASY_BACKEND/easy-fedora-commons-repository/basic-digital-objects
+$DCCD-LIB/dccd-fedora-commons-repository/basic-digital-objects
 
 Change directory to this folder and execute the following command, replacing
 &lt;password:fedoraAdmin>  the corresponding entry from Table 1 Passwords.
@@ -899,14 +906,14 @@ for other “special” characters in the password)
 		0 objects failed
 		0 unexpected files in directory
 		0 files ignored after error
-
+-->
 
 
 3.2 DCCD LDAP Directory 
 -----------------------
 
-The DCCD LDAP Directory component, apart from an LDAP daemon, consists some
-DCCD-specific schema’s and a few basic entry’s.  We will add those here, using
+The DCCD LDAP Directory component, apart from an LDAP daemon, consists of some
+DCCD-specific schemas and a few basic entries.  We will add those here, using
 the standard LDAP client tools.
 
 ### 3.2.1 Create a separate directory folder for DCCD
@@ -914,17 +921,15 @@ the standard LDAP client tools.
 To keep things neat and tidy, we will give DCCD its own directory:
 
 	$ sudo mkdir /var/lib/ldap/dccd; sudo chown ldap:ldap /var/lib/ldap/dccd
-	$ ls /var/lib/ldap/ -l
-	totaal 4
+	$ sudo ls -l /var/lib/ldap/
+	total 4
 	drwxr-xr-x. 2 ldap ldap 4096 mrt  2 08:51 dccd
 
 
-### 3.2.2 Add DANS and DCCD schema’s
+### 3.2.2 Add DANS and DCCD schemas
 
-__ADDAPT for DCCD__
-
-The schema’s are added using LDIF files that can be found in:
-$EASY_BACKEND/ldap
+The schemas are added using LDIF files that can be found in:
+$DCCD-LIB/ldap
 
 Execute the following commands:
 
@@ -944,9 +949,7 @@ Execute the following commands:
 	adding new entry "cn=dans,cn=schema,cn=config"
 	modify complete
 
-
 ### 3.2.3 Add DCCD database
-__ADDAPT for DCCD__
 
 First we add the DCCD database configuration to the config directory:
 
@@ -960,7 +963,6 @@ First we add the DCCD database configuration to the config directory:
 	# .. more similar output
 	adding new entry "olcDatabase=bdb,cn=config"
 	modify complete
-
 
 ### 3.2.4 Add basic entries to the DCCD database
 __ADDAPT for DCCD__
@@ -1022,12 +1024,12 @@ Then, execute this command:
 	modify complete
 
 
-### 3.2.6 Change the easyadmin user’s application password
+### 3.2.6 Change the dccdadmin user’s application password
 __ADDAPT for DCCD__
 
 The file “dccd-basis.ldif,” which we added earlier, added the administrator user
 for the DCCD application: dccdadmin.  The default password for this user is also
-“easyadmin.”  This needs to be replaced by a safe password.
+“dccdadmin.”  This needs to be replaced by a safe password.
 
 Execute:
 
@@ -1135,7 +1137,7 @@ to the /data/solr/cores/dendro/conf directory:
 	$ sudo cp schema.xml solrconfig.xml stopwords.txt \
 	    synonyms.txt protwords.txt /data/solr/cores/dendro/conf
 
-Now set ownerschip of the whole directory tree to the tomcat user:
+Now set ownership of the whole directory tree to the tomcat user:
 
 	$ sudo chown -R tomcat:tomcat /data/solr
 	$ ls -l /data/solr/
@@ -1182,7 +1184,7 @@ Execute:
 Again, we are tailing the Tomcat 6 log to see if the deployment goes well.
  
 
-4 DCCD Frond-end Modules
+4 DCCD Front-end Modules
 ========================
 
 Now that we have the back-end services up and running, we can deploy the
@@ -1227,7 +1229,7 @@ access is limited to root and tomcat:
 
 Create the dccd application directory (Maybe the dccd-home should  just be there?)
 	# sudo mkdir /opt/dccd
-	# sudo cp DCCD.war /opt/dccd
+	# sudo cp dccd.war /opt/dccd
 	# sudo chown -R tomcat:tomcat /opt/dccd
 
 Configure tomcat to deploy this war by creating an xml file 
@@ -1235,7 +1237,7 @@ Configure tomcat to deploy this war by creating an xml file
 
 	# sudo vi /usr/share/tomcat6/conf/Catalina/localhost/DCCD.xml 
 	<?xml version="1.0" encoding="UTF-8"?>
-    <Context docBase="/opt/dccd/DCCD.war" debug="0" crossContext="true" />
+    <Context docBase="/opt/dccd/dccd.war" debug="0" crossContext="true" />
 	
 Now reload the Tomcat environment (i.e. stop and start it):
 
