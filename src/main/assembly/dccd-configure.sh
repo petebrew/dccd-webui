@@ -269,10 +269,6 @@ if [ ! -f /var/lib/pgsql/data/postgresql.conf.dccd.bak ]; then
 fi
 
 # 2.6.4 Configure database to accept user/password credentials
-#printf "DCCD needs to set the client credential configuration for PostgreSQL.  If you have already configured your pg_hba.conf "
-#printf "file will strongly recommend you do this manually after this script has run.  Only continue if postgresql is not used "
-#printf "for any other applications on this machine.\n"
-#read -p "Are you sure you want DCCD to edit your pg_hba.conf file? y/N" -n 1 -r
 if [[ $editpghba = "1" ]]
 then
 	cp /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
