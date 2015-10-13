@@ -315,7 +315,7 @@ su - postgres -c "psql -U postgres < /opt/dccd/dccd-fedora-commons-repository/cr
 # 3.1.2 Set the fedora_db_admin password
 # This is now done during the previous step through the edited SQL file
 #su - postgres -c "psql -U postgres -d postgres -c \"alter user fedora_db_admin with password '$fedora_db_admin';\""
-
+	
 # 3.1.3 Set the FEDORA_HOME environment variable and run it now with source so we don't need to log out and in
 cp /opt/dccd/dccd-fedora-commons-repository/fedora.sh /etc/profile.d/
 source /opt/dccd/dccd-fedora-commons-repository/fedora.sh
@@ -341,6 +341,12 @@ cp /opt/fedora/server/config/fedora.fcfg /opt/fedora/server/config/fedora.fcfg.b
 sed -i -e 's/data\/objects/\/data\/fedora\/objects/' /opt/fedora/server/config/fedora.fcfg
 sed -i -e 's/data\/datastreams/\/data\/fedora\/datastreams/' /opt/fedora/server/config/fedora.fcfg
 sed -i -e 's/data\/resourceIndex/\/data\/fedora\/resourceIndex/' /opt/fedora/server/config/fedora.fcfg
+sed -i -e 's?name="pidNamespace" value="changeme"?name="pidNamespace" value="dccd"?' /opt/fedora/server/config/fedora.fcfg
+sed -i -e 's?name="repositoryName" value="Your Fedora Repository Name Here"?name="repositoryName" value="DCCD"?' /opt/fedora/server/config/fedora.fcfg
+sed -i -e 's?name="repositoryDomainName" value="example.org"?name="repositoryDomainName" value="'$serverDomain'"?' /opt/fedora/server/config/fedora.fcfg
+sed -i -e 's?name="adminEmailList" value="bob@example.org sally@example.org"?name="adminEmailList" value="'$adminEmail'"?' /opt/fedora/server/config/fedora.fcfg
+sed -i -e 's?name="adminEmails" value="oai-admin@example.org bob@example.org"?name="adminEmails" value="'$adminEmail'"?' /opt/fedora/server/config/fedora.fcfg
+
 
 # 3.1.7 Add Fedora Commons users
 cp /opt/dccd/dccd-fedora-commons-repository/fedora-users.xml.orig /opt/fedora/server/config/fedora-users.xml
