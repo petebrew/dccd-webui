@@ -153,8 +153,8 @@ getNewPwd fedoraIntCallUser "Create new password for fedoraIntCallUser:"
 getNewPwd ldapadmin "Create new password for ldapadmin:"
 getNewPwd dccduseradmin "Create new password for dccduseradmin:"
 getNewPwd dccd_webui "Create new password for dccd_webui:"
-getNewPwd dccd_oai "Create new password for dccd_oai:"
-getNewPwd dccd_rest "Create new password for dccd_rest:"
+#getNewPwd dccd_oai "Create new password for dccd_oai:"
+#getNewPwd dccd_rest "Create new password for dccd_rest:"
 getInput "Enter email address for the system administrator: " adminEmail
 getInput "Enter SMTP host for sending emails: " smtpHost
 getInput "Enter domain name of this server: " serverDomain
