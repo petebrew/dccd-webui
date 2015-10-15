@@ -404,6 +404,7 @@ ldapadd -w secret -D cn=ldapadmin,dc=dans,dc=knaw,dc=nl -f /opt/dccd/ldap/dccd-b
 # 3.2.5 Change the ldapadmin password
 printf "Changing the ldapadmin password...\n"
 cp /opt/dccd/ldap/change-ldapadmin-pw.ldif.orig /opt/dccd/ldap/change-ldapadmin-pw.ldif
+#sed -i -e "s?CHANGEME?$ldapadmin?" /opt/dccd/ldap/change-ldapadmin-pw.ldif
 sed -i -e "s?CHANGEME?$ldapadminsha?" /opt/dccd/ldap/change-ldapadmin-pw.ldif
 ldapadd -v -Y EXTERNAL -H ldapi:/// -f /opt/dccd/ldap/change-ldapadmin-pw.ldif
 #rm /opt/dccd/ldap/change-ldapadmin-pw.ldif
@@ -457,7 +458,7 @@ chmod -R a+x /etc/tomcat6/Catalina/localhost
 cp -R /opt/dccd/dccd-home /opt/
 cp /opt/dccd-home/dccd.properties.orig /opt/dccd-home/dccd.properties
 sed -i -e 's?###Fill-In-fedoraAdmin-password###?'$fedora_db_admin'?' /opt/dccd-home/dccd.properties
-sed -i -e 's?###Fill-In-ldapadmin-password###?'$ldapadminsha'?' /opt/dccd-home/dccd.properties
+sed -i -e 's?###Fill-In-ldapadmin-password###?'$ldapadmin'?' /opt/dccd-home/dccd.properties
 sed -i -e 's?###Fill-In-email###?'$adminEmail'?' /opt/dccd-home/dccd.properties
 sed -i -e 's?###Fill-In-host###?'$smtpHost'?' /opt/dccd-home/dccd.properties
 chown -R tomcat:tomcat /opt/dccd-home
@@ -489,6 +490,15 @@ service tomcat6 force-reload
 ################################
 # Cron jobs 
 ################################
+
+# Install required Python packages
+pip install requests docopt
+
+# Create cron job
+COMMAND="/opt/dccd/cronjobs/geolocate_organisations.py"
+JOB="0 2 * * * $COMMAND"
+cat <(fgrep -i -v "$COMMAND" <(crontab -l)) <(echo "$JOB") | crontab -
+
 
 
 printf "\n\nDCCD backend configuration complete!\n\n";
