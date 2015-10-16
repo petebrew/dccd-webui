@@ -351,7 +351,7 @@
 						<require>newt</require>
 						<require>wget</require>
 						<require>python</require>
-						<require>python-pip</require>
+						<require>python-setuptools</require>
 					</requires>
 				</configuration>
 			</plugin>
