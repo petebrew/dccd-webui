@@ -171,7 +171,6 @@ fi
 ldapadminsha=`slappasswd -h "{SSHA}" -s "$ldapadmin"`
 dccduseradminsha=`slappasswd -h "{SSHA}" -s "$dccduseradmin"`
 
-
 #########################################
 # Store output of the remainder in logs
 #########################################
@@ -455,7 +454,7 @@ chmod -R a+x /etc/tomcat6/Catalina/localhost
 cp -R /opt/dccd/dccd-home /opt/
 cp /opt/dccd-home/dccd.properties.orig /opt/dccd-home/dccd.properties
 sed -i -e 's?###Fill-In-fedoraAdmin-password###?'$fedora_db_admin'?' /opt/dccd-home/dccd.properties
-sed -i -e 's?###Fill-In-ldapadmin-password###?'$ldapadminsha'?' /opt/dccd-home/dccd.properties
+sed -i -e 's?###Fill-In-ldapadmin-password###?'$ldapadmin'?' /opt/dccd-home/dccd.properties
 sed -i -e 's?###Fill-In-email###?'$adminEmail'?' /opt/dccd-home/dccd.properties
 sed -i -e 's?###Fill-In-host###?'$smtpHost'?' /opt/dccd-home/dccd.properties
 chown -R tomcat:tomcat /opt/dccd-home
