@@ -350,6 +350,8 @@
 						<require>dccd-lib</require>
 						<require>newt</require>
 						<require>wget</require>
+						<require>python</require>
+						<require>python-setuptools</require>
 					</requires>
 				</configuration>
 			</plugin>
