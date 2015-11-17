@@ -42,4 +42,4 @@ mail.fromAddress=###Fill-In-email###
 # JSON cache files created by cron jobs
 geolocation.organisations=/opt/dccd-home/data/geolocation_organisations.json
 project.categories.path=/opt/dccd-home/data/dccd_project_categories.json
-
+taxon.data.path=/opt/dccd-home/data/dccd_taxon_data.json

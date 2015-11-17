@@ -31,6 +31,7 @@ public class AboutPage extends BasePage
 {
 	private static final long serialVersionUID = 1L;
 	public static final String PROJECT_CATEGORIES_PATH = "project.categories.path";
+	public static final String TAXON_DATA_PATH = "taxon.data.path";
 	private static Logger logger = LoggerFactory.getLogger(AboutPage.class);
 
 	public AboutPage()
@@ -41,11 +42,10 @@ public class AboutPage extends BasePage
 		logger.debug("Launching AboutPage dbg");
 
 		initCategoriesChart();		
-		
+		initTaxonChart();
 	}
 	
-	
-	 // try getting the loading message on the screen!
+
 		private void initCategoriesChart()
 		{
 			logger.error("initCategoriesChart()");
@@ -66,10 +66,33 @@ public class AboutPage extends BasePage
 
 			}
 			
-			ChartPanel chart = new ChartPanel("categoriesChart", file);
-
+			MorrisDonutChartPanel chart = new MorrisDonutChartPanel("categoriesChart", file);
 			add(chart);	    
 		}    
 
+		
+		private void initTaxonChart()
+		{
+			logger.error("initTaxonChart()");
+
+			// TODO get file path/name from configuration
+			Properties settings = DccdConfigurationService.getService().getSettings();
+			String filePath = settings.getProperty(TAXON_DATA_PATH);
+			File file = null;
+			if (filePath == null) 
+			{
+				// no file to read, bail out
+				logger.info("No taxon info read from file because No property found for: " + TAXON_DATA_PATH);
+			}
+			else
+			{
+				file = new File(filePath);
+				logger.info("Read taxon data file from " + TAXON_DATA_PATH);
+
+			}
+			
+			MorrisDonutChartPanel chart = new MorrisDonutChartPanel("taxonChart", file);
+			add(chart);	    
+		}    
 }
 
