@@ -8,21 +8,12 @@
 <wicket:extend>
 
 <div class="infoPageContent">
-	<br/>
 	<wicket:message key="text">[text]</wicket:message>
-	<br/>
-	<div id="charts" style="width:510px; overflow: hidden;">
-		<div id="categoriesChart" style="height: 200px; width : 200px; float: left;"></div>
-		<div style="overflow : hidden; width : 300px"><wicket:message key="chart_categories_text">[text]</wicket:message></div>
-	</div>
 	
-	<div id="charts" style="width:510px; overflow: hidden;">
-		<div id="taxonChart" style="height: 200px; width : 200px; float: left;"></div>
-		<div style="overflow : hidden; width : 300px"><wicket:message key="chart_taxa_text">[text]</wicket:message></div>
-	</div>
+	<span wicket:id="loginForMore">[loginForMore]</span>
+	<a href="#" wicket:id="login"><wicket:message key="page.login">login</wicket:message></a>
 
-	<wicket:message key="more_info">[more]</wicket:message>
-	
+	<div wicket:id="statsPanel">[statsPanel]</div>
 </div><!-- to center content -->
 
 

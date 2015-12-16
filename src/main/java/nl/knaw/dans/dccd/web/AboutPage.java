@@ -15,12 +15,12 @@
  ******************************************************************************/
 package nl.knaw.dans.dccd.web;
 
-import java.io.File;
-import java.util.Properties;
-
-import nl.knaw.dans.dccd.application.services.DccdConfigurationService;
+import nl.knaw.dans.common.lang.user.User;
+import nl.knaw.dans.dccd.web.authn.LoginPage;
 import nl.knaw.dans.dccd.web.base.BasePage;
 
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,65 +34,34 @@ public class AboutPage extends BasePage
 	public static final String TAXON_DATA_PATH = "taxon.data.path";
 	private static Logger logger = LoggerFactory.getLogger(AboutPage.class);
 
+	User currentUser;
+	
 	public AboutPage()
 	{
 		super();
-		logger.error("Launching AboutPage err");
-		logger.info("Launching AboutPage inf");
-		logger.debug("Launching AboutPage dbg");
+		logger.error("About page called");
+		currentUser = ((DccdSession) getSession()).getUser();
 
-		initCategoriesChart();		
-		initTaxonChart();
+		
+		Label loginForMore = new Label("loginForMore", getString("moreInfoWhenLoggedIn"));
+		BookmarkablePageLink loginLink = new BookmarkablePageLink("login", LoginPage.class);
+		add(loginForMore);
+		add(loginLink);
+		
+		StatisticsDisplayPanel statsPanel = new StatisticsDisplayPanel("statsPanel");
+		add(statsPanel);
+		
+		
+		if(currentUser!=null)
+		{
+			loginForMore.setVisible(false);
+			loginLink.setVisible(false);
+		}
+		
+
 	}
 	
 
-		private void initCategoriesChart()
-		{
-			logger.error("initCategoriesChart()");
-
-			// TODO get file path/name from configuration
-			Properties settings = DccdConfigurationService.getService().getSettings();
-			String filePath = settings.getProperty(PROJECT_CATEGORIES_PATH);
-			File file = null;
-			if (filePath == null) 
-			{
-				// no file to read, bail out
-				logger.info("No categories read from file because No property found for: " + PROJECT_CATEGORIES_PATH);
-			}
-			else
-			{
-				file = new File(filePath);
-				logger.info("Read categories file from " + PROJECT_CATEGORIES_PATH);
-
-			}
-			
-			MorrisDonutChartPanel chart = new MorrisDonutChartPanel("categoriesChart", file);
-			add(chart);	    
-		}    
-
 		
-		private void initTaxonChart()
-		{
-			logger.error("initTaxonChart()");
-
-			// TODO get file path/name from configuration
-			Properties settings = DccdConfigurationService.getService().getSettings();
-			String filePath = settings.getProperty(TAXON_DATA_PATH);
-			File file = null;
-			if (filePath == null) 
-			{
-				// no file to read, bail out
-				logger.info("No taxon info read from file because No property found for: " + TAXON_DATA_PATH);
-			}
-			else
-			{
-				file = new File(filePath);
-				logger.info("Read taxon data file from " + TAXON_DATA_PATH);
-
-			}
-			
-			MorrisDonutChartPanel chart = new MorrisDonutChartPanel("taxonChart", file);
-			add(chart);	    
-		}    
 }
 
