@@ -53,7 +53,6 @@ public class UserInfoDisplayPanel extends AbstractCommonStatelessPanel
 
 	private DccdUser userLogedIn = (DccdUser)((DccdSession) getSession()).getUser();
 	private boolean admin = (userLogedIn != null && userLogedIn.hasRole(DccdUser.Role.ADMIN));
-	
 
 	UserStatusChangeForm statusChangeForm;
 
