@@ -9,9 +9,9 @@
 # @author Peter Brewer (p.brewer@ltrr.arizona.edu)
 
 
-################################
-# Functions
-################################
+################################################################################################
+#                                         FUNCTIONS                                            #
+################################################################################################
 
 # Helper function that asks user to define a password, then checks it with a repeat
 # Call it with the name of the variable that you would like the new password stored
@@ -103,6 +103,11 @@ function getYesNo()
 	fi
 }
 
+################################################################################################
+#                                      BEGINNING OF SCRIPT                                     #
+################################################################################################
+
+
 
 #########################################
 # Check if we're being run by root/sudo 
@@ -119,6 +124,10 @@ fi
 ###################################################
 # Download binary installers not available in repos
 ###################################################
+
+# DCCD is dependent on both Apache Solr and Fedora Commons neither of which are available in standard software repositories
+# Before we begin we download the binary installers from the relevant websites and stored them in the /opt/dccd folder.  If 
+# the installers are already located in /opt/dccd/ then the script will use these and skip the download
 
 ## Download Apache Solr
 if [ ! -f /opt/dccd/apache-solr-3.5.0.tgz ]; then
@@ -147,14 +156,18 @@ fi
 # Get passwords and other input from user
 #########################################
 
+# The next step is to collect all the input required from the user/administrator.  This amounts to a lot of passwords and some basic
+# domain, email and server configurations.  Once all the information is collected the user is asked whether they want to proceed
+# with the installation.
+
 getNewPwd fedora_db_admin "Create new password for fedora_db_admin:"
 getNewPwd fedoraAdmin "Create new password for fedoraAdmin:"
 getNewPwd fedoraIntCallUser "Create new password for fedoraIntCallUser:"
 getNewPwd ldapadmin "Create new password for ldapadmin:"
 getNewPwd dccduseradmin "Create new password for dccduseradmin:"
 getNewPwd dccd_webui "Create new password for dccd_webui:"
-getNewPwd dccd_oai "Create new password for dccd_oai:"
-getNewPwd dccd_rest "Create new password for dccd_rest:"
+#getNewPwd dccd_oai "Create new password for dccd_oai:"
+#getNewPwd dccd_rest "Create new password for dccd_rest:"
 getInput "Enter email address for the system administrator: " adminEmail
 getInput "Enter SMTP host for sending emails: " smtpHost
 getInput "Enter domain name of this server: " serverDomain
@@ -171,13 +184,15 @@ fi
 ldapadminsha=`slappasswd -h "{SSHA}" -s "$ldapadmin"`
 dccduseradminsha=`slappasswd -h "{SSHA}" -s "$dccduseradmin"`
 
-
 #########################################
 # Store output of the remainder in logs
 #########################################
 
+# The stdout from the configuration procedure is copied to the logs (/var/log/dccd-configure.log) so that the user
+# can then inspect later if something didn't work out.
+
 # Store output in log file 
-exec > >(tee /var/log/dccd-lib-postinstall.log)
+exec > >(tee /var/log/dccd-configure.log)
 exec 2>&1
 
 printf "Configuring DCCD Server...\n"
@@ -186,6 +201,10 @@ printf "Configuring DCCD Server...\n"
 ################################
 # Java JDK
 ################################
+
+#
+# DCCD requires Java to run.  CentOS comes with OpenJDK but we recommend using Oracle Java for production environments.
+#
 
 printf "Configuring Java environment for DCCD:\n"
 
@@ -269,10 +288,6 @@ if [ ! -f /var/lib/pgsql/data/postgresql.conf.dccd.bak ]; then
 fi
 
 # 2.6.4 Configure database to accept user/password credentials
-#printf "DCCD needs to set the client credential configuration for PostgreSQL.  If you have already configured your pg_hba.conf "
-#printf "file will strongly recommend you do this manually after this script has run.  Only continue if postgresql is not used "
-#printf "for any other applications on this machine.\n"
-#read -p "Are you sure you want DCCD to edit your pg_hba.conf file? y/N" -n 1 -r
 if [[ $editpghba = "1" ]]
 then
 	cp /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf.bak
@@ -319,7 +334,7 @@ su - postgres -c "psql -U postgres < /opt/dccd/dccd-fedora-commons-repository/cr
 # 3.1.2 Set the fedora_db_admin password
 # This is now done during the previous step through the edited SQL file
 #su - postgres -c "psql -U postgres -d postgres -c \"alter user fedora_db_admin with password '$fedora_db_admin';\""
-
+	
 # 3.1.3 Set the FEDORA_HOME environment variable and run it now with source so we don't need to log out and in
 cp /opt/dccd/dccd-fedora-commons-repository/fedora.sh /etc/profile.d/
 source /opt/dccd/dccd-fedora-commons-repository/fedora.sh
@@ -345,6 +360,11 @@ cp /opt/fedora/server/config/fedora.fcfg /opt/fedora/server/config/fedora.fcfg.b
 sed -i -e 's/data\/objects/\/data\/fedora\/objects/' /opt/fedora/server/config/fedora.fcfg
 sed -i -e 's/data\/datastreams/\/data\/fedora\/datastreams/' /opt/fedora/server/config/fedora.fcfg
 sed -i -e 's/data\/resourceIndex/\/data\/fedora\/resourceIndex/' /opt/fedora/server/config/fedora.fcfg
+sed -i -e 's?name="pidNamespace" value="changeme"?name="pidNamespace" value="dccd"?' /opt/fedora/server/config/fedora.fcfg
+sed -i -e 's?name="repositoryName" value="Your Fedora Repository Name Here"?name="repositoryName" value="DCCD"?' /opt/fedora/server/config/fedora.fcfg
+sed -i -e 's?name="repositoryDomainName" value="example.org"?name="repositoryDomainName" value="'$serverDomain'"?' /opt/fedora/server/config/fedora.fcfg
+sed -i -e 's?name="adminEmailList" value="bob@example.org sally@example.org"?name="adminEmailList" value="'$adminEmail'"?' /opt/fedora/server/config/fedora.fcfg
+sed -i -e 's?name="adminEmails" value="oai-admin@example.org bob@example.org"?name="adminEmails" value="'$adminEmail'"?' /opt/fedora/server/config/fedora.fcfg
 
 # 3.1.7 Add Fedora Commons users
 cp /opt/dccd/dccd-fedora-commons-repository/fedora-users.xml.orig /opt/fedora/server/config/fedora-users.xml
@@ -402,6 +422,7 @@ ldapadd -w secret -D cn=ldapadmin,dc=dans,dc=knaw,dc=nl -f /opt/dccd/ldap/dccd-b
 # 3.2.5 Change the ldapadmin password
 printf "Changing the ldapadmin password...\n"
 cp /opt/dccd/ldap/change-ldapadmin-pw.ldif.orig /opt/dccd/ldap/change-ldapadmin-pw.ldif
+#sed -i -e "s?CHANGEME?$ldapadmin?" /opt/dccd/ldap/change-ldapadmin-pw.ldif
 sed -i -e "s?CHANGEME?$ldapadminsha?" /opt/dccd/ldap/change-ldapadmin-pw.ldif
 ldapadd -v -Y EXTERNAL -H ldapi:/// -f /opt/dccd/ldap/change-ldapadmin-pw.ldif
 #rm /opt/dccd/ldap/change-ldapadmin-pw.ldif
@@ -452,10 +473,11 @@ chmod -R a+x /etc/tomcat6/Catalina/localhost
 ################################
 
 # 4.1.1 Create the dccd-home dir
+printf "Setup the DCCD web frontend...\n" 
 cp -R /opt/dccd/dccd-home /opt/
 cp /opt/dccd-home/dccd.properties.orig /opt/dccd-home/dccd.properties
 sed -i -e 's?###Fill-In-fedoraAdmin-password###?'$fedora_db_admin'?' /opt/dccd-home/dccd.properties
-sed -i -e 's?###Fill-In-ldapadmin-password###?'$ldapadminsha'?' /opt/dccd-home/dccd.properties
+sed -i -e 's?###Fill-In-ldapadmin-password###?'$ldapadmin'?' /opt/dccd-home/dccd.properties
 sed -i -e 's?###Fill-In-email###?'$adminEmail'?' /opt/dccd-home/dccd.properties
 sed -i -e 's?###Fill-In-host###?'$smtpHost'?' /opt/dccd-home/dccd.properties
 chown -R tomcat:tomcat /opt/dccd-home
@@ -466,6 +488,7 @@ echo -e '\n# DCCD home directory\nJAVA_OPTS="${JAVA_OPTS} -Ddccd.home=/opt/dccd-
 chmod 0600 /opt/dccd-home/dccd.properties
 
 # 4.1.8 Deploy the webapp
+printf "Deploy DCCD web frontend...\n"
 cp /opt/dccd/dccd.xml /usr/share/tomcat6/conf/Catalina/localhost/
 # Reload tomcat to start it
 service tomcat6 force-reload
@@ -487,6 +510,17 @@ service tomcat6 force-reload
 ################################
 # Cron jobs 
 ################################
+
+printf "Create organisations geolocation cron job...\n" 
+
+# Install required Python packages
+easy_install requests docopt
+
+# Create cron job
+COMMAND="/opt/dccd/cronjobs/geolocate_organisations.py"
+JOB="0 2 * * * $COMMAND"
+cat <(fgrep -i -v "$COMMAND" <(crontab -l)) <(echo "$JOB") | crontab -
+
 
 
 printf "\n\nDCCD backend configuration complete!\n\n";
